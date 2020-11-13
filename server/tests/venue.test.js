@@ -4,52 +4,54 @@ const {sequelize} = require('../models')
 const {queryInterface} = sequelize
 
 let id
-let access_token
+let access_token = "1234"
 let access_token_invalid = ''
 
-beforeAll((done)=> {
-    const userData = {
-        email: 'admin@mail.com',
-        password: '1234'
-    }
-    request(app)
-    .post('/users/login')
-    .send(userData)
-    .set('Accept', 'application/json')
-    .end((err, response) => {
-        access_token = response.body.access_token
-        done()
-    })
-})
+// beforeAll((done)=> {
+//     const userData = {
+//         email: 'admin@mail.com',
+//         password: '1234'
+//     }
+//     request(app)
+//     .post('/users/login')
+//     .send(userData)
+//     .set('Accept', 'application/json')
+//     .end((err, response) => {
+//         access_token = response.body.access_token
+//         done()
+//     })
+// })
 
-afterAll((done) => {
-    queryInterface.bulkDelete('Products')
-    .then(()=> {
-        done()
-    })
-    .catch(err => {
-        console.log(err)
-        done()
-    })
-})
+// afterAll((done) => {
+//     queryInterface.bulkDelete('Venues')
+//     .then(()=> {
+//         done()
+//     })
+//     .catch(err => {
+//         console.log(err)
+//         done()
+//     })
+// })
 
 let venueData = {
     name: 'Wedness Hall',
     address: 'Jl. Pernikahan No.1, Pondok Indah, Jakarta Selatan',
     email: 'wedness_app@mail.com',
-    phone_number: 08166669999,
+    phone_number: "08166669999",
     photos:'https://images.unsplash.com/photo-1523438885200-e635ba2c371e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80',
     price: 10000000,
-    type: 'Outdoor'
+    type: 'Outdoor',
+    description: 'Lorem ipsum'
 }
 let venueDataPut = {
-    name: 'Wedness Hall',
-    address: 'Jl. Pernikahan No.1, Pondok Indah, Jakarta Selatan',
-    email: 'wedness_app@mail.com',
-    phone_number: 08166669999,
+    name: 'Wedness Hall Update',
+    address: 'Jl. Pernikahan No.1, Pondok Indah, Jakarta Selatan Update',
+    email: 'wedness_app@mail.com Update',
+    phone_number: "08166669999",
     photos:'https://images.unsplash.com/photo-1523438885200-e635ba2c371e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80',
     price: 10000000,
-    type: 'Outdoor'
+    type: 'Outdoor',
+    description: 'Lorem ipsum Update'
 }
 
 describe('Testing /postVenue', () => {
@@ -67,11 +69,12 @@ describe('Testing /postVenue', () => {
                 id = body.id
                 expect(body).toHaveProperty('id', expect.any(Number))
                 expect(body).toHaveProperty('name', venueData.name)
-                expect(body).toHaveProperty('address', venueData.image_url)
-                expect(body).toHaveProperty('phone_number', expect.any(Number))
-                expect(body).toHaveProperty('photos', venueData.stock)
-                expect(body).toHaveProperty('price', venueData.stock)
-                expect(body).toHaveProperty('type', venueData.stock)
+                expect(body).toHaveProperty('address', venueData.address)
+                expect(body).toHaveProperty('phone_number', venueData.phone_number)
+                expect(body).toHaveProperty('photos', venueData.photos)
+                expect(body).toHaveProperty('price', venueData.price)
+                expect(body).toHaveProperty('type', venueData.type)
+                expect(body).toHaveProperty('description', venueData.description)
                 done()
             })
         })
