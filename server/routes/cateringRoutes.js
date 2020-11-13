@@ -4,7 +4,7 @@ const cateringController = require("../controllers/cateringController")
 routes.get("/", cateringController.getCaterings)
 routes.get("/:id", cateringController.getCatering)
 
-routes.post("/:id", cateringController.postCatering)
+routes.post("/", cateringController.postCatering)
 routes.put("/:id", cateringController.putCatering)
 routes.delete("/:id", cateringController.deleteCatering) 
  

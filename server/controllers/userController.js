@@ -1,40 +1,39 @@
 const { User } = require('../models/index')
 const { signToken } = require('../helpers/jwt')
+const { comparePassword } = require('../helpers/bcryptjs')
 
 class UserController {
   static userLogin(req, res, next){
     const { email, password } = req.body
     if(email === '' || password === ''){
-      res.status(400).json({
-          name: "Bad Request",
-          message: "Please input email and/or password"
-      })
+      next({name: "Bad Request"})
   }
     User.findOne({where: {
       email: email
     }})
     .then(user => {
       if(!user){
-        res.status(404).json({
-          name: 'Unauthorized',
-          message: 'Wrong email or password!'
-      })}
+        next({name: 'Wrong Email or Password' })
+      }
+      else if(!comparePassword(password, user.password)) {
+        next({name: 'Wrong Email or Password' })
+      }
       else{
         const access_token = signToken({id: user.id, email: user.email, role: user.role})
         res.status(200).json({access_token}) 
       }
     })
     .catch(err => {
-      res.status(500).json({
-        name: "Internal Server Error",
-        message: err.message
-      })
+      next({name: "Internal Server Error"})
     })
   }
 
   static userRegister(req, res, next){
     const role = 'customer'
     const { name, email, password, phone_number } = req.body
+    if( name === '' || email === '' || phone_number === '' || password === ''){
+      next({name: "Empty Column"})
+    }
     User.create({
       name,
       email,
@@ -50,10 +49,7 @@ class UserController {
       })
     })
     .catch(err => {
-      res.status(500).json({
-        name: "Internal Server Error",
-        message: err.message
-      })
+      next({name: "Internal Server Error"})
     })
   }
 }

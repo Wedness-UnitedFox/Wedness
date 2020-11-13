@@ -4,6 +4,7 @@ const vendorRoutes = require('./vendorRoutes')
 const venueRoutes = require('./venueRoutes')
 const organizerRoutes = require('./organizerRoutes')
 const cateringRoutes = require('./cateringRoutes')
+const photoRoutes = require('./photoRoutes')
 const errorHandler = require('../middlewares/errorHandler')
 
 routes.get("/", (req,res)=>{
@@ -18,6 +19,7 @@ routes.use("/vendor", vendorRoutes)
 routes.use("/venue", venueRoutes)
 routes.use("/organizer", organizerRoutes)
 routes.use("/catering", cateringRoutes)
+routes.use("/photo", photoRoutes)
 routes.use(errorHandler)
 
  
