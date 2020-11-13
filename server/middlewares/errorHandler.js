@@ -27,14 +27,21 @@ function errorHandler (err, req, res, next) {
             code = 403
             msg = 'You are not Authorized'
             break
-
+        case 'Bad Request':
+            code = 400
+            msg = 'Please input email and/or password'
+            break
+        case 'Empty Column':
+            code = 400
+            msg = 'This column should not be empty!'
+            break
         default:
             code = 500
             msg = 'Internal Server Error'
             break
     }
 
-    return res.status(code).json({msg})
+  return res.status(code).json({msg})
 }
 
 module.exports = errorHandler
