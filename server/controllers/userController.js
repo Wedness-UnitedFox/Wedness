@@ -35,18 +35,18 @@ class UserController {
   static userRegister(req, res, next){
     const role = 'customer'
     const { name, email, password, phone_number } = req.body
-    const new_user = {
+    User.create({
       name,
       email,
       password,
       phone_number,
       role
-    }
-    User.create({new_user})
+    })
     .then(user => {
       res.status(201).json({
         id: user.id,
-        email: user.email
+        email: user.email,
+        name: user.name
       })
     })
     .catch(err => {
