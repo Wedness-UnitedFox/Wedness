@@ -4,9 +4,13 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+<<<<<<< HEAD
     "test": "jest --runInBand --verbose false --detectOpenHandles --forceExit",
     "dev": "nodemon ./bin/www",
     "start": "node app.js"
+=======
+    "test": "jest --runInBand --verbose --detectOpenHandles --forceExit"
+>>>>>>> 80b0c2492b95937b44ef7e5a344df2809557fdfb
   },
   "keywords": [],
   "author": "",
