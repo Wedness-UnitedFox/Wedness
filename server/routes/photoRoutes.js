@@ -1,0 +1,10 @@
+const routes = require('express').Router() 
+const photoController = require("../controllers/photoController")
+
+routes.get("/", photoController.getPhotos)
+routes.get("/:id", photoController.getPhoto)
+
+routes.post("/", photoController.postPhoto) 
+routes.delete("/:id", photoController.deletePhoto) 
+  
+module.exports = routes
