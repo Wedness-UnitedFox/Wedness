@@ -10,8 +10,8 @@ routes.get("/", (req,res)=>{
     res.status(200).json({message:"halo home"})
 })
 
-routes.post("/login", userController.postLogin)
-routes.post("/register", userController.postRegister)  
+routes.post("/login", userController.userLogin)
+routes.post("/register", userController.userRegister)  
 routes.use("/vendor", vendorRoutes)
 
 //auth
