@@ -1,7 +1,8 @@
 class VenueController {
     
     static postVenue(req,res,next){ 
-        next({})
+        res.status(201).json(req.body)
+        // next({})
     }
 
     static getVenues(req,res,next){ 
