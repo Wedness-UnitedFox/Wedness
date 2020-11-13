@@ -2,6 +2,7 @@ function errorHandler (err, req, res, next) {
     let msg = ''
     let code = ''
     console.log("ERROR HANDLER");
+    console.log(err);
 
     switch(err.name) {
         case 'SequelizeValidationError':
@@ -16,6 +17,11 @@ function errorHandler (err, req, res, next) {
         case 'Wrong Email or Password':
             code = 404
             msg = 'Wrong Email or Password'
+            break
+            
+        case 'Not Found':
+            code = 404
+            msg = 'Data not found'
             break
             
         case 'Unauthenticated':
