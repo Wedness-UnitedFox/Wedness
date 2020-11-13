@@ -2,22 +2,22 @@
   "development": {
     "username": "postgres",
     "password": "postgres",
-    "database": "wedness_development",
+    "database": "wedness-dev",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "test": {
     "username": "postgres",
     "password": "postgres",
-    "database": "wedness_test",
+    "database": "wedness-test",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
+    "username": "postgres",
+    "password": "postgres",
+    "database": "wedness-production",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "postgres"
   }
 }
