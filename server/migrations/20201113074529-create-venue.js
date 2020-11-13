@@ -22,10 +22,7 @@ module.exports = {
       },
       phone_number: {
         type: Sequelize.STRING
-      },
-      photos: {
-        type: Sequelize.STRING
-      },
+      }, 
       price: {
         type: Sequelize.INTEGER
       },
