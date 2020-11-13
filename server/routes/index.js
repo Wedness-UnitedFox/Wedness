@@ -1,3 +1,7 @@
 const route = require('express').Router()
+const UserController = require('../controllers/userController')
 
-route
+route.post('/login', UserController.userLogin)
+route.post('/register', UserController.userRegister)
+
+module.exports = route
