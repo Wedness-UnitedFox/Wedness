@@ -307,7 +307,7 @@ describe('Testing /putVenue', () => {
             .then(response => {
                 const {status, body} = response
                 expect(status).toBe(201)
-                expect(body).toHaveProperty('message', 'Edit Successfully')
+                expect(body).toHaveProperty('msg', 'Edit Successfully')
                 done()
             })
         })
@@ -474,7 +474,7 @@ describe('Testing /deleteVenue', () => {
             .then(response => {
                 const {status, body} = response
                 expect(status).toBe(200)
-                expect(body).toHaveProperty('message', 'Venue Deleted')
+                expect(body).toHaveProperty('msg', 'Deleted Successfully')
                 done()
             })
         })
