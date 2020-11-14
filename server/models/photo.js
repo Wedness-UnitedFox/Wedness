@@ -14,8 +14,17 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Photo.init({
-    photo_url: DataTypes.STRING,
-    vendor_id: DataTypes.INTEGER
+    photo_url: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Photo URL cannot be empty"
+        }
+      }
+    },
+    vendor_id: DataTypes.INTEGER,
+    vendor_type: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Photo',

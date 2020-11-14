@@ -1,4 +1,5 @@
-const { Catering } = require('../models/index')
+const { Catering, Photo } = require('../models/index')
+const { Op } = require('sequelize')
 class CateringController {
     
     static postCatering(req,res,next){ 
@@ -18,8 +19,21 @@ class CateringController {
         .catch(err => next(err))
     } 
     
-    static getCatering(req,res,next){ 
-        Catering.findByPk(req.params.id)
+    static getCatering(req,res,next){
+
+        Catering.findByPk(req.params.id, {
+            include: [{
+                model: Photo,
+                where: {
+                    // vendor_id: req.params.id,
+                    [Op.and]: [
+                        { vendor_id: req.params.id }, 
+                        { vendor_type: 'catering' }
+                    ],                   
+                },
+                required: false
+            }]
+        })
         .then(catering => {
             if(catering) res.status(200).json(catering)
             else next({name:'Not Found'})
