@@ -1,4 +1,4 @@
-const { Catering } = require('../models/index')
+const { Catering, User } = require('../models/index')
 class CateringController {
     
     static postCatering(req,res,next){ 
@@ -11,7 +11,9 @@ class CateringController {
     }
 
     static getCaterings(req,res,next){ 
-        Catering.findAll()
+        Catering.findAll({
+            // include:[User]
+        })
         .then(caterings => {
             res.status(200).json(caterings)
         })
@@ -19,7 +21,9 @@ class CateringController {
     } 
     
     static getCatering(req,res,next){ 
-        Catering.findByPk(req.params.id)
+        Catering.findByPk(req.params.id, {
+            include:[User]
+        })
         .then(catering => {
             if(catering) res.status(200).json(catering)
             else next({name:'Not Found'})
