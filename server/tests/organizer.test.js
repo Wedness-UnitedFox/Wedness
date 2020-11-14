@@ -14,7 +14,7 @@ beforeAll((done)=> {
         email: 'testing@mail.com',
         password: '1234',
         phone_number: '08999666999',
-        role: 'customer'
+        role: 'vendor'
     }
     // request(app)
     // .post('/login')

@@ -93,7 +93,11 @@ const venueAuthorization = (req, res, next) => {
 const organizerAuthorization = (req, res, next) => {
     // console.log("<<<<<organizer auth", req.params)
     const {id} = req.params  
+<<<<<<< HEAD
+    Organizer.findByPk(id)
+=======
     Organizer.findByPk(+id)
+>>>>>>> 5947ba84cba9599af377353b130be0718d0cbb2a
         .then(data => {
             console.log(data);
             if(!data){
@@ -111,7 +115,7 @@ const organizerAuthorization = (req, res, next) => {
 
 const cateringAuthorization = (req, res, next) => {
     const {id} = req.params  
-    Catering.findByPK(id)
+    Catering.findByPk(id)
         .then(data => {
             if(!data){
                 res.status(404).json({message : 'Data not found'})
