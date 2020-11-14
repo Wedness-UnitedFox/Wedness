@@ -6,7 +6,7 @@ class VendorController{
     const { email, password } = req.body
     if(email === '' || password === ''){
       next({name: "Bad Request"})
-  }
+    }
     User.findOne({where: {
       email: email
     }})
@@ -28,6 +28,7 @@ class VendorController{
   }
 
   static userRegister(req, res, next){
+    console.log('masuk register')
     const role = 'vendor'
     const { name, email, password, phone_number } = req.body
     if( name === '' || email === '' || phone_number === '' || password === ''){

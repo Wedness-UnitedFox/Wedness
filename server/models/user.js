@@ -22,7 +22,15 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     email: DataTypes.STRING,
     phone_number: DataTypes.STRING,
-    password: DataTypes.STRING,
+    password: {
+      type: DataTypes.STRING,
+      validate: {
+        len: {
+          args: [6,],
+          msg: "Use at least 6 characters"
+        }
+      }
+    },
     role: DataTypes.STRING
   }, {
     sequelize,
