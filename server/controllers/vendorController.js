@@ -4,6 +4,7 @@ const { comparePassword } = require('../helpers/bcryptjs')
 class VendorController{  
   static userLogin(req, res, next){
     const { email, password } = req.body
+    console.log("VENDOR LOGIN", req.body);
     if(email === '' || password === ''){
       next({name: "Bad Request"})
     }
@@ -11,6 +12,7 @@ class VendorController{
       email: email
     }})
     .then(user => {
+      console.log({user}, "<<<<<<<<<<<<<");
       if(!user){
         next({name: 'Wrong Email or Password' })
       }
@@ -23,7 +25,7 @@ class VendorController{
       }
     })
     .catch(err => {
-      next({name: "Internal Server Error"})
+      next(err)
     })
   }
 
@@ -48,8 +50,8 @@ class VendorController{
         name: user.name
       })
     })
-    .catch(err => {
-      next({name: "Internal Server Error"})
+    .catch(err => { 
+      next(err)
     })
   }
 }

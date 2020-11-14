@@ -8,7 +8,7 @@ routes.get("/", (req,res)=>{
     res.status(200).json({message:"halo home"})
 })
 
-// routes.use("/user", userRoutes)
+routes.use("/user", userRoutes)
 routes.use("/vendor", vendorRoutes) 
 routes.use(errorHandler)
 

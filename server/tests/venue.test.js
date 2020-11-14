@@ -11,22 +11,22 @@ let access_token_invalid = ''
 
 beforeAll((done)=> {
     console.log("asdadasdad");
-    const userData = {
-        name: 'Testing',
+    const userData = { 
         email: 'testing@mail.com',
-        password: '123456',
-        phone_number: '08999666999',
-        role: 'vendor'
-    } 
+        password: '1234', 
+    }  
     request(app)
-        .post('/vendor/register')
+        .post('/vendor/login')
         .send(userData)
-        .end((err, response)=>{
-            console.log("REGISTER, ",response.body);
+        .then((err, response)=>{
+            console.log("LOGIN, ",response.body);
+            access_token = response.body.access_token
             done()
+        }).catch(err=>{
+            console.log(err,"ERROR LOGINN");
         })
 
-    access_token = signToken({id: userData.id, email: userData.email, role: userData.role})
+    // access_token = signToken({id: userData.id, email: userData.email, role: userData.role})
     done()
 })
 
