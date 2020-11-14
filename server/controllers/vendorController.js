@@ -50,7 +50,7 @@ class VendorController{
         name: user.name
       })
     })
-    .catch(err => { 
+    .catch(err => {
       next(err)
     })
   }

@@ -93,7 +93,7 @@ const venueAuthorization = (req, res, next) => {
 const organizerAuthorization = (req, res, next) => {
     // console.log("<<<<<organizer auth", req.params)
     const {id} = req.params  
-    Organizer.findByPk(id)
+    Organizer.findByPk(+id)
         .then(data => {
             console.log(data);
             if(!data){
