@@ -7,32 +7,47 @@ const {signToken} = require('../helpers/jwt')
 let id
 let access_token
 let access_token_invalid = ''
+const userData = {
+    name: 'Testing',
+    email: 'testing2@mail.com',
+    password: '123456',
+    phone_number: '08999666999',
+    role: 'vendor'
+}
+const userLogin = {
+    email: userData.email,
+    password: userData.password
+}
 
 beforeAll((done)=> {
-    const userData = {
-        name: 'Testing',
-        email: 'testing@mail.com',
-        password: '123456',
-        phone_number: '08999666999',
-        role: 'vendor'
-    }
+    
+    return User.create(userData)
+    .then(user => {
+        access_token = signToken({id: user.id, email: user.email, role: user.role})
+        console.log(access_token, "before all")
+        done()
+    })
+    .catch(err => {
+        done(err)
+    })
     request(app)
         .post('/vendor/register')
         .send(userData)
         .end((err, response)=>{
             console.log("REGISTER, ",response.body);
-            access_token = signToken({id: response.body.id, email: userData.email, role: userData.role})
+            // access_token = signToken({id: response.body.id, email: userData.email, role: userData.role})
             done()
         })
-    // request(app)
-    // .post('/vendor/login')
-    // .send(userData)
-    // .set('Accept', 'application/json')
-    // .end((err, response) => {
-    //     // console.log(response,'<<<<<<<<<<<response')
-    //     access_token = response.body.access_token
-    //     done()
-    // })
+    request(app)
+    .post('/vendor/login')
+    .send(userLogin)
+    .set('Accept', 'application/json')
+    .end((err, response) => {
+        console.log(response.body,'<<<<<<<<<<<response')
+        access_token = response.body.access_token
+        console.log(access_token)
+        done()
+    })
     done()
 })
 
@@ -40,7 +55,7 @@ afterAll((done) => {
     queryInterface.bulkDelete('Caterings')
     .then(() => {
         return User.destroy({where: {
-            email: 'testing@mail.com'
+            email: userData.email
         }})
     })
     .then(() => {
@@ -53,12 +68,11 @@ afterAll((done) => {
 })
 
 let data = {
-    id:1,
     name: 'Wedness Catering',
     address: 'Jl. Catering No.1, Pondok Indah, Jakarta Selatan',
     email: 'wedness_app@mail.com',
     phone_number: "08166669999",
-    type: 'Indonesian',
+    // type: 'Indonesian',
     price: 10000000,
     description: 'Lorem ipsum',
     avatar: 'https://www.kindpng.com/picc/m/78-785827_user-profile-avatar-login-account-male-user-icon.png',
@@ -66,16 +80,16 @@ let data = {
 let dataPut = {
     name: 'Wedness Catering Update',
     address: 'Jl. Catering No.1, Pondok Indah, Jakarta Selatan Update',
-    email: 'wedness_app@mail.com Update',
+    email: 'update_wedness_app@mail.com',
     phone_number: "08166669999",
-    type: 'Indonesian',
+    // type: 'Indonesian',
     price: 10000000,
-    type: 'Outdoor',
-    description: 'Lorem ipsum Update'
+    description: 'Lorem ipsum Update',
+    avatar: 'https://www.kindpng.com/picc/m/78-785827_user-profile-avatar-login-account-male-user-icon.png',
 }
 
 
-describe.only('Testing /postCatering', () => {
+describe('Testing /postCatering', () => {
     describe('Success case /postCatering', () => {
         test('Successfully Add Catering', (done) => {
             console.log('<<<<<<<<<<<<<<<<<<<<<masuk sini')
@@ -94,7 +108,6 @@ describe.only('Testing /postCatering', () => {
                 expect(body).toHaveProperty('address', data.address)
                 expect(body).toHaveProperty('phone_number', data.phone_number)
                 expect(body).toHaveProperty('price', data.price)
-                expect(body).toHaveProperty('type', data.type)
                 expect(body).toHaveProperty('description', data.description)
                 done()
             })
@@ -206,21 +219,6 @@ describe.only('Testing /postCatering', () => {
                 done()
             })
         })
-        test('Validation Error Empty Type', (done) => {
-            var dataEmptyType = {
-                ...data, type: ''
-            }
-            request(app)
-            .post('/vendor/catering')
-            .set('access_token', access_token)
-            .send(dataEmptyType)
-            .set('Accept', 'application/json')
-            .then(response => {
-                const {status,body} = response
-                expect(status).toBe(400)
-                done()
-            })
-        })
         test('Validation Error Empty Description', (done) => {
             var dataEmptyDescription = {
                 ...data, description: ''
@@ -259,7 +257,7 @@ describe.only('Testing /postCatering', () => {
             .set('Accept', 'application/json')
             .then(response => {
                 const {status,body} = response
-                expect(status).toBe(401)
+                expect(status).toBe(403)
                 done()
             })
         })
@@ -283,7 +281,7 @@ describe('Testing /getCatering', () => {
                 expect(body[0]).toHaveProperty('phone_number', data.phone_number)
                 expect(body[0]).toHaveProperty('email', data.email)
                 expect(body[0]).toHaveProperty('price', data.price)
-                expect(body[0]).toHaveProperty('type', data.type)
+                // expect(body[0]).toHaveProperty('type', data.type)
                 expect(body[0]).toHaveProperty('avatar', data.avatar)
                 expect(body[0]).toHaveProperty('description', data.description)
                 done()
@@ -300,7 +298,7 @@ describe('Testing /getCatering', () => {
             .set('Accept', 'application/json')
             .then(response => {
                 const {status, body} = response
-                expect(status).toBe(401)
+                expect(status).toBe(403)
                 done()
             })
         })
@@ -318,7 +316,8 @@ describe('Testing /putCatering', () => {
             .set('Accept', 'application/json')
             .then(response => {
                 const {status, body} = response
-                expect(status).toBe(201)
+                console.log(response, "put catering")
+                expect(status).toBe(200)
                 expect(body).toHaveProperty('msg', 'Edit Successfully')
                 done()
             })
@@ -416,21 +415,6 @@ describe('Testing /putCatering', () => {
                 done()
             })
         })
-        test('Validation Error Put Empty Type', (done) => {
-            var dataPutEmptyType = {
-                ...dataPut, type: ''
-            }
-            request(app)
-            .put(`/vendor/catering/${id}`)
-            .set('access_token', access_token)
-            .send(dataPutEmptyType)
-            .set('Accept', 'application/json')
-            .then(response => {
-                const {status,body} = response
-                expect(status).toBe(400)
-                done()
-            })
-        })
         test('Validation Error Put Empty Description', (done) => {
             var dataPutEmptyDescription = {
                 ...dataPut, description: ''
@@ -469,7 +453,7 @@ describe('Testing /putCatering', () => {
             .set('Accept', 'application/json')
             .then(response => {
                 const {status,body} = response
-                expect(status).toBe(401)
+                expect(status).toBe(403)
                 done()
             })
         })
@@ -499,7 +483,7 @@ describe('Testing /deleteCatering', () => {
             .set('Accept', 'application/json')
             .then(response => {
                 const {status, body} = response
-                expect(status).toBe(401)
+                expect(status).toBe(403)
                 done()
             })
         })
