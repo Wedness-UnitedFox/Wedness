@@ -2,6 +2,7 @@ function errorHandler (err, req, res, next) {
     let msg = ''
     let code = ''
     console.log("ERROR HANDLER");
+    console.log(err, "err from err Handler")
     switch(err.name) {
         case 'SequelizeValidationError':
             let errors = [];
