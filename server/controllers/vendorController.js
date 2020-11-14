@@ -23,7 +23,7 @@ class VendorController{
       }
     })
     .catch(err => {
-      next({name: "Internal Server Error"})
+      next(err)
     })
   }
 
@@ -49,7 +49,7 @@ class VendorController{
       })
     })
     .catch(err => {
-      next({name: "Internal Server Error"})
+      next(err)
     })
   }
 }

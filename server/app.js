@@ -12,8 +12,8 @@ app.use(routes)
 //   res.status(200).json({ email })
 // })
 
-app.listen(port , () => {
-  console.log(`app is listening on ${port}`)
-})
+// app.listen(port , () => {
+//   console.log(`app is listening on ${port}`)
+// })
 
 module.exports = app
