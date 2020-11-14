@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
   };
   Venue.init({
     name: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: {
@@ -32,15 +32,101 @@ module.exports = (sequelize, DataTypes) => {
         }, 
       }
     },
-    description: DataTypes.STRING,
-    address: DataTypes.STRING,
-    email: DataTypes.STRING,
-    phone_number: DataTypes.STRING, 
-    price: DataTypes.INTEGER,
-    type: DataTypes.STRING,
-    avatar: DataTypes.STRING,
-    UserId: DataTypes.INTEGER,
-    capacity: DataTypes.INTEGER
+    description: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "Input description cannot be empty"
+        }, 
+      }
+    },
+    address: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "Input address cannot be empty"
+        }, 
+      }
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "Input email cannot be empty"
+        }, 
+      }
+    },
+    phone_number: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "Input phone_number cannot be empty"
+        }, 
+      }
+    },
+    price: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        isNumeric:true,
+        notEmpty: {
+          args: true,
+          msg: "Input price cannot be empty"
+        }, 
+        min: {
+          args: [1],
+          msg: "Price cannot less than 0"
+        }
+      }
+    },
+    type: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "Input type cannot be empty"
+        }, 
+      }
+    },
+    avatar: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "Input avatar cannot be empty"
+        }, 
+      }
+    },
+    UserId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "Input UserId cannot be empty"
+        }, 
+      }
+    },
+    capacity: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "Input capacity cannot be empty"
+        }, 
+      }
+    },
   }, {
     sequelize,
     modelName: 'Venue',

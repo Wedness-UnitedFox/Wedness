@@ -7,7 +7,7 @@ function errorHandler (err, req, res, next) {
             let errors = [];
             err.errors.forEach(el => {
                 errors.push(el.message);
-            });
+            }); 
             code = 400
             msg = `${errors}`
             break;

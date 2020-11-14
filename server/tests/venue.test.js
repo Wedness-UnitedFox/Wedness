@@ -10,24 +10,21 @@ let access_token
 let access_token_invalid = ''
 
 beforeAll((done)=> {
-    console.log("asdadasdad");
     const userData = { 
         email: 'testing@mail.com',
-        password: '1234', 
-    }  
+        password: '123456'
+    }
     request(app)
-        .post('/vendor/login')
-        .send(userData)
-        .then((err, response)=>{
-            console.log("LOGIN, ",response.body);
-            access_token = response.body.access_token
-            done()
-        }).catch(err=>{
-            console.log(err,"ERROR LOGINN");
-        })
+    .post('/vendor/login')
+    .send(userData)
+    .end((err, response) => {
+        access_token = response.body.access_token
+        console.log(access_token,"<<<");
+        done()
+    })
 
     // access_token = signToken({id: userData.id, email: userData.email, role: userData.role})
-    done()
+    // done()
 })
 
 afterAll((done) => {
@@ -49,7 +46,8 @@ let data = {
     avatar: 'https://www.kindpng.com/picc/m/78-785827_user-profile-avatar-login-account-male-user-icon.png',
     price: 10000000,
     type: 'Outdoor',
-    description: 'Lorem ipsum'
+    description: 'Lorem ipsum',
+    capacity: 800,
 }
 let dataPut = {
     name: 'Wedness Hall Update',
@@ -59,7 +57,8 @@ let dataPut = {
     avatar: 'https://www.kindpng.com/picc/m/78-785827_user-profile-avatar-login-account-male-user-icon.png',
     price: 10000000,
     type: 'Outdoor',
-    description: 'Lorem ipsum Update'
+    description: 'Lorem ipsum Update',
+    capacity: 1000,
 }
 
 
@@ -69,7 +68,7 @@ describe('Testing /postVenue', () => {
             request(app)
             .post("/vendor/venue")
             .send(data)
-            // .set('access_token', access_token) 
+            .set('access_token', access_token) 
             .then(response => {
                 const {status,body} = response 
                 expect(status).toBe(201)
@@ -102,7 +101,7 @@ describe('Testing /postVenue', () => {
                 done()
             })
         })
-        test.only('Validation Error Empty Name', (done) => {
+        test('Validation Error Empty Name', (done) => {
             console.log({access_token});
             var dataEmptyName = {
                 ...data, name: ''
@@ -112,7 +111,7 @@ describe('Testing /postVenue', () => {
             .set('access_token', access_token)
             .send(dataEmptyName)
             .set('Accept', 'application/json')
-            .then(response => {
+            .then(response => { 
                 const {status,body} = response
                 expect(status).toBe(400)
                 expect(body).toHaveProperty('msg', 'Input name cannot be empty')
@@ -262,7 +261,7 @@ describe('Testing /postVenue', () => {
             .set('Accept', 'application/json')
             .then(response => {
                 const {status,body} = response
-                expect(status).toBe(401)
+                expect(status).toBe(403)
                 done()
             })
         })
@@ -303,7 +302,7 @@ describe('Testing /getVenue', () => {
             .set('Accept', 'application/json')
             .then(response => {
                 const {status, body} = response
-                expect(status).toBe(401)
+                expect(status).toBe(403)
                 done()
             })
         })
@@ -315,13 +314,13 @@ describe('Testing /putVenue', () => {
     describe('Success Case /putVenue', () => {
         test('Successfully Update Venue', (done) => {
             request(app)
-            .put(`/venue/${id}`)
+            .put(`/vendor/venue/${id}`)
             .set('access_token', access_token)
             .send(dataPut)
             .set('Accept', 'application/json')
             .then(response => {
                 const {status, body} = response
-                expect(status).toBe(201)
+                expect(status).toBe(200)
                 expect(body).toHaveProperty('msg', 'Edit Successfully')
                 done()
             })
@@ -334,7 +333,7 @@ describe('Testing /putVenue', () => {
                 ...dataPut, name: ''
             }
             request(app)
-            .put(`/venue/${id}`)
+            .put(`/vendor/venue/${id}`)
             .set('access_token', access_token)
             .send(dataPutEmptyName)
             .set('Accept', 'application/json')
@@ -349,7 +348,7 @@ describe('Testing /putVenue', () => {
                 ...dataPut, address: ''
             }
             request(app)
-            .put(`/venue/${id}`)
+            .put(`/vendor/venue/${id}`)
             .set('access_token', access_token)
             .send(dataPutEmptyAddress)
             .set('Accept', 'application/json')
@@ -364,7 +363,7 @@ describe('Testing /putVenue', () => {
                 ...dataPut, email: ''
             }
             request(app)
-            .put(`/venue/${id}`)
+            .put(`/vendor/venue/${id}`)
             .set('access_token', access_token)
             .send(dataPutEmptyEmail)
             .set('Accept', 'application/json')
@@ -379,7 +378,7 @@ describe('Testing /putVenue', () => {
                 ...dataPut, phone_number: ''
             }
             request(app)
-            .put(`/venue/${id}`)
+            .put(`/vendor/venue/${id}`)
             .set('access_token', access_token)
             .send(dataPutEmptyPhone)
             .set('Accept', 'application/json')
@@ -394,13 +393,14 @@ describe('Testing /putVenue', () => {
                 ...data, price: -1
             }
             request(app)
-            .put(`/venue/${id}`)
+            .put(`/vendor/venue/${id}`)
             .set('access_token', access_token)
             .send(dataPutLessPrice)
             .set('Accept', 'application/json')
             .then(response => {
                 const {status,body} = response
                 expect(status).toBe(400)
+                expect(body).toHaveProperty('msg','Price cannot less than 0')
                 done()
             })
         })
@@ -409,7 +409,7 @@ describe('Testing /putVenue', () => {
                 ...data, price: 'a'
             }
             request(app)
-            .put(`/venue/${id}`)
+            .put(`/vendor/venue/${id}`)
             .set('access_token', access_token)
             .send(dataPutInvalidPrice)
             .set('Accept', 'application/json')
@@ -424,7 +424,7 @@ describe('Testing /putVenue', () => {
                 ...dataPut, type: ''
             }
             request(app)
-            .put(`/venue/${id}`)
+            .put(`/vendor/venue/${id}`)
             .set('access_token', access_token)
             .send(dataPutEmptyType)
             .set('Accept', 'application/json')
@@ -439,7 +439,7 @@ describe('Testing /putVenue', () => {
                 ...dataPut, description: ''
             }
             request(app)
-            .put(`/venue/${id}`)
+            .put(`/vendor/venue/${id}`)
             .set('access_token', access_token)
             .send(dataPutEmptyDescription)
             .set('Accept', 'application/json')
@@ -454,7 +454,7 @@ describe('Testing /putVenue', () => {
                 ...dataPut, avatar: ''
             }
             request(app)
-            .put(`/venue/${id}`)
+            .put(`/vendor/venue/${id}`)
             .set('access_token', access_token)
             .send(dataPutEmptyAvatar)
             .set('Accept', 'application/json')
@@ -466,13 +466,13 @@ describe('Testing /putVenue', () => {
         })
         test('User Unauthorized to Update Data', (done) => {
             request(app)
-            .put(`/venue/${id}`)
+            .put(`/vendor/venue/${id}`)
             .set('access_token', access_token_invalid)
             .send(data)
             .set('Accept', 'application/json')
             .then(response => {
                 const {status,body} = response
-                expect(status).toBe(401)
+                expect(status).toBe(403)
                 done()
             })
         })
@@ -483,7 +483,7 @@ describe('Testing /deleteVenue', () => {
     describe('Success Case /deleteVenue', () => {
         test('Successfully Delete Venue', (done) => {
             request(app)
-            .delete(`/venue/${id}`)
+            .delete(`/vendor/venue/${id}`)
             .set('access_token', access_token)
             .set('Accept', 'application/json')
             .then(response => {
@@ -497,19 +497,19 @@ describe('Testing /deleteVenue', () => {
     describe('Failed Case /deleteVenue', () => {
         test('Delete Product User Unauthorized', (done) => {
             request(app)
-            .delete(`/venue/${id}`)
+            .delete(`/vendor/venue/${id}`)
             .set('access_token', access_token_invalid)
             .set('Accept', 'application/json')
             .then(response => {
                 const {status, body} = response
-                expect(status).toBe(401)
+                expect(status).toBe(403)
                 done()
             })
         })
         test('Delete Venue Invalid Id', (done) => {
             let id = 0
             request(app)
-            .delete(`/venue/${id}`)
+            .delete(`/vendor/venue/${id}`)
             .set('access_token', access_token)
             .set('Accept', 'application/json')
             .then(response => {

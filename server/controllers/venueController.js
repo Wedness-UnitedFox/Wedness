@@ -8,7 +8,8 @@ class VenueController {
             .then(venue=>{
                 res.status(201).json(venue)
             })
-            .catch(err=>next(err))
+            .catch(err=>{ 
+                next(err)})
     }
 
     static getVenues(req,res,next){  
