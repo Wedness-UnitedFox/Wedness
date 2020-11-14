@@ -22,7 +22,16 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Venue.init({
-    name: DataTypes.STRING,
+    name: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "Input name cannot be empty"
+        }, 
+      }
+    },
     description: DataTypes.STRING,
     address: DataTypes.STRING,
     email: DataTypes.STRING,
