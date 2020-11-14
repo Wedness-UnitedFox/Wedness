@@ -1,37 +1,64 @@
 const request = require('supertest');
 const app = require('../app')
-const {sequelize} = require('../models')
+const {sequelize, User} = require('../models')
 const {queryInterface} = sequelize
 const {signToken} = require('../helpers/jwt')
 
 let id
 let access_token
 let access_token_invalid = ''
+const userData = {
+    name: 'Testing',
+    email: 'testing2@mail.com',
+    password: '123456',
+    phone_number: '08999666999',
+    role: 'vendor'
+}
+const userLogin = {
+    email: userData.email,
+    password: userData.password
+}
 
 beforeAll((done)=> {
-    const userData = {
-        name: 'Testing',
-        email: 'testing@mail.com',
-        password: '1234',
-        phone_number: '08999666999',
-        role: 'customer'
-    }
-    // request(app)
-    // .post('/login')
-    // .send(userData)
-    // .set('Accept', 'application/json')
-    // .end((err, response) => {
-    //     // console.log(response,'<<<<<<<<<<<response')
-    //     access_token = response.body.access_token
-    //     done()
-    // })
-    access_token = signToken({id: userData.id, email: userData.email, role: userData.role})
+    
+    return User.create(userData)
+    .then(user => {
+        access_token = signToken({id: user.id, email: user.email, role: user.role})
+        console.log(access_token, "before all")
+        done()
+    })
+    .catch(err => {
+        done(err)
+    })
+    request(app)
+        .post('/vendor/register')
+        .send(userData)
+        .end((err, response)=>{
+            console.log("REGISTER, ",response.body);
+            // access_token = signToken({id: response.body.id, email: userData.email, role: userData.role})
+            done()
+        })
+    request(app)
+    .post('/vendor/login')
+    .send(userLogin)
+    .set('Accept', 'application/json')
+    .end((err, response) => {
+        console.log(response.body,'<<<<<<<<<<<response')
+        access_token = response.body.access_token
+        console.log(access_token)
+        done()
+    })
     done()
 })
 
 afterAll((done) => {
     queryInterface.bulkDelete('Caterings')
-    .then(()=> {
+    .then(() => {
+        return User.destroy({where: {
+            email: userData.email
+        }})
+    })
+    .then(() => {
         done()
     })
     .catch(err => {
@@ -41,12 +68,11 @@ afterAll((done) => {
 })
 
 let data = {
-    id:1,
     name: 'Wedness Catering',
     address: 'Jl. Catering No.1, Pondok Indah, Jakarta Selatan',
     email: 'wedness_app@mail.com',
     phone_number: "08166669999",
-    type: 'Indonesian',
+    // type: 'Indonesian',
     price: 10000000,
     description: 'Lorem ipsum',
     avatar: 'https://www.kindpng.com/picc/m/78-785827_user-profile-avatar-login-account-male-user-icon.png',
@@ -54,26 +80,27 @@ let data = {
 let dataPut = {
     name: 'Wedness Catering Update',
     address: 'Jl. Catering No.1, Pondok Indah, Jakarta Selatan Update',
-    email: 'wedness_app@mail.com Update',
+    email: 'update_wedness_app@mail.com',
     phone_number: "08166669999",
-    type: 'Indonesian',
+    // type: 'Indonesian',
     price: 10000000,
-    type: 'Outdoor',
-    description: 'Lorem ipsum Update'
+    description: 'Lorem ipsum Update',
+    avatar: 'https://www.kindpng.com/picc/m/78-785827_user-profile-avatar-login-account-male-user-icon.png',
 }
 
 
 describe('Testing /postCatering', () => {
     describe('Success case /postCatering', () => {
         test('Successfully Add Catering', (done) => {
-            // console.log('<<<<<<<<<<<<<<<<<<<<<masuk sini')
+            console.log('<<<<<<<<<<<<<<<<<<<<<masuk sini')
             request(app)
-            .post("/catering")
+            .post("/vendor/catering")
             .set('access_token', access_token)
             .send(data)
             .set('Accept', 'application/json')
             .then(response => {
                 const {status,body} = response
+                console.log("Post success case", response.body)
                 expect(status).toBe(201)
                 id = body.id
                 expect(body).toHaveProperty('id', expect.any(Number))
@@ -81,7 +108,6 @@ describe('Testing /postCatering', () => {
                 expect(body).toHaveProperty('address', data.address)
                 expect(body).toHaveProperty('phone_number', data.phone_number)
                 expect(body).toHaveProperty('price', data.price)
-                expect(body).toHaveProperty('type', data.type)
                 expect(body).toHaveProperty('description', data.description)
                 done()
             })
@@ -93,7 +119,7 @@ describe('Testing /postCatering', () => {
                 ...data, name: ''
             }
             request(app)
-            .post('/catering')
+            .post('/vendor/catering')
             .set('access_token', access_token)
             .send(dataEmptyName)
             .set('Accept', 'application/json')
@@ -108,7 +134,7 @@ describe('Testing /postCatering', () => {
                 ...data, address: ''
             }
             request(app)
-            .post('/catering')
+            .post('/vendor/catering')
             .set('access_token', access_token)
             .send(dataEmptyAddress)
             .set('Accept', 'application/json')
@@ -123,7 +149,7 @@ describe('Testing /postCatering', () => {
                 ...data, phone_number: ''
             }
             request(app)
-            .post('/catering')
+            .post('/vendor/catering')
             .set('access_token', access_token)
             .send(dataEmptyPhone)
             .set('Accept', 'application/json')
@@ -138,7 +164,7 @@ describe('Testing /postCatering', () => {
                 ...data, email: ''
             }
             request(app)
-            .post('/catering')
+            .post('/vendor/catering')
             .set('access_token', access_token)
             .send(dataEmptyEmail)
             .set('Accept', 'application/json')
@@ -153,7 +179,7 @@ describe('Testing /postCatering', () => {
                 ...data, avatar: ''
             }
             request(app)
-            .post('/catering')
+            .post('/vendor/catering')
             .set('access_token', access_token)
             .send(dataEmptyAvatar)
             .set('Accept', 'application/json')
@@ -168,7 +194,7 @@ describe('Testing /postCatering', () => {
                 ...data, price: 0
             }
             request(app)
-            .post('/catering')
+            .post('/vendor/catering')
             .set('access_token', access_token)
             .send(dataLessPrice)
             .set('Accept', 'application/json')
@@ -183,24 +209,9 @@ describe('Testing /postCatering', () => {
                 ...data, price: ''
             }
             request(app)
-            .post('/catering')
+            .post('/vendor/catering')
             .set('access_token', access_token)
             .send(dataEmptyPrice)
-            .set('Accept', 'application/json')
-            .then(response => {
-                const {status,body} = response
-                expect(status).toBe(400)
-                done()
-            })
-        })
-        test('Validation Error Empty Type', (done) => {
-            var dataEmptyType = {
-                ...data, type: ''
-            }
-            request(app)
-            .post('/catering')
-            .set('access_token', access_token)
-            .send(dataEmptyType)
             .set('Accept', 'application/json')
             .then(response => {
                 const {status,body} = response
@@ -213,7 +224,7 @@ describe('Testing /postCatering', () => {
                 ...data, description: ''
             }
             request(app)
-            .post('/catering')
+            .post('/vendor/catering')
             .set('access_token', access_token)
             .send(dataEmptyDescription)
             .set('Accept', 'application/json')
@@ -228,7 +239,7 @@ describe('Testing /postCatering', () => {
                 ...data, price: 'a'
             }
             request(app)
-            .post('/catering')
+            .post('/vendor/catering')
             .set('access_token', access_token)
             .send(dataInvalidPrice)
             .set('Accept', 'application/json')
@@ -240,13 +251,13 @@ describe('Testing /postCatering', () => {
         })
         test('User Not Authenticated', (done) => {
             request(app)
-            .post('/catering')
+            .post('/vendor/catering')
             .set('access_token', access_token_invalid)
             .send(data)
             .set('Accept', 'application/json')
             .then(response => {
                 const {status,body} = response
-                expect(status).toBe(401)
+                expect(status).toBe(403)
                 done()
             })
         })
@@ -257,7 +268,7 @@ describe('Testing /getCatering', () => {
     describe('Success Case /getCatering', () => {
         test('Should send array of object with Status Code 200', (done) => {
             request(app)
-            .get('/catering')
+            .get('/vendor/catering')
             .set('access_token', access_token)
             .send(data)
             .set('Accept', 'application/json')
@@ -270,7 +281,7 @@ describe('Testing /getCatering', () => {
                 expect(body[0]).toHaveProperty('phone_number', data.phone_number)
                 expect(body[0]).toHaveProperty('email', data.email)
                 expect(body[0]).toHaveProperty('price', data.price)
-                expect(body[0]).toHaveProperty('type', data.type)
+                // expect(body[0]).toHaveProperty('type', data.type)
                 expect(body[0]).toHaveProperty('avatar', data.avatar)
                 expect(body[0]).toHaveProperty('description', data.description)
                 done()
@@ -281,13 +292,13 @@ describe('Testing /getCatering', () => {
     describe('Failed Case /getCatering', () => {
         test('User Not Authenticated', (done) => {
             request(app)
-            .get('/catering')
+            .get('/vendor/catering')
             .set('access_token', access_token_invalid)
             .send(data)
             .set('Accept', 'application/json')
             .then(response => {
                 const {status, body} = response
-                expect(status).toBe(401)
+                expect(status).toBe(403)
                 done()
             })
         })
@@ -299,14 +310,15 @@ describe('Testing /putCatering', () => {
     describe('Success Case /putCatering', () => {
         test('Successfully Update Catering', (done) => {
             request(app)
-            .put(`/catering/${id}`)
+            .put(`/vendor/catering/${id}`)
             .set('access_token', access_token)
             .send(dataPut)
             .set('Accept', 'application/json')
             .then(response => {
                 const {status, body} = response
-                expect(status).toBe(201)
-                expect(body).toHaveProperty('message', 'Edit Successfully')
+                console.log(response, "put catering")
+                expect(status).toBe(200)
+                expect(body).toHaveProperty('msg', 'Edit Successfully')
                 done()
             })
         })
@@ -318,7 +330,7 @@ describe('Testing /putCatering', () => {
                 ...dataPut, name: ''
             }
             request(app)
-            .put(`/catering/${id}`)
+            .put(`/vendor/catering/${id}`)
             .set('access_token', access_token)
             .send(dataPutEmptyName)
             .set('Accept', 'application/json')
@@ -333,7 +345,7 @@ describe('Testing /putCatering', () => {
                 ...dataPut, address: ''
             }
             request(app)
-            .put(`/catering/${id}`)
+            .put(`/vendor/catering/${id}`)
             .set('access_token', access_token)
             .send(dataPutEmptyAddress)
             .set('Accept', 'application/json')
@@ -348,7 +360,7 @@ describe('Testing /putCatering', () => {
                 ...dataPut, email: ''
             }
             request(app)
-            .put(`/catering/${id}`)
+            .put(`/vendor/catering/${id}`)
             .set('access_token', access_token)
             .send(dataPutEmptyEmail)
             .set('Accept', 'application/json')
@@ -363,7 +375,7 @@ describe('Testing /putCatering', () => {
                 ...dataPut, phone_number: ''
             }
             request(app)
-            .put(`/catering/${id}`)
+            .put(`/vendor/catering/${id}`)
             .set('access_token', access_token)
             .send(dataPutEmptyPhone)
             .set('Accept', 'application/json')
@@ -378,7 +390,7 @@ describe('Testing /putCatering', () => {
                 ...data, price: -1
             }
             request(app)
-            .put(`/catering/${id}`)
+            .put(`/vendor/catering/${id}`)
             .set('access_token', access_token)
             .send(dataPutLessPrice)
             .set('Accept', 'application/json')
@@ -393,24 +405,9 @@ describe('Testing /putCatering', () => {
                 ...data, price: 'a'
             }
             request(app)
-            .put(`/catering/${id}`)
+            .put(`/vendor/catering/${id}`)
             .set('access_token', access_token)
             .send(dataPutInvalidPrice)
-            .set('Accept', 'application/json')
-            .then(response => {
-                const {status,body} = response
-                expect(status).toBe(400)
-                done()
-            })
-        })
-        test('Validation Error Put Empty Type', (done) => {
-            var dataPutEmptyType = {
-                ...dataPut, type: ''
-            }
-            request(app)
-            .put(`/catering/${id}`)
-            .set('access_token', access_token)
-            .send(dataPutEmptyType)
             .set('Accept', 'application/json')
             .then(response => {
                 const {status,body} = response
@@ -423,7 +420,7 @@ describe('Testing /putCatering', () => {
                 ...dataPut, description: ''
             }
             request(app)
-            .put(`/catering/${id}`)
+            .put(`/vendor/catering/${id}`)
             .set('access_token', access_token)
             .send(dataPutEmptyDescription)
             .set('Accept', 'application/json')
@@ -438,7 +435,7 @@ describe('Testing /putCatering', () => {
                 ...dataPut, avatar: ''
             }
             request(app)
-            .put(`/catering/${id}`)
+            .put(`/vendor/catering/${id}`)
             .set('access_token', access_token)
             .send(dataPutEmptyAvatar)
             .set('Accept', 'application/json')
@@ -450,13 +447,13 @@ describe('Testing /putCatering', () => {
         })
         test('User Unauthorized to Update Data', (done) => {
             request(app)
-            .put(`/catering/${id}`)
+            .put(`/vendor/catering/${id}`)
             .set('access_token', access_token_invalid)
             .send(data)
             .set('Accept', 'application/json')
             .then(response => {
                 const {status,body} = response
-                expect(status).toBe(401)
+                expect(status).toBe(403)
                 done()
             })
         })
@@ -467,13 +464,13 @@ describe('Testing /deleteCatering', () => {
     describe('Success Case /deleteCatering', () => {
         test('Successfully Delete Catering', (done) => {
             request(app)
-            .delete(`/catering/${id}`)
+            .delete(`/vendor/catering/${id}`)
             .set('access_token', access_token)
             .set('Accept', 'application/json')
             .then(response => {
                 const {status, body} = response
                 expect(status).toBe(200)
-                expect(body).toHaveProperty('message', 'Catering Deleted')
+                expect(body).toHaveProperty('msg', 'Deleted Successfully')
                 done()
             })
         })
@@ -481,19 +478,19 @@ describe('Testing /deleteCatering', () => {
     describe('Failed Case /deleteCatering', () => {
         test('Delete Product User Unauthorized', (done) => {
             request(app)
-            .delete(`/catering/${id}`)
+            .delete(`/vendor/catering/${id}`)
             .set('access_token', access_token_invalid)
             .set('Accept', 'application/json')
             .then(response => {
                 const {status, body} = response
-                expect(status).toBe(401)
+                expect(status).toBe(403)
                 done()
             })
         })
         test('Delete catering Invalid Id', (done) => {
             let id = 0
             request(app)
-            .delete(`/catering/${id}`)
+            .delete(`/vendor/catering/${id}`)
             .set('access_token', access_token)
             .set('Accept', 'application/json')
             .then(response => {

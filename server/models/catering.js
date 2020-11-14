@@ -22,14 +22,87 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Catering.init({
-    name: DataTypes.STRING,
-    address: DataTypes.STRING,
-    email: DataTypes.STRING,
-    phone_number: DataTypes.STRING,
-    price: DataTypes.INTEGER,
-    description: DataTypes.STRING,
-    avatar: DataTypes.STRING,
-    UserId: DataTypes.INTEGER
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate:{
+        notEmpty: {
+          args: true,
+          msg: "Name cannot be empty"
+        }
+      }
+    },
+    address: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "Address cannot be empty"
+        }
+      }
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isEmail: {
+          msg: "Please input a valid email"
+        },
+        notEmpty: {
+          args: true,
+          msg: "Email cannot be empty"
+        }
+      }
+    },
+    phone_number: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "Phone number cannot be empty"
+        }
+      }
+    },
+    price: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "Price cannot be empty"
+        },
+        min: {
+          args: [1],
+          msg: "Price cannot be less than one"
+        },
+        isNumeric: {
+          args: true
+        }
+      }
+    },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "Description cannot be empty"
+        }
+      }
+    },
+    avatar: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "Avatar cannot be empty"
+        }
+      }
+    },
+    UserId: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Catering',
