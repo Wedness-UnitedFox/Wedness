@@ -2,12 +2,14 @@ const { Venue } = require("../models")
 
 class VenueController { 
     static postVenue(req,res,next){ 
+        // console.log(req.body,"POST<<<<<<<<<<<<<<<<<" );
         req.body.UserId = req.userData.id
         Venue.create(req.body)
             .then(venue=>{
                 res.status(201).json(venue)
             })
-            .catch(err=>next(err))
+            .catch(err=>{ 
+                next(err)})
     }
 
     static getVenues(req,res,next){  
@@ -26,9 +28,7 @@ class VenueController {
             })
             .catch(err=>next(err))
     } 
-
     static putVenue(req,res,next){ 
-        console.log(req.body, req.params.id);
         Venue.update(req.body, {
             where:{
                 id:req.params.id
@@ -40,7 +40,6 @@ class VenueController {
         }).catch(err=> {
             next(err)})
     }
-
     static deleteVenue(req,res,next){ 
         Venue.destroy({
             where:{

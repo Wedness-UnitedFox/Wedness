@@ -5,7 +5,8 @@ const organizerController = require("../controllers/organizerController")
 const cateringController = require("../controllers/cateringController")
 const {userAuthentication, authorization} = require("../middlewares/auth")
 routes.post("/login", userController.userLogin)
-routes.post("/register", userController.userRegister)
+routes.post("/register", userController.userRegister) 
+
 // CRUD buat user "plan your wedding" 
 routes.use(userAuthentication)
 routes.get("/venue", venueController.getVenues)
@@ -14,9 +15,6 @@ routes.get("/organizer", organizerController.getOrganizers)
 routes.get("/organizer/:id", organizerController.getOrganizer)
 routes.get("/catering", cateringController.getCaterings)
 routes.get("/catering/:id", cateringController.getCatering)
-
-// routes.get("/plan")
-// routes.post("/plan")
-// routes.delete("/plan/:id")
+ 
 
 module.exports = routes

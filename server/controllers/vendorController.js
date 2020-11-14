@@ -3,14 +3,16 @@ const { signToken } = require('../helpers/jwt')
 const { comparePassword } = require('../helpers/bcryptjs')
 class VendorController{  
   static userLogin(req, res, next){
-    const { email, password } = req.body
+    const { email, password } = req.body 
+
     if(email === '' || password === ''){
       next({name: "Bad Request"})
-  }
+    }
+    
     User.findOne({where: {
       email: email
     }})
-    .then(user => {
+    .then(user => { 
       if(!user){
         next({name: 'Wrong Email or Password' })
       }
@@ -23,12 +25,13 @@ class VendorController{
         res.status(200).json({access_token}) 
       }
     })
-    .catch(err => {
-      next({name: "Internal Server Error"})
+    .catch(err => { 
+      next(err)
     })
   }
 
   static userRegister(req, res, next){
+    console.log('masuk register')
     const role = 'vendor'
     const { name, email, password, phone_number } = req.body
     if( name === '' || email === '' || phone_number === '' || password === ''){
@@ -49,7 +52,7 @@ class VendorController{
       })
     })
     .catch(err => {
-      next({name: "Internal Server Error"})
+      next(err)
     })
   }
 }
