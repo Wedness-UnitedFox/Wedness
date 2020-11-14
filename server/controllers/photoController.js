@@ -10,7 +10,7 @@ class PhotoController {
         res.status(200).json({})
     }
     
-    static postPhoto(req,res,next){
+    static postPhoto(req,res,next){ //dari vendor_id => services_id
 
         res.status(201).json(req.body)
     }

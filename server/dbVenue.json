@@ -22,13 +22,14 @@
         "capacity": 1000
     },
     {
-        "name": "Wedness Hall",
-        "address": "Jl. Pernikahan No.1, Pondok Indah, Jakarta Selatan",
-        "email": "wedness_app@mail.com",
-        "phone_number": "08166669999",
-        "avatar": "https://www.kindpng.com/picc/m/78-785827_user-profile-avatar-login-account-male-user-icon.png",
-        "price": 10000000,
-        "type": "Outdoor",
-        "description": "Lorem ipsum"
+        "name": "Millenium Hotel Sirih Jakarta",
+        "address": "Jl. Fachrudin No.3, RT.1/RW.7, Kp. Bali, Tanahabang, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10250",
+        "email": "millenium@gmail.com",
+        "phone_number": "(021) 2303636",
+        "avatar": "https://www.woke.id/wp-content/uploads/2019/12/Millenium-Hotel-Sirih-Jakarta.jpg",
+        "price": 380000000,
+        "type": "Indoor",
+        "description": "Hotel bintang 4 yang berada di daerah Tanahabang ini menyediakan berbagai macam paket pernikahan untuk hari bahagia kamu. Paket yang ditawarkan dibagi berdasarkan jumlah tamu yang akan kamu undang.",
+        "capacity": 1000
     }
 ]
