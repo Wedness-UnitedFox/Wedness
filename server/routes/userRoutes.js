@@ -21,6 +21,6 @@ routes.get("/catering/:id", cateringController.getCatering)
 routes.get("/plan", CheckoutController.getCheckouts)
 routes.post("/plan", CheckoutController.postCheckout) 
 routes.delete("/plan/:id", CheckoutController.deleteCheckout)
- 
+routes.put("/plan/checkout", CheckoutController.payCheckoutForCustomer) 
 
 module.exports = routes

@@ -23,8 +23,20 @@ class VenueController {
     } 
 
     static getVenue(req,res,next){ 
-        Venue.findByPk(req.params.id,{
-            include:[User]
+        Venue.findByPk(req.params.id, {
+            include: [{
+                model: Photo,
+                where: {
+                    [Op.and]: [
+                        { vendor_id: req.params.id }, 
+                        { vendor_type: 'venue' }
+                    ],                   
+                },
+                required: false
+            }, {
+                model: User,
+                attributes: {exclude: ['password']},
+            }]
         })
             .then(venue=>{
                 if (venue) res.status(200).json(venue)
