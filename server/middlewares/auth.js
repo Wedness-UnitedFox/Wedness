@@ -91,9 +91,11 @@ const venueAuthorization = (req, res, next) => {
 }
 
 const organizerAuthorization = (req, res, next) => {
+    // console.log("<<<<<organizer auth", req.params)
     const {id} = req.params  
-    Organizer.findByPK(id)
+    Organizer.findByPk(+id)
         .then(data => {
+            console.log(data);
             if(!data){
                 res.status(404).json({message : 'Data not found'})
             } else if(req.userData.id !== data.UserId){

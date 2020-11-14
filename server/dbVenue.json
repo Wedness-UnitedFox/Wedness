@@ -1,0 +1,35 @@
+[
+    {
+        "name": "Balai Makarti Muktitama",
+        "address": "Jl. TMP Kalibata No.17, RT.6/RW.7, Rawajati, Kec. Pancoran, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12750",
+        "email": "balaimakarti@gmail.com",
+        "phone_number": "(021) 7993376",
+        "avatar": "https://www.woke.id/wp-content/uploads/2019/12/Balai-Makarti-Muktitama-1024x768.jpg",
+        "price": 10000000,
+        "type": "Indoor",
+        "description": "Gedung pernikahan yang satu ini identik dengan nuansa Jawa. Ballroom yang menyerupai joglo, dihiasi dengan kayu-kayu, serta langit-langit gedung yang tinggi akan membuat acara pernikahan kamu berkesan. ",
+        "capacity": 800
+    },
+    {
+        "name": "Taruma Grand Ballroom",
+        "address": "Gedung Utama Universitas Tarumanagara. Lantai 21, JL. Letjen.S.Parman, No. 01, RT.6/RW.16, Tomang, Kec. Grogol petamburan, Kota Jakarta Barat, Daerah Khusus Ibukota Jakarta 11440",
+        "email": "carakataruma@ymail.com",
+        "phone_number": "0818-977-310",
+        "avatar": "https://www.woke.id/wp-content/uploads/2019/12/Taruma-Grand-Ballroom.jpg",
+        "price": 10000000,
+        "type": "Indoor",
+        "description": "Universitas Tarumanagara bisa menjadi tempat pernikahan kamu. Jangan membayangkan ruang kelasnya, melainkan ballroom yang berada di kampus di bilangan Grogol ini. Taruma Grand Ballroom berkapasitas hingga 1000 orang. ",
+        "capacity": 1000
+    },
+    {
+        "name": "Millenium Hotel Sirih Jakarta",
+        "address": "Jl. Fachrudin No.3, RT.1/RW.7, Kp. Bali, Tanahabang, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10250",
+        "email": "millenium@gmail.com",
+        "phone_number": "(021) 2303636",
+        "avatar": "https://www.woke.id/wp-content/uploads/2019/12/Millenium-Hotel-Sirih-Jakarta.jpg",
+        "price": 380000000,
+        "type": "Indoor",
+        "description": "Hotel bintang 4 yang berada di daerah Tanahabang ini menyediakan berbagai macam paket pernikahan untuk hari bahagia kamu. Paket yang ditawarkan dibagi berdasarkan jumlah tamu yang akan kamu undang.",
+        "capacity": 1000
+    }
+]
