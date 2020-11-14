@@ -1,4 +1,4 @@
-const { Catering, Photo } = require('../models/index')
+const { Catering, Photo, User } = require('../models/index')
 const { Op } = require('sequelize')
 class CateringController {
     
@@ -12,7 +12,9 @@ class CateringController {
     }
 
     static getCaterings(req,res,next){ 
-        Catering.findAll()
+        Catering.findAll({
+            // include:[User]
+        })
         .then(caterings => {
             res.status(200).json(caterings)
         })
@@ -25,13 +27,15 @@ class CateringController {
             include: [{
                 model: Photo,
                 where: {
-                    // vendor_id: req.params.id,
                     [Op.and]: [
                         { vendor_id: req.params.id }, 
                         { vendor_type: 'catering' }
                     ],                   
                 },
                 required: false
+            }, {
+                model: User,
+                attributes: {exclude: ['password']},
             }]
         })
         .then(catering => {

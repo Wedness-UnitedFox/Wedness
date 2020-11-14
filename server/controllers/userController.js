@@ -19,6 +19,7 @@ class UserController {
         next({name: 'Wrong Email or Password' })
       }
       else{
+        if(user.role!=='customer') next({name: 'customMessage', msg:'You cannot use vendor account on mobile app' })
         const access_token = signToken({id: user.id, email: user.email, role: user.role})
         res.status(200).json({access_token}) 
       }

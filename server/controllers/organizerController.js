@@ -1,4 +1,4 @@
-const { Organizer } = require('../models')
+const { Organizer, User } = require('../models')
 
 class OrganizerController {
     
@@ -12,7 +12,9 @@ class OrganizerController {
     }
 
     static getOrganizers(req,res,next){ 
-        Organizer.findAll()
+        Organizer.findAll({
+            // include:[User]
+        })
             .then(data=>{
                 res.status(200).json(data)
             })
@@ -20,7 +22,21 @@ class OrganizerController {
     } 
     
     static getOrganizer(req,res,next){ 
-        Organizer.findByPk(req.params.id)
+        Organizer.findByPk(req.params.id, {
+            include: [{
+                model: Photo,
+                where: {
+                    [Op.and]: [
+                        { vendor_id: req.params.id }, 
+                        { vendor_type: 'organizer' }
+                    ],                   
+                },
+                required: false
+            }, {
+                model: User,
+                attributes: {exclude: ['password']},
+            }]
+        })
             .then(data=>{
                 if (data) res.status(200).json(data)
                 else next({name:'Not Found'})
