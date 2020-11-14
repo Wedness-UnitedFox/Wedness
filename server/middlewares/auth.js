@@ -92,7 +92,7 @@ const venueAuthorization = (req, res, next) => {
 
 const organizerAuthorization = (req, res, next) => {
     const {id} = req.params  
-    Organizer.findByPK(id)
+    Organizer.findByPk(id)
         .then(data => {
             if(!data){
                 res.status(404).json({message : 'Data not found'})
@@ -109,7 +109,7 @@ const organizerAuthorization = (req, res, next) => {
 
 const cateringAuthorization = (req, res, next) => {
     const {id} = req.params  
-    Catering.findByPK(id)
+    Catering.findByPk(id)
         .then(data => {
             if(!data){
                 res.status(404).json({message : 'Data not found'})
