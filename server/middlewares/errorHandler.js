@@ -3,12 +3,13 @@ function errorHandler (err, req, res, next) {
     let code = ''
     // console.log("ERROR HANDLER");
     // console.log(err, "err from err Handler")
+    console.log(err.name,"<--ERROR HANDLER");
     switch(err.name) {
         case 'SequelizeValidationError':
             let errors = [];
             err.errors.forEach(el => {
                 errors.push(el.message);
-            });
+            }); 
             code = 400
             msg = `${errors}`
             break;

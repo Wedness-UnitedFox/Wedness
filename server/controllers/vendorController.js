@@ -3,14 +3,16 @@ const { signToken } = require('../helpers/jwt')
 const { comparePassword } = require('../helpers/bcryptjs')
 class VendorController{  
   static userLogin(req, res, next){
-    const { email, password } = req.body
+    const { email, password } = req.body 
+
     if(email === '' || password === ''){
       next({name: "Bad Request"})
     }
+    
     User.findOne({where: {
       email: email
     }})
-    .then(user => {
+    .then(user => { 
       if(!user){
         next({name: 'Wrong Email or Password' })
       }
@@ -22,7 +24,7 @@ class VendorController{
         res.status(200).json({access_token}) 
       }
     })
-    .catch(err => {
+    .catch(err => { 
       next(err)
     })
   }

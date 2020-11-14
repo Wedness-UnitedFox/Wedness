@@ -9,6 +9,7 @@ function hashPassword(password){
 }
 
 const comparePassword = (password, hash) => {
+    console.log({password}, {hash},"<<<<<<COMPARING PASSWORD");
     return bcrypt.compareSync(password, hash)
 }
 
