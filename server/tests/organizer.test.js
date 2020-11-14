@@ -10,23 +10,18 @@ let access_token_invalid = ''
 
 beforeAll((done)=> {
     const userData = {
-        name: 'Testing',
         email: 'testing@mail.com',
-        password: '1234',
-        phone_number: '08999666999',
-        role: 'vendor'
+        password: '123456',
     }
-    // request(app)
-    // .post('/login')
-    // .send(userData)
-    // .set('Accept', 'application/json')
-    // .end((err, response) => {
-    //     // console.log(response,'<<<<<<<<<<<response')
-    //     access_token = response.body.access_token
-    //     done()
-    // })
-    access_token = signToken({id: userData.id, email: userData.email, role: userData.role})
-    done()
+    request(app)
+    .post('/vendor/login')
+    .send(userData)
+    .end((err, response) => {
+        access_token = response.body.access_token
+        done()
+    })
+    // access_token = signToken({id: userData.id, email: userData.email, role: userData.role})
+    // done()
 })
 
 afterAll((done) => {
@@ -41,11 +36,11 @@ afterAll((done) => {
 })
 
 let data = {
-    id:1,
     name: 'Wedness Organizer',
     address: 'Jl. Organizer No.1, Pondok Indah, Jakarta Selatan',
     email: 'wedness_app@mail.com',
     phone_number: "08166669999",
+    photos:"https://www.kindpng.com/picc/m/78-785827_user-profile-avatar-login-account-male-user-icon.png",
     price: 10000000,
     description: 'Lorem ipsum',
     avatar: 'https://www.kindpng.com/picc/m/78-785827_user-profile-avatar-login-account-male-user-icon.png',
@@ -55,6 +50,7 @@ let dataPut = {
     address: 'Jl. Organizer No.1, Pondok Indah, Jakarta Selatan Update',
     email: 'wedness_app@mail.com Update',
     phone_number: "08166669999",
+    photos:"https://www.kindpng.com/picc/m/78-785827_user-profile-avatar-login-account-male-user-icon.png",
     price: 10000000,
     description: 'Lorem ipsum Update',
     avatar: 'https://www.kindpng.com/picc/m/78-785827_user-profile-avatar-login-account-male-user-icon.png'
@@ -64,12 +60,10 @@ let dataPut = {
 describe('Testing /postOrganizer', () => {
     describe('Success case /postOrganizer', () => {
         test('Successfully Add Organizer', (done) => {
-            // console.log('<<<<<<<<<<<<<<<<<<<<<masuk sini')
             request(app)
-            .post("/organizer")
+            .post("/vendor/organizer")
             .set('access_token', access_token)
             .send(data)
-            .set('Accept', 'application/json')
             .then(response => {
                 const {status,body} = response
                 expect(status).toBe(201)
@@ -78,6 +72,7 @@ describe('Testing /postOrganizer', () => {
                 expect(body).toHaveProperty('name', data.name)
                 expect(body).toHaveProperty('address', data.address)
                 expect(body).toHaveProperty('phone_number', data.phone_number)
+                expect(body).toHaveProperty('photos', data.photos)
                 expect(body).toHaveProperty('price', data.price)
                 expect(body).toHaveProperty('description', data.description)
                 expect(body).toHaveProperty('avatar', data.avatar)
@@ -91,7 +86,7 @@ describe('Testing /postOrganizer', () => {
                 ...data, name: ''
             }
             request(app)
-            .post('/organizer')
+            .post('/vendor/organizer')
             .set('access_token', access_token)
             .send(dataEmptyName)
             .set('Accept', 'application/json')
@@ -106,7 +101,7 @@ describe('Testing /postOrganizer', () => {
                 ...data, address: ''
             }
             request(app)
-            .post('/organizer')
+            .post('/vendor/organizer')
             .set('access_token', access_token)
             .send(dataEmptyAddress)
             .set('Accept', 'application/json')
@@ -121,7 +116,7 @@ describe('Testing /postOrganizer', () => {
                 ...data, phone_number: ''
             }
             request(app)
-            .post('/organizer')
+            .post('/vendor/organizer')
             .set('access_token', access_token)
             .send(dataEmptyPhone)
             .set('Accept', 'application/json')
@@ -136,7 +131,7 @@ describe('Testing /postOrganizer', () => {
                 ...data, email: ''
             }
             request(app)
-            .post('/organizer')
+            .post('/vendor/organizer')
             .set('access_token', access_token)
             .send(dataEmptyEmail)
             .set('Accept', 'application/json')
@@ -151,7 +146,7 @@ describe('Testing /postOrganizer', () => {
                 ...data, avatar: ''
             }
             request(app)
-            .post('/organizer')
+            .post('/vendor/organizer')
             .set('access_token', access_token)
             .send(dataEmptyAvatar)
             .set('Accept', 'application/json')
@@ -166,7 +161,7 @@ describe('Testing /postOrganizer', () => {
                 ...data, price: 0
             }
             request(app)
-            .post('/organizer')
+            .post('/vendor/organizer')
             .set('access_token', access_token)
             .send(dataLessPrice)
             .set('Accept', 'application/json')
@@ -181,7 +176,7 @@ describe('Testing /postOrganizer', () => {
                 ...data, price: ''
             }
             request(app)
-            .post('/organizer')
+            .post('/vendor/organizer')
             .set('access_token', access_token)
             .send(dataEmptyPrice)
             .set('Accept', 'application/json')
@@ -196,7 +191,7 @@ describe('Testing /postOrganizer', () => {
                 ...data, description: ''
             }
             request(app)
-            .post('/organizer')
+            .post('/vendor/organizer')
             .set('access_token', access_token)
             .send(dataEmptyDescription)
             .set('Accept', 'application/json')
@@ -211,7 +206,7 @@ describe('Testing /postOrganizer', () => {
                 ...data, price: 'a'
             }
             request(app)
-            .post('/organizer')
+            .post('/vendor/organizer')
             .set('access_token', access_token)
             .send(dataInvalidPrice)
             .set('Accept', 'application/json')
@@ -223,13 +218,14 @@ describe('Testing /postOrganizer', () => {
         })
         test('User Not Authenticated', (done) => {
             request(app)
-            .post('/organizer')
+            .post('/vendor/organizer')
             .set('access_token', access_token_invalid)
             .send(data)
             .set('Accept', 'application/json')
             .then(response => {
+                console.log(response, '<<<<<<<<auth err')
                 const {status,body} = response
-                expect(status).toBe(401)
+                expect(status).toBe(403)
                 done()
             })
         })
@@ -241,7 +237,7 @@ describe('Testing /getOrganizer', () => {
     describe('Success Case /getOrganizer', () => {
         test('Should send array of object with Status Code 200', (done) => {
             request(app)
-            .get('/organizer')
+            .get('/vendor/organizer')
             .set('access_token', access_token)
             .send(data)
             .set('Accept', 'application/json')
@@ -264,13 +260,13 @@ describe('Testing /getOrganizer', () => {
     describe('Failed Case /getOrganizer', () => {
         test('User Not Authenticated', (done) => {
             request(app)
-            .get('/organizer')
+            .get('/vendor/organizer')
             .set('access_token', access_token_invalid)
             .send(data)
             .set('Accept', 'application/json')
             .then(response => {
                 const {status, body} = response
-                expect(status).toBe(401)
+                expect(status).toBe(403)
                 done()
             })
         })
@@ -282,14 +278,14 @@ describe('Testing /putOrganizer', () => {
     describe('Success Case /putOrganizer', () => {
         test('Successfully Update Organizer', (done) => {
             request(app)
-            .put(`/organizer/${id}`)
+            .put(`/vendor/organizer/${id}`)
             .set('access_token', access_token)
             .send(dataPut)
             .set('Accept', 'application/json')
             .then(response => {
                 const {status, body} = response
-                expect(status).toBe(201)
-                expect(body).toHaveProperty('message', 'Edit Successfully')
+                expect(status).toBe(200)
+                expect(body).toHaveProperty('msg', 'Edit Successfully')
                 done()
             })
         })
@@ -301,7 +297,7 @@ describe('Testing /putOrganizer', () => {
                 ...dataPut, name: ''
             }
             request(app)
-            .put(`/organizer/${id}`)
+            .put(`/vendor/organizer/${id}`)
             .set('access_token', access_token)
             .send(dataPutEmptyName)
             .set('Accept', 'application/json')
@@ -316,7 +312,7 @@ describe('Testing /putOrganizer', () => {
                 ...dataPut, address: ''
             }
             request(app)
-            .put(`/organizer/${id}`)
+            .put(`/vendor/organizer/${id}`)
             .set('access_token', access_token)
             .send(dataPutEmptyAddress)
             .set('Accept', 'application/json')
@@ -331,7 +327,7 @@ describe('Testing /putOrganizer', () => {
                 ...dataPut, email: ''
             }
             request(app)
-            .put(`/organizer/${id}`)
+            .put(`/vendor/organizer/${id}`)
             .set('access_token', access_token)
             .send(dataPutEmptyEmail)
             .set('Accept', 'application/json')
@@ -346,7 +342,7 @@ describe('Testing /putOrganizer', () => {
                 ...dataPut, phone_number: ''
             }
             request(app)
-            .put(`/Organizer/${id}`)
+            .put(`/vendor/organizer/${id}`)
             .set('access_token', access_token)
             .send(dataPutEmptyPhone)
             .set('Accept', 'application/json')
@@ -361,7 +357,7 @@ describe('Testing /putOrganizer', () => {
                 ...data, price: -1
             }
             request(app)
-            .put(`/Organizer/${id}`)
+            .put(`/vendor/organizer/${id}`)
             .set('access_token', access_token)
             .send(dataPutLessPrice)
             .set('Accept', 'application/json')
@@ -376,7 +372,7 @@ describe('Testing /putOrganizer', () => {
                 ...data, price: 'a'
             }
             request(app)
-            .put(`/organizer/${id}`)
+            .put(`/vendor/organizer/${id}`)
             .set('access_token', access_token)
             .send(dataPutInvalidPrice)
             .set('Accept', 'application/json')
@@ -391,7 +387,7 @@ describe('Testing /putOrganizer', () => {
                 ...dataPut, description: ''
             }
             request(app)
-            .put(`/organizer/${id}`)
+            .put(`/vendor/organizer/${id}`)
             .set('access_token', access_token)
             .send(dataPutEmptyDescription)
             .set('Accept', 'application/json')
@@ -406,7 +402,7 @@ describe('Testing /putOrganizer', () => {
                 ...dataPut, avatar: ''
             }
             request(app)
-            .put(`/organizer/${id}`)
+            .put(`/vendor/organizer/${id}`)
             .set('access_token', access_token)
             .send(dataPutEmptyAvatar)
             .set('Accept', 'application/json')
@@ -418,13 +414,13 @@ describe('Testing /putOrganizer', () => {
         })
         test('User Unauthorized to Update Data', (done) => {
             request(app)
-            .put(`/organizer/${id}`)
+            .put(`/vendor/organizer/${id}`)
             .set('access_token', access_token_invalid)
             .send(data)
             .set('Accept', 'application/json')
             .then(response => {
                 const {status,body} = response
-                expect(status).toBe(401)
+                expect(status).toBe(403)
                 done()
             })
         })
@@ -435,13 +431,13 @@ describe('Testing /deleteOrganizer', () => {
     describe('Success Case /deleteOrganizer', () => {
         test('Successfully Delete Organizer', (done) => {
             request(app)
-            .delete(`/organizer/${id}`)
+            .delete(`/vendor/organizer/${id}`)
             .set('access_token', access_token)
             .set('Accept', 'application/json')
             .then(response => {
                 const {status, body} = response
                 expect(status).toBe(200)
-                expect(body).toHaveProperty('message', 'Organizer Deleted')
+                expect(body).toHaveProperty('msg', 'Deleted Successfully')
                 done()
             })
         })
@@ -449,19 +445,19 @@ describe('Testing /deleteOrganizer', () => {
     describe('Failed Case /deleteOrganizer', () => {
         test('Delete Product User Unauthorized', (done) => {
             request(app)
-            .delete(`/organizer/${id}`)
+            .delete(`/vendor/organizer/${id}`)
             .set('access_token', access_token_invalid)
             .set('Accept', 'application/json')
             .then(response => {
                 const {status, body} = response
-                expect(status).toBe(401)
+                expect(status).toBe(403)
                 done()
             })
         })
         test('Delete Organizer Invalid Id', (done) => {
             let id = 0
             request(app)
-            .delete(`/organizer/${id}`)
+            .delete(`/vendor/organizer/${id}`)
             .set('access_token', access_token)
             .set('Accept', 'application/json')
             .then(response => {
