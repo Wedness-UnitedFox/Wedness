@@ -76,6 +76,9 @@ module.exports = (sequelize, DataTypes) => {
         min: {
           args: [1],
           msg: "Price cannot be less than one"
+        },
+        isNumeric: {
+          args: true
         }
       }
     },
@@ -99,7 +102,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    UserId: DataTypes.INTEGER
+    UserId: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Catering',
