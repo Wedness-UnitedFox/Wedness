@@ -13,6 +13,10 @@ function errorHandler (err, req, res, next) {
             code = 400
             msg = `${errors}`
             break;
+        case 'customMessage':
+            code = 403
+            msg = err.msg
+            break;
 
         case 'Wrong Email or Password':
             code = 404

@@ -18,6 +18,7 @@ class VendorController{
         next({name: 'Wrong Email or Password' })
       }
       else{
+        if(user.role!=='vendor') next({name: 'customMessage', msg:'You cannot use client account on web app' })
         const access_token = signToken({id: user.id, email: user.email, role: user.role})
         res.status(200).json({access_token}) 
       }
