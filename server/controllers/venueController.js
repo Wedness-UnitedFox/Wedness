@@ -1,4 +1,4 @@
-const { Venue } = require("../models")
+const { Venue, User } = require("../models")
 
 class VenueController { 
     static postVenue(req,res,next){ 
@@ -13,7 +13,9 @@ class VenueController {
     }
 
     static getVenues(req,res,next){  
-        Venue.findAll()
+        Venue.findAll({
+            // include:[User]
+        })
             .then(venues=>{
                 res.status(200).json(venues)
             })
@@ -21,7 +23,9 @@ class VenueController {
     } 
 
     static getVenue(req,res,next){ 
-        Venue.findByPk(req.params.id)
+        Venue.findByPk(req.params.id,{
+            include:[User]
+        })
             .then(venue=>{
                 if (venue) res.status(200).json(venue)
                 else next({name:'Not Found'})

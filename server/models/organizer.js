@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'vendor_id',
         sourceKey: 'id'
       })
+      Organizer.belongsTo(models.User)
     }
   };
   Organizer.init({

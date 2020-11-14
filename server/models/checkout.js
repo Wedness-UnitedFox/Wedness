@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const { checkout } = require('../app');
 module.exports = (sequelize, DataTypes) => {
   class Checkout extends Model {
     /**
@@ -11,10 +12,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Checkout.belongsTo(models.Venue)
-      Checkout.belongsTo(models.Organizer)
-      Checkout.belongsTo(models.Catering)
-      Checkout.belongsTo(models.User)
+      Checkout.belongsTo(models.Venue, {foreignKey:'VendorId'})
+      Checkout.belongsTo(models.Organizer, {foreignKey:'VendorId'})
+      Checkout.belongsTo(models.Catering, {foreignKey:'VendorId'})
+      Checkout.belongsTo(models.User, {foreignKey:'UserId'})
     }
   };
   Checkout.init({
@@ -28,5 +29,10 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Checkout',
   });
+
+  Checkout.beforeCreate((checkout, options)=>{
+    checkout.isPaid = false
+    checkout.isApproved = false
+  })
   return Checkout;
 };
