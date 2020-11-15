@@ -112,11 +112,11 @@ export const fetchServices = () => {
     }
 }
 
-export const fetchVenueById = (id) => {
+export const fetchVenueById = (id, service_type) => {
     return (dispatch) => {
         dispatch(setLoading(true))
         axios({
-            url: apiUrl + `/vendor/venue/` + id ,
+            url: apiUrl + `/vendor/${service_type}/` + id ,
             method: "GET",
             headers: {
                 access_token: localStorage.getItem('access_token')
@@ -181,12 +181,12 @@ export const deleteItem = (id, service_type) => {
         })
             .then(( data ) => {
                 console.log(data, "<<<<<<<<<<<<del action");
-            //     dispatch({
-            //         type: "DELETE",
-            //         payload: {
-            //             data
-            //         }
-            //     })
+                dispatch({
+                    type: "DELETE",
+                    payload: {
+                        data
+                    }
+                })
             })
             .catch(err => {
                 dispatch(setError(err))
@@ -197,10 +197,10 @@ export const deleteItem = (id, service_type) => {
     }
 }
 
-export const editItem = (id) => {
+export const editItem = (id, service_type) => {
     return (dispatch) => {
         axios({
-            url: apiUrl + `/vendor/venue/` + id,
+            url: apiUrl + `/vendor/${service_type}/` + id,
             method: "PUT",
             headers: {
                 access_token: localStorage.getItem('access_token')

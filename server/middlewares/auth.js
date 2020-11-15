@@ -32,19 +32,19 @@ const vendorAuthentication = (req, res, next) => {
       User.findByPk(req.userData.id)
           .then(user => {
               if(!user || user.role !== 'vendor'){
-                console.log('masukkk if<<<<<<<<<<<<<<');
+                // console.log('masukkk if<<<<<<<<<<<<<<');
                   next({name: 'Unauthenticated'})
               }
-              console.log(' iniiiiiiiiii masuk abru<<<<<<<<<<<<<<');
+            //   console.log(' iniiiiiiiiii masuk abru<<<<<<<<<<<<<<');
               next()
           })
           .catch(err => {
-            console.log('errrrrrrrrrrrr <<<<<<<<<<<<<<');
+            // console.log('errrrrrrrrrrrr <<<<<<<<<<<<<<');
               next(err)
           })
   }
   else{
-      console.log('masuk else>>>>>>>>>>>>>>>>');
+    //   console.log('masuk else>>>>>>>>>>>>>>>>');
       next({name: 'Not Authorized', message: "Invalid access!"})
   }
 }
@@ -105,11 +105,11 @@ const authorization = (req, res, next) => {
 
 
 const venueAuthorization = (req, res, next) => {
-    console.log("VENUE AUTH", req.params);
+    // console.log("VENUE AUTH", req.params);
     const {id} = req.params  
     Venue.findByPk(+id)
         .then(data => {
-            console.log(data);
+            // console.log(data);
             if(!data){
                 res.status(404).json({message : 'Data not found'})
             } else if(req.userData.id !== data.UserId){
@@ -119,7 +119,7 @@ const venueAuthorization = (req, res, next) => {
             }
         })
         .catch(err => {
-            console.log(err);
+            // console.log(err);
             res.status(500).json({message : err.message})
         }) 
 }
@@ -129,7 +129,7 @@ const organizerAuthorization = (req, res, next) => {
     const {id} = req.params  
     Organizer.findByPk(+id)
         .then(data => {
-            console.log(data);
+            // console.log(data);
             if(!data){
                 res.status(404).json({message : 'Data not found'})
             } else if(req.userData.id !== data.UserId){

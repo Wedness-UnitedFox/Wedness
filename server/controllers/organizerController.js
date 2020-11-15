@@ -3,7 +3,7 @@ const { Organizer, User } = require('../models')
 class OrganizerController {
     
     static postOrganizer(req,res,next){ 
-        console.log(req.body, '<><><><<<><>masuk server controller');
+        // console.log(req.body, '<><><><<<><>masuk server controller');
         req.body.UserId = req.userData.id
         Organizer.create(req.body)
             .then(data=>{

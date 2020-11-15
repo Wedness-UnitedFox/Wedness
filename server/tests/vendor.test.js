@@ -31,7 +31,7 @@ afterAll(done => {
 describe('POST /register', () => {
   test('Register Succeed', done => {
     request(app)
-      .post('/user/register')
+      .post('/vendor/register')
       .send(newUser)
       .set('Accept', 'application/json')
       .then(response => {
@@ -47,7 +47,7 @@ describe('POST /register', () => {
   test('Fail to register due to empty name column', done => {
     const latestUser = {...newUser, name: ''}
     request(app)
-      .post('/user/register')
+      .post('/vendor/register')
       .send(latestUser)
       .set('Accept', 'application/json')
       .then(response => {
@@ -62,7 +62,7 @@ describe('POST /register', () => {
   test('Fail to register due to empty email column', done => {
     const latestUser = {...newUser, email: ''}
     request(app)
-      .post('/user/register')
+      .post('/vendor/register')
       .send(latestUser)
       .set('Accept', 'application/json')
       .then(response => {
@@ -77,7 +77,7 @@ describe('POST /register', () => {
   test('Fail to register due to empty password column', done => {
     const latestUser = {...newUser, password: ''}
     request(app)
-      .post('/user/register')
+      .post('/vendor/register')
       .send(latestUser)
       .set('Accept', 'application/json')
       .then(response => {
@@ -92,7 +92,7 @@ describe('POST /register', () => {
   test('Fail to register due to empty phone_number column', done => {
     const latestUser = {...newUser, phone_number: ''}
     request(app)
-      .post('/user/register')
+      .post('/vendor/register')
       .send(latestUser)
       .set('Accept', 'application/json')
       .then(response => {
@@ -108,7 +108,7 @@ describe('POST /register', () => {
 describe('POST /login', () => {
   test('Login Successfully', done => {
     request(app)
-      .post('/user/login')
+      .post('/vendor/login')
       .send(user)
       .set('Accept', 'application/json')
       .then(response => {
@@ -127,7 +127,7 @@ describe('POST /login', () => {
     obj.email = "users@mail.com"
     obj.password = user.password
     request(app)
-      .post('/user/login')
+      .post('/vendor/login')
       .send(obj)
       .set('Accept', 'application/json')
       .then(response => {
@@ -146,7 +146,7 @@ describe('POST /login', () => {
     obj.email = user.email
     obj.password = "123457"
     request(app)
-      .post('/user/login')
+      .post('/vendor/login')
       .send(obj)
       .set('Accept', 'application/json')
       .then(response => {
@@ -165,7 +165,7 @@ describe('POST /login', () => {
     obj.email = ''
     obj.password = ''
     request(app)
-      .post('/user/login')
+      .post('/vendor/login')
       .send(obj)
       .set('Accept', 'application/json')
       .then(response => {

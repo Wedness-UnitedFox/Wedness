@@ -31,7 +31,7 @@ class VendorController{
   }
 
   static userRegister(req, res, next){
-    console.log('masuk register')
+    // console.log('masuk register')
     const role = 'vendor'
     const { name, email, password, phone_number } = req.body
     if( name === '' || email === '' || phone_number === '' || password === ''){
