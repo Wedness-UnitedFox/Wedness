@@ -5,7 +5,7 @@ const DetailItem = () => {
     
     return (
         <div>
-
+            
         </div>
     )
 }

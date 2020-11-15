@@ -11,9 +11,9 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const { email, password } = inputLogin;
         console.log(inputLogin, "<<<<<<page handlesubmit");
         dispatch(userLogin(inputLogin))
+        history.push('/')
     };
 
     const handleRegister = (e) => {

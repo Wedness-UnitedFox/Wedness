@@ -103,6 +103,16 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
+    service_type: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "Input Vendor Type cannot be empty"
+        }, 
+      }
+    },
     UserId: DataTypes.INTEGER,
   }, {
     sequelize,
