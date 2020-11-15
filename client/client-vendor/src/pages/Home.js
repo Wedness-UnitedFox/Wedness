@@ -1,39 +1,39 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
+import TableRow from '../components/TableRow'
+import { fetchVenue } from '../store/actions/action'
 
 const Home = () => {
 
-    const history = useHistory()
-
-    const handleDetail = (e) => {
-        e.preventDefault()
-        history.push('/vendor/venue/:id')
-    }
+    // const history = useHistory()
+    const dispatch = useDispatch()
+    const { venue } = useSelector((state) => state)
+    
+    useEffect(() => {
+        dispatch(fetchVenue())
+    }, [dispatch])
     
     return (
         <div>
-            <div className="jumbotron justify-content-center mt-3">
-                <div className='row justify-content-center'>
-                    <div className="card shadow col-3 m-3 align-items-center justify-content-center">
-                        <div className="card-body text-center">
-                            <img className="card-img-top" src="..." alt="..." />
-                            <div className="card-title mt-3">
-                                <div className="card-text mt-3">Testing</div>
-                                <button className="btn btn-info" onClick={(e) => {handleDetail(e)}}>Detail</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="card shadow col-3 m-3 align-items-center justify-content-center">
-                        <div className="card-body text-center">
-                            <img className="card-img-top" src="..." alt="..." />
-                            <div className="card-title mt-3">
-                                <div className="card-text mt-3">Testing</div>
-                                <button className="btn btn-info">Detail</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <table className="table">
+                <thead className="thead-dark">
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Item</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Phone Number</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    { !venue.data ? null :
+                    venue.data.map((data,id) => {
+                        return <TableRow key={data.id} data={data} id={id}/>
+                    })}
+                </tbody>
+            </table>
         </div>
     )
 }
