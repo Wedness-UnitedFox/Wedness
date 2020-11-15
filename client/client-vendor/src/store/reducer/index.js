@@ -4,12 +4,13 @@ const initialState = {
     loading: false,
     error: null,
     services: [],
+    isLogin: false
 }
 
 export default function reducer(state = initialState, action) {
     switch (action.type) {
         case SET_LOGIN:
-            return { ...state, ...action.payload.data}
+            return { ...state, ...action.payload.data, isLogin: true}
         case ADD_REGISTER:
             return { ...state, ...action.payload.data}
         case FETCH_SERVICES:

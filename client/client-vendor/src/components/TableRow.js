@@ -9,15 +9,14 @@ const TableRow = (props) => {
     const history = useHistory()
     const dispatch = useDispatch()
 
-    const handleDetail = (e, id) => {
+    const handleDetail = (e, id, service_type) => {
         e.preventDefault()
-        history.push('/vendor/venue/' + id)
-        dispatch(editItem(id))
+        history.push(`/vendor/${service_type}/` + id)
+        dispatch(editItem(id, service_type))
     }
     const handleDelete = (e, id, service_type) => {
         e.preventDefault()
         dispatch(deleteItem(id, service_type))
-        history.push('/')
     }  
     return (
         <tr>
@@ -27,7 +26,7 @@ const TableRow = (props) => {
             <td>Rp. {data.price.toLocaleString("ID")}</td>
             <td>{data.phone_number}</td>
             <td>
-                <button className="btn btn-outline-info mr-2" onClick={(e) => { handleDetail(e, data.id) }}>Detail</button>
+                <button className="btn btn-outline-info mr-2" onClick={(e) => { handleDetail(e, data.id, data.service_type) }}>Detail</button>
                 <button className="btn btn-outline-danger" onClick={(e) => { handleDelete(e, data.id, data.service_type) }}
                 >Delete</button>
             </td>
