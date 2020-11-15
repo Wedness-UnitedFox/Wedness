@@ -14,7 +14,6 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const { email, password } = inputLogin;
         console.log(inputLogin, "<<<<<<page handlesubmit");
         dispatch(userLogin(inputLogin))
         auth.signInWithEmailAndPassword(email, password)
@@ -29,6 +28,7 @@ const Login = () => {
             console.log(errorMessage, errorCode)
             // ...
         });
+        history.push('/')
     };
 
     const handleRegister = (e) => {

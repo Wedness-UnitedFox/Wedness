@@ -12,7 +12,6 @@ const Register = () => {
 
     const handleRegister = (e) => {
         e.preventDefault();
-        const { email, password } = inputRegister;
         console.log(inputRegister, "<<<<<<page handleRegister");
         dispatch(userRegister(inputRegister))
     };

@@ -1,32 +1,32 @@
-import { ADD_ITEM, ADD_REGISTER, DELETE, EDIT, FETCH_VENUE, SET_LOGIN } from '../actions'
+import { ADD_ITEM, ADD_REGISTER, DELETE, EDIT, FETCH_SERVICES, SET_LOGIN, SET_ERROR, SET_LOADING } from '../actions'
 
 const initialState = {
-    isLogin: false,
-    userId: '',
-    token: '',
-    refreshToken: '',
-    expiresOn: '',
-    data: '',
-    venue: []
+    loading: false,
+    error: null,
+    services: [],
 }
 
 export default function reducer(state = initialState, action) {
     switch (action.type) {
         case SET_LOGIN:
-            return { ...state, ...action.payload.data, isLogin: true }
+            return { ...state, ...action.payload.data}
         case ADD_REGISTER:
-            return { ...state, ...action.payload.data }
-        case FETCH_VENUE:
-            console.log(action, '<<<store fetch reducer<<<')
-            return { ...state, venue: action.payload.data }
+            return { ...state, ...action.payload.data}
+        case FETCH_SERVICES:
+            return { ...state, services: action.payload}
         case ADD_ITEM:
-            console.log(action, '<<<store add reducer<<<')
-            let newItem = state.venue.concat(action.payload.data)
-            return {...state, venue: newItem}
+            // console.log(action.payload.data, '<<<<<<<<reducer');
+            let newItem = state.services.concat(action.payload.data)
+            // console.log(newItem, '<<<<<<<<<<<new item reducer')
+            return { ...state, services: newItem }
         case DELETE:
-            return { ...state, venue: action.payload.data }
+            return { ...state, services: action.payload.data }
         case EDIT:
-            return { ...state, venue: action.payload.data }
+            return { ...state, services: action.payload.data }
+        case SET_LOADING:
+            return { ...state, loading: action.payload }
+        case SET_ERROR:
+            return { ...state, error: action.payload }
         default:
             return state
     }

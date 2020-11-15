@@ -8,12 +8,14 @@ const AddNew = () => {
     const history = useHistory()
     const dispatch = useDispatch()
     const [inputNew, setNew] = useState([])
+    const [vendorType, setVendorType] = useState("")
 
     const handleNew = (e) => {
         e.preventDefault();
-        const { name, address, price, phone_number, photos, description, type, avatar} = inputNew;
+        if (inputNew.service_type !== "")
         console.log(inputNew, "<<<<<<page handle Add");
-        dispatch(addItem(inputNew))
+        dispatch(addItem(inputNew, vendorType))
+        history.push('/')
     };
 
     const handleCancel = (e) => {
@@ -22,6 +24,8 @@ const AddNew = () => {
     };
 
     const handleChange = (e) => {
+        if (e.target.name === "price") e.target.value = +e.target.value
+        if (e.target.name === "service_type") setVendorType(e.target.value)
         setNew({ ...inputNew, [e.target.name]: e.target.value });
     };
 
@@ -30,6 +34,12 @@ const AddNew = () => {
             <h3 className="text-center">Add New Item</h3>
             <div className="container mt-3">
                 <form onSubmit={handleNew}>
+                    <select required className="form-control" onChange={handleChange} name="service_type">
+                        <option>Choose Vendor Type</option>
+                        <option value="venue">Venue</option>
+                        <option value="catering">Catering</option>
+                        <option value="organizer">Organizer</option>
+                    </select>
                     <div className="form-group">
                         <input
                             className="form-control"
@@ -51,6 +61,15 @@ const AddNew = () => {
                         />
                         <input
                             className="form-control"
+                            label="Email"
+                            name="email"
+                            type="email"
+                            placeholder="Input Email"
+                            onChange={handleChange}
+                            required
+                        />
+                        <input
+                            className="form-control"
                             label="Address"
                             name="address"
                             type="text"
@@ -62,7 +81,7 @@ const AddNew = () => {
                             className="form-control"
                             label="Phone Number"
                             name="phone_number"
-                            type="number"
+                            type="text"
                             placeholder="Input Phone Number"
                             onChange={handleChange}
                             required
@@ -76,15 +95,23 @@ const AddNew = () => {
                             onChange={handleChange}
                             required
                         />
+                        {vendorType === 'venue' ?
+                        <><select required className="form-control" onChange={handleChange} name="type">
+                            <option default value="">Choose Venue Type</option>
+                            <option value="indoor">Indoor</option>
+                            <option value="outdoor">Outdoor</option>
+                        </select>
                         <input
                             className="form-control"
                             label="Type"
-                            name="type"
-                            type="text"
-                            placeholder="Input Type"
+                            name="capacity"
+                            type="number"
+                            placeholder="Input Capacity"
                             onChange={handleChange}
                             required
-                        />
+                        /></>
+                        : ""
+                        }
                         <input
                             className="form-control"
                             label="Avatar"
