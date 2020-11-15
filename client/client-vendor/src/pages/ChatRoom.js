@@ -60,16 +60,16 @@ const ChatRoom = () => {
     return (
         <div style={{marginTop: "0", width: "1000px", height: "100%"}}>
             <h1 style={{textAlign: "center"}}> Chat {id} Room</h1>
-            <button type="button" onClick={SignIn}>Login</button>
+            {/* <button type="button" onClick={SignIn}>Login</button> */}
             <hr />
             <div className="container" style={{ width: "100%"}}>
-                <div className="container" style={{height: "250px", width: "700px", overflow: "scroll"}}>
+                <div className="container border" style={{height: "400px", width: "800px", overflow: "scroll"}}>
                     {chats && chats.map(chat => <ChatMessage key={chat.id} chat={chat} />)}   
                     <span ref={dummy}></span>
                 </div>
-                <div className="container" style={{width: "700px"}}>
-                    <form className="form-inline" onSubmit={sendMessage}>
-                        <div className="form-group mx-sm-2 mb-2" style={{width: "85%"}}>
+                <div className="container mt-3" style={{width: "800px"}}>
+                    <form className="d-flex flex-row justify-content-center" onSubmit={sendMessage}>
+                        <div className="form-group mx-sm-0 mb-2" style={{width: "100%"}}>
                             <input type="text" className="form-control" placeholder="Type here..." value={formChat} onChange={e => setFormChat(e.target.value)} />
                         </div>
                         <button type="submit" className="btn btn-primary mx-sm-1 mb-2" disabled={!formChat}>Send</button>

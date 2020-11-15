@@ -9,7 +9,7 @@ const ChatConversations = () => {
     
     return (
         <>
-        <div className="d-flex" style={{width: "400px", height: "400px"}}>
+        <div className="d-flex" style={{width: "400px", height: "100%"}}>
             <div className="border" style={{width: "400px"}}>
                 <h1>Conversations:  </h1>
                 <hr />
