@@ -1,5 +1,4 @@
-const routes = require('express').Router() 
-const userController = require("../controllers/userController")
+const routes = require('express').Router()  
 const vendorRoutes = require('./vendorRoutes') 
 const userRoutes = require('./userRoutes') 
 const errorHandler = require('../middlewares/errorHandler')

@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'vendor_id',
         sourceKey: 'id'
       })
+      Catering.belongsTo(models.User)
     }
   };
   Catering.init({
