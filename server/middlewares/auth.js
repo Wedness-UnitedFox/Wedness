@@ -26,24 +26,58 @@ const userAuthentication = (req, res, next) => {
 const vendorAuthentication = (req, res, next) => {
   const { access_token } = req.headers
   if(access_token){
+      
       let decode = verifyToken(access_token)
       req.userData = decode
       User.findByPk(req.userData.id)
           .then(user => {
               if(!user || user.role !== 'vendor'){
+                console.log('masukkk if<<<<<<<<<<<<<<');
                   next({name: 'Unauthenticated'})
               }
+              console.log(' iniiiiiiiiii masuk abru<<<<<<<<<<<<<<');
               next()
           })
           .catch(err => {
+            console.log('errrrrrrrrrrrr <<<<<<<<<<<<<<');
               next(err)
           })
   }
   else{
+      console.log('masuk else>>>>>>>>>>>>>>>>');
       next({name: 'Not Authorized', message: "Invalid access!"})
   }
 }
 
+const checkoutAuthorization = async (req, res, next) => {
+    const caterings = await Catering.findAll({where: {UserId: req.userData.id}})
+    const venues = await Venue.findAll({where: {UserId: req.userData.id}})
+    const organizers = await Organizer.findAll({where: {UserId: req.userData.id}})
+    const {id} = req.params  
+    Checkout.findByPk(+id)
+        .then(data => {
+            let found
+            if(!data){
+                next({name : 'Not Found'})
+            }
+            else{
+              if(data.vendor_type === 'venue'){
+                found = venues.find(venue => venue.id === data.VendorId )
+              }
+              else if(data.vendor_type === 'catering'){
+                found = caterings.find(catering => catering.id === data.VendorId)
+              }
+              else{
+                found = organizers.find(organizer => organizer.id === data.VendorId)
+              }
+            }
+            if(found) next()
+            else next({name: 'Not Authorized'})
+        })
+        .catch(err => {
+            next(err)
+        }) 
+  }
 
 // middleware for user authorization
 const authorization = (req, res, next) => {
@@ -148,5 +182,6 @@ module.exports = {
     authorization,
     venueAuthorization,
     organizerAuthorization,
-    cateringAuthorization
+    cateringAuthorization,
+    checkoutAuthorization
 } 

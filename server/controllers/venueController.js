@@ -13,6 +13,7 @@ class VenueController {
     }
 
     static getVenues(req,res,next){  
+        console.log("controoller get venues<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
         Venue.findAll({
             // include:[User]
         })
