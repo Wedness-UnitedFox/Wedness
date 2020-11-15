@@ -10,16 +10,20 @@ import Navbar from './components/Navbar'
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ChatConversation from './pages/ChatConversation';
+import AddNew from './pages/AddNew';
+import DetailItem from './pages/DetailItem';
 
 function App() {
   return (
     <Router>
       <Navbar />
         <Switch>
+          <Route exact path="/" component={Home} />
+          <Route path="/vendor/login" component={Login} />
+          <Route path="/vendor/register" component={Register} />
+          <Route path="/vendor/venue/add" component={AddNew} />
+          <Route path="/vendor/venue/:id" component={DetailItem} />
           <Route path="/chat" component={ChatConversation} />
-          <Route path="/" component={Home} />
-          <Route exact path="/vendor/login" component={Login} />
-          <Route exact path="/vendor/register" component={Register} />
         </Switch>
     </Router>
   );

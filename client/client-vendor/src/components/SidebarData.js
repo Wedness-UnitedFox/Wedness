@@ -12,7 +12,7 @@ export const SidebarData = [
   },
   {
     title: 'Add Vendor',
-    path: '/vendor',
+    path: '/vendor/venue/add',
     icon: <IoIcons.IoIosPaper />,
     cName: 'nav-text'
   },

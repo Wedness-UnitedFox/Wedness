@@ -13,7 +13,7 @@ routes.post("/login", vendorController.userLogin)
 routes.post("/register", vendorController.userRegister)
 
 //auth
-routes.use(vendorAuthentication)
+// routes.use(vendorAuthentication)
 routes.get('/checkout', planController.getCheckoutForVendor)
 
 const checkoutAuthorization = async (req, res, next) => {

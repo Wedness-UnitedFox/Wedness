@@ -1,13 +1,13 @@
 import React from 'react'
 
-const DetailOrganizer = () => {
+const DetailItem = () => {
     
     
     return (
         <div>
-            
+
         </div>
     )
 }
 
-export default DetailOrganizer
+export default DetailItem
