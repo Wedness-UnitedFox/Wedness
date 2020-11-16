@@ -24,7 +24,8 @@ const userAuthentication = (req, res, next) => {
 }
 
 const vendorAuthentication = (req, res, next) => {
-  const { access_token } = req.headers
+    const { access_token } = req.headers
+    console.log("AUTHENTICATING-->", access_token,"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
   if(access_token){
       let decode = verifyToken(access_token)
       req.userData = decode
@@ -36,6 +37,7 @@ const vendorAuthentication = (req, res, next) => {
               next()
           })
           .catch(err => {
+              console.log(err);
               next(err)
           })
   }

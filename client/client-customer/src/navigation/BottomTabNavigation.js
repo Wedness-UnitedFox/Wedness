@@ -2,19 +2,14 @@ import React, { useEffect } from 'react';
 import { Text, View } from 'react-native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {HomeScreen,ChatScreen, ConversationsScreen} from '../screens'
+import {HomeScreen,ChatScreen, ConversationsScreen, ProfileScreen} from '../screens'
 import AsyncStorage from '@react-native-community/async-storage'
+import { Button } from 'react-native-paper';
+import firebaseSDK from '../firebase';
 
 
 const Tab = createMaterialBottomTabNavigator();
  
-function SettingsScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings!</Text>
-    </View>
-  );
-}
 
 export default function MyTabs() {
 
@@ -50,8 +45,8 @@ export default function MyTabs() {
         }}
       />
       <Tab.Screen
-        name="Settings"
-        component={SettingsScreen}
+        name="Profile"
+        component={ProfileScreen}
         options={{
           tabBarLabel: 'Profile',
           tabBarIcon: ({ color }) => (

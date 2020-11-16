@@ -2,13 +2,15 @@ const { Venue, User } = require("../models")
 
 class VenueController { 
     static postVenue(req,res,next){ 
+        console.log(req.userData);
         // console.log(req.body,"POST<<<<<<<<<<<<<<<<<" );
-        req.body.UserId = req.userData.id
+        req.body.UserId = +req.userData.id
         Venue.create(req.body)
             .then(venue=>{
                 res.status(201).json(venue)
             })
             .catch(err=>{ 
+                console.log(err);
                 next(err)})
     }
 

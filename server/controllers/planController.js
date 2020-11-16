@@ -144,31 +144,7 @@ class CheckoutController {
                     },{
                         transaction: t
                     })
-            };
-            // for( const checkout of userCheckouts.Checkouts ) {
-            //     await Checkout.update({
-            //             isPaid: true
-            //         },{
-            //             where: { 
-            //                 id: checkout.id
-            //             } 
-            //         }, {
-            //             transaction: t
-            //         })
-            // };
-            // Checkouts.forEach(async (element) => {
-            //     console.log("masukkk")
-            //     await Checkout.update({
-            //             isPaid: true
-            //         },{
-            //             where: { 
-            //                 id: element.id
-            //             } 
-            //         }, 
-            //         { 
-            //             transaction: t 
-            //         })
-            // });
+            }; 
             t.afterCommit(() => {
                 res.status(200).json({ message: 'Checkout completed' })
             })

@@ -1,37 +1,31 @@
-import {SET_BOARD, START_LOADING, STOP_LOADING, SET_STATUS, SET_SOLVEDBOARD, RESET_STATE, SET_LEADERBOARD} from '../actions'
+import { SET_LOGIN, SET_VENUE, SET_ORGANIZER, SET_CATERING, LOGOUT} from '../actions'
+
 const initialState = {
-    board: [],
-    solvedBoard: [],
-    status: 'unsolved', 
-    loading: false,
-    leaderBoard:[]
+  userId: '',
+  token: '',
+  isLogin: false,
+  venues: [], 
+  caterings: [],
+  organizers: [],
+  loading: false,
+  messages: ''
 }
-
-export default function reducer(state = initialState, action) {  
+export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case SET_BOARD:
-      return {...state, board:action.payload}
-
-    case SET_SOLVEDBOARD:
-      return {...state, solvedBoard:action.payload}
-
-    case SET_STATUS:
-      return {...state, status:action.payload}
-
-    case START_LOADING:
-      return {...state, loading:true}
-
-    case STOP_LOADING:
-      return {...state, loading:false}
-
-    case SET_LEADERBOARD:
-      return {...state, leaderBoard:action.payload}
-
-    case RESET_STATE:
-      return {...initialState, leaderBoard:state.leaderBoard}
-
+    case SET_LOGIN:
+      return { ...state, ...action.payload.data, isLogin: true } 
+    case LOGOUT:
+      return {...state, isLogin:false}
+    case SET_VENUE:
+      console.log(action, '<<<store SET VENUE<<<')
+      return { ...state, venues: action.payload.data }
+    case SET_ORGANIZER:
+      console.log(action, '<<<store SET ORGANIZER<<<')
+      return { ...state, organizers: action.payload.data }
+    case SET_CATERING:
+      console.log(action, '<<<store SET CATERING<<<')
+      return { ...state, caterings: action.payload.data }
     default:
       return state
   }
-}
- 
+} 

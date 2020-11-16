@@ -13,7 +13,7 @@ routes.post("/login", vendorController.userLogin)
 routes.post("/register", vendorController.userRegister)
 
 //auth
-// routes.use(vendorAuthentication)
+routes.use(vendorAuthentication)
 routes.get('/checkout', planController.getCheckoutForVendor)
 
 const checkoutAuthorization = async (req, res, next) => {
@@ -47,7 +47,6 @@ const checkoutAuthorization = async (req, res, next) => {
 }
 
 routes.put('/checkout/:id', checkoutAuthorization, planController.approveCheckoutForVendor)
-
 
 routes.use("/venue", venueRoutes)
 routes.use("/organizer", organizerRoutes)

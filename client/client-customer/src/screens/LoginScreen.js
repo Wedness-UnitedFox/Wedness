@@ -1,20 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
 import firebaseSDK from '../firebase/index';
 import AsyncStorage from '@react-native-community/async-storage'
 import { useDispatch, useSelector } from "react-redux"
+import {login} from '../store/actions/wednessAction'
+// import { Button } from 'react-native-paper';  
 
 export default function Login(props){
+    const data = useSelector(state=>state.Reducer)
+    const dispatch = useDispatch()
 	const navigationOptions = {
 		title: 'RN + Firebase Chat App'
-	};
-
+    };
 	const [userData, setUserData] = useState({
 		name: 'tester',
 		email: 'testing@mail.com',
-		password: 'testing',
+		password: '123456',
 		avatar: ''
 	})
+    
+    useEffect(()=>{ 
+        // if(data.isLogin || firebaseSDK.uid){
+        if(data.access_token){
+            console.log("user already Loggedin");
+            const response = firebaseSDK.login(userData,loginSuccess,loginFailed)
+        }
+    },[data])
+
 
 	const onPressLogin = async () => {
 		const user = {
@@ -22,13 +34,9 @@ export default function Login(props){
 			email: userData.email,
 			password: userData.password,
 			avatar: userData.avatar
-		};
-
-		const response = firebaseSDK.login(
-			user,
-			loginSuccess,
-			loginFailed
-		);
+        };
+        dispatch(login({email:user.email,password:user.password}))
+		
 	};
 
 	const loginSuccess = async () => {
@@ -46,8 +54,7 @@ export default function Login(props){
         const _id = firebaseSDK.uid
         const name = firebaseSDK.displayName || firebaseSDK.email
         const user = { _id, name }
-        await AsyncStorage.setItem('user', JSON.stringify(user))
-        setUser(user) 
+        await AsyncStorage.setItem('user', JSON.stringify(user)) 
     }
 
 	const loginFailed = (message) => {
@@ -82,6 +89,7 @@ export default function Login(props){
             <Button
                 title="Signup"
                 style={styles.buttonText}
+                color={'black'}
                 // onPress={() => props.navigation.navigate('Signup')}
             />
         </View>
@@ -104,6 +112,7 @@ const styles = StyleSheet.create({
 	},
 	buttonText: {
 		marginLeft: 16,
-		fontSize: 42
+        fontSize: 42,
+        
 	}
 });

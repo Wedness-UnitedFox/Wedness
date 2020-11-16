@@ -26,6 +26,7 @@ class FirebaseSDK {
 
     login = async (user, success_callback, failed_callback) => {
         await firebase.auth()
+            // .createUserWithEmailAndPassword(user.email, user.password)
             .signInWithEmailAndPassword(user.email, user.password)
             .then(success_callback, failed_callback);
     }
