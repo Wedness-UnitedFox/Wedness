@@ -16,6 +16,9 @@ const Home = () => {
     
     console.log(services)   
 
+    if(loading) return <p>Loading....</p>
+    if(error) return <p>Error!</p>
+
     return (
         <div>
             <table className="table">

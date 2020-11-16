@@ -3,26 +3,24 @@ const app = require('../app')
 const {sequelize} = require('../models')
 const {queryInterface} = sequelize
 const {signToken} = require('../helpers/jwt');
-const { response } = require('express');
+
 
 let id
 let access_token
-let access_token_invalid = ''
 
 beforeAll((done)=> {
     const userData = { 
         email: 'testing@mail.com',
-        password: '123456'
+        password: '123456',
+        role:"vendor"
     }
     request(app)
     .post('/vendor/login')
     .send(userData)
     .end((err, response) => {
         access_token = response.body.access_token
-        console.log(access_token,"<<<");
         done()
     })
-
     // access_token = signToken({id: userData.id, email: userData.email, role: userData.role})
     // done()
 })
@@ -48,6 +46,7 @@ let data = {
     type: 'Outdoor',
     description: 'Lorem ipsum',
     capacity: 800,
+    service_type: "venue"
 }
 let dataPut = {
     name: 'Wedness Hall Update',
@@ -59,6 +58,7 @@ let dataPut = {
     type: 'Outdoor',
     description: 'Lorem ipsum Update',
     capacity: 1000,
+    service_type: "venue"
 }
 
 
@@ -71,6 +71,7 @@ describe('Testing /postVenue', () => {
             .set('access_token', access_token) 
             .then(response => {
                 const {status,body} = response 
+                console.log(body, "<<<<<<<<<<<<<<<body");
                 expect(status).toBe(201)
                 id = body.id
                 expect(body).toHaveProperty('id', expect.any(Number))
@@ -81,26 +82,13 @@ describe('Testing /postVenue', () => {
                 expect(body).toHaveProperty('type', data.type)
                 expect(body).toHaveProperty('description', data.description)
                 expect(body).toHaveProperty('avatar', data.avatar)
+                expect(body).toHaveProperty('capacity', data.capacity)
+                expect(body).toHaveProperty('service_type', data.service_type)
                 done()
             })
         })
     })
     describe('Failed case /postVenue', () => {
-        test('No access token, should return Unauthenticated,', (done) => {
-            var dataEmptyName = {
-                ...data, name: ''
-            }
-            request(app)
-            .post('/vendor/venue')
-            .send(data) 
-            // .set('access_token', access_token)
-            .then(response => {
-                const {status,body} = response
-                expect(status).toBe(403)
-                expect(body).toHaveProperty('msg', 'You are not Authorized')
-                done()
-            })
-        })
         test('Validation Error Empty Name', (done) => {
             console.log({access_token});
             var dataEmptyName = {
@@ -238,6 +226,36 @@ describe('Testing /postVenue', () => {
                 done()
             })
         })
+        test('Validation Error Empty Capacity', (done) => {
+            var dataEmptyCapacity = {
+                ...data, capacity: ''
+            }
+            request(app)
+            .post('/vendor/venue')
+            .set('access_token', access_token)
+            .send(dataEmptyCapacity)
+            .set('Accept', 'application/json')
+            .then(response => {
+                const {status,body} = response
+                expect(status).toBe(400)
+                done()
+            })
+        })
+        test('Validation Error Empty Vendor Type', (done) => {
+            var dataEmptyService = {
+                ...data, service_type: ''
+            }
+            request(app)
+            .post('/vendor/venue')
+            .set('access_token', access_token)
+            .send(dataEmptyService)
+            .set('Accept', 'application/json')
+            .then(response => {
+                const {status,body} = response
+                expect(status).toBe(400)
+                done()
+            })
+        })
         test('Validation Error Type Price', (done) => {
             var dataInvalidPrice = {
                 ...data, price: 'a'
@@ -253,24 +271,23 @@ describe('Testing /postVenue', () => {
                 done()
             })
         })
-        test('User Not Authenticated', (done) => {
+        test('No access token, should return Unauthenticated', (done) => {
             request(app)
             .post('/vendor/venue')
-            .set('access_token', access_token_invalid)
-            .send(data)
-            .set('Accept', 'application/json')
+            .send(data) 
             .then(response => {
                 const {status,body} = response
                 expect(status).toBe(403)
+                expect(body).toHaveProperty('msg', 'You are not Authorized')
                 done()
             })
         })
     })
 })
 
-describe('Testing /getVenue', () => {
+describe('Testing /getVenues', () => {
 
-    describe('Success Case /getVenue', () => {
+    describe('Success Case /getVenues', () => {
         test('Should send array of object with Status Code 200', (done) => {
             request(app)
             .get('/vendor/venue')
@@ -288,21 +305,100 @@ describe('Testing /getVenue', () => {
                 expect(body[0]).toHaveProperty('type', data.type)
                 expect(body[0]).toHaveProperty('description', data.description)
                 expect(body[0]).toHaveProperty('avatar', data.avatar)
+                expect(body[0]).toHaveProperty('capacity', data.capacity)
+                expect(body[0]).toHaveProperty('service_type', data.service_type)
+                done()
+            })
+        })
+        test('Should send array of object with Status Code 200', (done) => {
+            request(app)
+            .get('/vendor/venue')
+            .set('access_token', access_token)
+            .send(data)
+            .set('Accept', 'application/json')
+            .then(response => {
+                const {status, body} = response
+                expect(status).toBe(200)
+                expect(body[0]).toHaveProperty('id', expect.any(Number))
+                expect(body[0]).toHaveProperty('name', data.name)
+                expect(body[0]).toHaveProperty('address', data.address)
+                expect(body[0]).toHaveProperty('phone_number', data.phone_number)
+                expect(body[0]).toHaveProperty('price', data.price)
+                expect(body[0]).toHaveProperty('type', data.type)
+                expect(body[0]).toHaveProperty('description', data.description)
+                expect(body[0]).toHaveProperty('avatar', data.avatar)
+                expect(body[0]).toHaveProperty('capacity', data.capacity)
+                expect(body[0]).toHaveProperty('service_type', data.service_type)
+                done()
+            })
+        })
+    })
+
+    describe('Failed Case /getVenues', () => {
+        test('No access token, should return Unauthenticated', (done) => {
+            request(app)
+            .get('/vendor/venue')
+            .send(data)
+            .set('Accept', 'application/json')
+            .then(response => {
+                const {status, body} = response
+                expect(status).toBe(403)
+                expect(body).toHaveProperty('msg', 'You are not Authorized')
+                done()
+            })
+        })
+    })
+})
+
+describe('Testing /getVenue', () => {
+
+    describe('Success Case /getVenue', () => {
+        test('Should send object with Status Code 200', (done) => {
+            request(app)
+            .get(`/vendor/venue/${id}`)
+            .set('access_token', access_token)
+            .send(data)
+            .set('Accept', 'application/json')
+            .then(response => {
+                const {status, body} = response
+                console.log(response, "<<<<<<<<<");
+                expect(status).toBe(200)
+                expect(body).toHaveProperty('id', expect.any(Number))
+                expect(body).toHaveProperty('name', data.name)
+                expect(body).toHaveProperty('address', data.address)
+                expect(body).toHaveProperty('phone_number', data.phone_number)
+                expect(body).toHaveProperty('price', data.price)
+                expect(body).toHaveProperty('type', data.type)
+                expect(body).toHaveProperty('description', data.description)
+                expect(body).toHaveProperty('avatar', data.avatar)
+                expect(body).toHaveProperty('service_type', data.service_type)
                 done()
             })
         })
     })
 
     describe('Failed Case /getVenue', () => {
-        test('User Not Authenticated', (done) => {
+        test('Wrong Id', (done) => {
             request(app)
-            .get('/vendor/venue')
-            .set('access_token', access_token_invalid)
+            .get('/vendor/venue' + 0 )
+            .set('access_token', access_token)
+            .send(data)
+            .set('Accept', 'application/json')
+            .then(response => {
+                const {status, body} = response
+                expect(status).toBe(404)
+                done()
+            })
+        })
+        test('No access token, should return Unauthenticated', (done) => {
+            request(app)
+            .get('/vendor/venue' + id)
             .send(data)
             .set('Accept', 'application/json')
             .then(response => {
                 const {status, body} = response
                 expect(status).toBe(403)
+                expect(body).toHaveProperty('msg', 'You are not Authorized')
                 done()
             })
         })
@@ -464,15 +560,30 @@ describe('Testing /putVenue', () => {
                 done()
             })
         })
-        test('User Unauthorized to Update Data', (done) => {
+        test('Validation Error Put Empty Capacity', (done) => {
+            var dataPutEmptyCapacity = {
+                ...dataPut, capacity: ''
+            }
             request(app)
             .put(`/vendor/venue/${id}`)
-            .set('access_token', access_token_invalid)
+            .set('access_token', access_token)
+            .send(dataPutEmptyCapacity)
+            .set('Accept', 'application/json')
+            .then(response => {
+                const {status,body} = response
+                expect(status).toBe(400)
+                done()
+            })
+        })
+        test('No access token, should return Unauthenticated', (done) => {
+            request(app)
+            .put(`/vendor/venue/${id}`)
             .send(data)
             .set('Accept', 'application/json')
             .then(response => {
                 const {status,body} = response
                 expect(status).toBe(403)
+                expect(body).toHaveProperty('msg', 'You are not Authorized')
                 done()
             })
         })
@@ -495,21 +606,21 @@ describe('Testing /deleteVenue', () => {
         })
     })
     describe('Failed Case /deleteVenue', () => {
-        test('Delete Product User Unauthorized', (done) => {
+        test('No access token, should return Unauthenticated', (done) => {
             request(app)
             .delete(`/vendor/venue/${id}`)
-            .set('access_token', access_token_invalid)
             .set('Accept', 'application/json')
             .then(response => {
                 const {status, body} = response
                 expect(status).toBe(403)
+                expect(body).toHaveProperty('msg', 'You are not Authorized')
                 done()
             })
         })
         test('Delete Venue Invalid Id', (done) => {
             let id = 0
             request(app)
-            .delete(`/vendor/venue/${id}`)
+            .delete(`/vendor/venue/`)
             .set('access_token', access_token)
             .set('Accept', 'application/json')
             .then(response => {

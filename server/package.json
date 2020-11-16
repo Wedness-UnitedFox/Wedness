@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "jest --runInBand --verbose --detectOpenHandles --forceExit",
+    "test": "jest --runInBand --verbose false --detectOpenHandles --forceExit --coverage",
     "dev": "nodemon ./bin/www",
     "start": "node app.js"
   },
