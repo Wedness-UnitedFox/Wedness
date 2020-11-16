@@ -69,6 +69,7 @@ class CheckoutController {
     } 
  
     static deleteCheckout(req,res,next){ 
+        console.log("deleting");
         Checkout.destroy({
             where:{
                 id:req.params.id
@@ -76,8 +77,12 @@ class CheckoutController {
         }).then(result=>{
             if(result){
                 res.status(200).json({msg:'Deleted Successfully'})
+            }else{
+                next({name:"Not Found"})
             }
-        }).catch(err=> next(err))
+        }).catch(err=>  
+            next(err)
+            )
     }
 
     static async getCheckoutForVendor(req, res, next){

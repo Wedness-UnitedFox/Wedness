@@ -11,3 +11,4 @@ export const SET_ORGANIZER = "SET_ORGANIZER"
 export const SET_CATERING = "SET_CATERING"
 export const SET_MESSAGE = "SET_MESSAGE";
 export const CLEAR_MESSAGE = "CLEAR_MESSAGE";
+export const SET_PLANS = "SET_PLANS";

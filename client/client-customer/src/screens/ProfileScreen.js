@@ -10,11 +10,11 @@ export default function ProfileScreen(props) {
     const {navigation} = props
     const logout = () =>{
       console.log("logout")
-      firebaseSDK.onLogout()
-      navigation.replace('Login')
+      firebaseSDK.onLogout() 
       dispatch({
           type:"LOGOUT"
       })
+      navigation.replace('Login')
     }
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

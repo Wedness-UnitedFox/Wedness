@@ -21,6 +21,7 @@ export default function Login(props){
     
     useEffect(()=>{ 
         // if(data.isLogin || firebaseSDK.uid){
+            console.log(data.access_token,"<--- TOKEN",firebaseSDK.uid);
         if(data.access_token){
             console.log("user already Loggedin");
             const response = firebaseSDK.login(userData,loginSuccess,loginFailed)
@@ -35,14 +36,13 @@ export default function Login(props){
 			password: userData.password,
 			avatar: userData.avatar
         };
-        dispatch(login({email:user.email,password:user.password}))
-		
+        dispatch(login({email:user.email,password:user.password})) 
 	};
 
 	const loginSuccess = async () => {
         console.log('login successful, navigate to chat.'); 
         setStorage()
-		props.navigation.navigate('Home', {
+		props.navigation.replace('Home', {
 			name: userData.name,
 			email: userData.email,
 			avatar: userData.avatar

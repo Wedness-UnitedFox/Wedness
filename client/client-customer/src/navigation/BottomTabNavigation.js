@@ -1,8 +1,12 @@
 import React, { useEffect } from 'react';
 import { Text, View } from 'react-native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {HomeScreen,ChatScreen, ConversationsScreen, ProfileScreen} from '../screens'
+// import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Octicons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons'; 
+import { Ionicons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
+import {HomeScreen,PlanScreen, ConversationsScreen, ProfileScreen} from '../screens'
 import AsyncStorage from '@react-native-community/async-storage'
 import { Button } from 'react-native-paper';
 import firebaseSDK from '../firebase';
@@ -30,7 +34,7 @@ export default function MyTabs() {
         options={{
           tabBarLabel: 'Home',
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="home" color={color} size={26} />
+            <AntDesign name="home" size={24} color="black" />
           ),
         }}
       />
@@ -40,7 +44,17 @@ export default function MyTabs() {
         options={{
           tabBarLabel: 'Conversations',
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="chat" color={color} size={26} />
+            <Ionicons name="ios-chatboxes" size={24} color="black" />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Plan"
+        component={PlanScreen}
+        options={{
+          tabBarLabel: 'Your Plan',
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="list-alt" size={24} color="black" />
           ),
         }}
       />
@@ -50,7 +64,7 @@ export default function MyTabs() {
         options={{
           tabBarLabel: 'Profile',
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="account" color={color} size={26} />
+            <Octicons name="person" size={24} color="black" />
           ),
         }}
       />
