@@ -1,4 +1,5 @@
-const { Organizer, User } = require('../models')
+const { Organizer, User, Photo } = require('../models')
+const { Op } = require('sequelize')
 
 class OrganizerController {
     

@@ -15,12 +15,12 @@ const AddNew = () => {
         if (inputNew.service_type !== "")
         console.log(inputNew, "<<<<<<page handle Add");
         dispatch(addItem(inputNew, vendorType))
-        history.push('/')
+        history.push('/home')
     };
 
     const handleCancel = (e) => {
         e.preventDefault();
-        history.push('/')
+        history.push('/home')
     };
 
     const handleChange = (e) => {

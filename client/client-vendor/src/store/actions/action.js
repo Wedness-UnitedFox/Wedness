@@ -15,7 +15,7 @@ export function setError(data) {
     }
 }
 export const userLogin = (inputLogin) => {
-    console.log(inputLogin, "<<<<<<<store login");
+    // console.log(inputLogin, "<<<<<<<store login");
     return (dispatch) => {
         axios({
             url: apiUrl + `/vendor/login`,
@@ -23,7 +23,7 @@ export const userLogin = (inputLogin) => {
             data: inputLogin
         })
             .then(({data}) => {
-                console.log(data.access_token, "-----------masuk dispatch");
+                // console.log(data.access_token, "-----------masuk dispatch");
                 localStorage.setItem('access_token', data.access_token)
                 dispatch({
                     type: "SET_LOGIN",
@@ -58,6 +58,7 @@ export const userRegister = (inputRegister) => {
 };
 
 export const fetchServices = () => {
+    let arr = []
     return (dispatch) => {
         axios({
             url: apiUrl + `/vendor/venue`,
@@ -67,7 +68,6 @@ export const fetchServices = () => {
             }
         })
         .then(({data}) => {
-            console.log(data, 'sucsss venue<<<<<<<<<<<<');
             arr = [...arr, ...data]
             return axios({
                 url: apiUrl + `/vendor/catering`,
@@ -78,7 +78,6 @@ export const fetchServices = () => {
             })
         })
         .then(({data}) => {
-            console.log(data, 'sucsss catering<<<<<<<<<<<<');
             arr = [...arr, ...data]
             return axios({
                 url: apiUrl + `/vendor/organizer`,
@@ -89,7 +88,6 @@ export const fetchServices = () => {
             })
         })
         .then(({data}) => {
-            console.log(data, 'sucsss organizer<<<<<<<<<<<<');
             arr = [...arr, ...data]
             console.log(arr, '<<<<<<<<<<<<<<<arrr action');
             dispatch({
@@ -108,31 +106,31 @@ export const fetchServices = () => {
 }
 }
 
-export const fetchVenueById = (id) => {
-return (dispatch) => {
-    dispatch(setLoading(true))
-    axios({
-        url: apiUrl + `/vendor/venue/` + id ,
-        method: "GET",
-        headers: {
-            access_token: localStorage.getItem('access_token')
-        }
-    })
-        .then(({ data }) => {
-            dispatch({
-                    type: "FETCH_VENUE",
-                    payload: {
-                        data
-                    }
+export const fetchServiceById = (id, service_type) => {
+    console.log("masuk action fetchId");
+    return (dispatch) => {
+        dispatch(setLoading(true))
+        axios({
+            url: apiUrl + `/vendor/${service_type}/${id}`,
+            method: "GET",
+            headers: {
+                access_token: localStorage.getItem('access_token')
+            }
+        })
+            .then(({ data }) => {
+                console.log(data, "from fetchID in action.js")
+                dispatch({
+                        type: "FETCH_SERVICE",
+                        payload: data
+                    })
                 })
-            })
-            .catch(err => {
-                console.log(err)
-            })
-            .finally(() => {
-                dispatch(setLoading(false))
-            })
-    }
+                .catch(err => {
+                    console.log(err)
+                })
+                .finally(() => {
+                    dispatch(setLoading(false))
+                })
+        }
 }
 
 export const addItem = (inputNew, service_type) => {
@@ -166,7 +164,7 @@ export const addItem = (inputNew, service_type) => {
 };
 
 export const deleteItem = (id, service_type) => {
-    return (dispatch) => {
+    return (dispatch, getState) => {
         dispatch(setLoading(true))
         axios({
             url: apiUrl + `/vendor/${service_type}/` + id,
@@ -175,12 +173,13 @@ export const deleteItem = (id, service_type) => {
                 access_token: localStorage.getItem('access_token')
             }
         })
-            .then((data) => {
+            .then(() => {
+                const state = getState()
+                const newServices = state.services.filter(service => service.id !== id || service.service_type !== service_type)
+
                 dispatch({
-                    type: "DELETE",
-                    payload: {
-                        data
-                    }
+                    type: "FETCH_SERVICES",
+                    payload: newServices
                 })
             })
             .catch(err => {
@@ -192,21 +191,28 @@ export const deleteItem = (id, service_type) => {
     }
 }
 
-export const editItem = (id) => {
-    return (dispatch) => {
+export const editItem = (id, service_type, input_data) => {
+    return (dispatch, getState) => {
         axios({
-            url: apiUrl + `/vendor/venue/` + id,
+            url: apiUrl + `/vendor/${service_type}/${id}`,
             method: "PUT",
             headers: {
                 access_token: localStorage.getItem('access_token')
-            }
+            },
+            data: input_data
         })
             .then(({ data }) => {
+                const state = getState()
+                const updateData = input_data
+                const currentServices = state.services
+                const filteredServices = currentServices.filter(service => {
+                if(service.id !== updateData.id || service.service_type !== updateData.service_type){
+                    return service
+                }
+            })
                 dispatch({
-                    type: "EDIT",
-                    payload: {
-                        data
-                    }
+                    type: "FETCH_SERVICES",
+                    payload: filteredServices
                 })
             })
             .catch(err => {

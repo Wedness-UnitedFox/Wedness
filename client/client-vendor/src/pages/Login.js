@@ -14,7 +14,7 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(inputLogin, "<<<<<<page handlesubmit");
+        const { email, password } = inputLogin
         dispatch(userLogin(inputLogin))
         auth.signInWithEmailAndPassword(email, password)
         .then(() => {
@@ -28,12 +28,12 @@ const Login = () => {
             console.log(errorMessage, errorCode)
             // ...
         });
-        history.push('/')
+        history.push('/home')
     };
 
     const handleRegister = (e) => {
         e.preventDefault();
-        history.push('/vendor/register')
+        history.push('/register')
     };
 
     const handleChange = (e) => {

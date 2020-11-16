@@ -32,19 +32,15 @@ const vendorAuthentication = (req, res, next) => {
       User.findByPk(req.userData.id)
           .then(user => {
               if(!user || user.role !== 'vendor'){
-                console.log('masukkk if<<<<<<<<<<<<<<');
                   next({name: 'Unauthenticated'})
               }
-              console.log(' iniiiiiiiiii masuk abru<<<<<<<<<<<<<<');
               next()
           })
           .catch(err => {
-            console.log('errrrrrrrrrrrr <<<<<<<<<<<<<<');
-              next(err)
+            next(err)
           })
   }
   else{
-      console.log('masuk else>>>>>>>>>>>>>>>>');
       next({name: 'Not Authorized', message: "Invalid access!"})
   }
 }
@@ -105,7 +101,7 @@ const authorization = (req, res, next) => {
 
 
 const venueAuthorization = (req, res, next) => {
-    console.log("VENUE AUTH", req.params);
+    // console.log("VENUE AUTH", req.params);
     const {id} = req.params  
     Venue.findByPk(+id)
         .then(data => {
@@ -125,7 +121,6 @@ const venueAuthorization = (req, res, next) => {
 }
 
 const organizerAuthorization = (req, res, next) => {
-    // console.log("<<<<<organizer auth", req.params)
     const {id} = req.params  
     Organizer.findByPk(+id)
         .then(data => {
@@ -158,7 +153,7 @@ const cateringAuthorization = (req, res, next) => {
         .catch(err => {
             res.status(500).json({message : err.message})
         }) 
-// }
+}
 // const photosAuthorization = (req, res, next) => {
 //     const {id} = req.params  
 //     Photo.findByPK(id)
@@ -174,7 +169,6 @@ const cateringAuthorization = (req, res, next) => {
 //         .catch(err => {
 //             res.status(500).json({message : err.message})
 //         }) 
-}
 
 module.exports = {
     userAuthentication,

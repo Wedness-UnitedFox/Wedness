@@ -1,11 +1,17 @@
 import React from 'react';
 import { Link, Route, Switch, useHistory, useRouteMatch } from 'react-router-dom';
 import ChatRoom from './ChatRoom';
+import firebase from '../services/firebase'
 
+const firestore = firebase.firestore
 
 const ChatConversations = () => {
     const history = useHistory()
-    let { path, url } = useRouteMatch()
+    const { path, url } = useRouteMatch()
+    // console.log(path, url, "Mantapp")
+
+    // const chatRef = firestore.collection('chats').doc()
+    // console.log(chatRef, "chat Ref");
     
     return (
         <>
@@ -14,15 +20,14 @@ const ChatConversations = () => {
                 <h1>Conversations:  </h1>
                 <hr />
                 <ul>
-                    <li><Link to={`${url}/1`}>Chat#1</Link></li>
-                    <li><Link to={`${url}/2`}>Chat#2</Link></li>
-                    <li><Link to={`${url}/3`}>Chat#3</Link></li>
-                    <li><Link to={`${url}/4`}>Chat#4</Link></li>
+                    <li><Link to={`${url}/testing@mail.com`}>Chat#1</Link></li>
+                    <li><Link to={`${url}/testing2@mail.com`}>Chat#2</Link></li>
+
                 </ul>
             </div>
             <div className="border">
                 <Switch>
-                    <Route path={`${path}/:id`}><ChatRoom/></Route>
+                    <Route path={`${path}/:email`} component={ChatRoom} />
                 </Switch>
             </div>
         </div>

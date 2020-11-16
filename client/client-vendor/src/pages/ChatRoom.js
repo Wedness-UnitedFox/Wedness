@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -27,30 +27,42 @@ const ChatRoom = () => {
         });
     }
 
-    let { id } = useParams()
+    let { email: customerEmail } = useParams()
     const dummy = useRef()
     const chatRef = firestore.collection('chats')
     const query = chatRef.orderBy('createdAt').limit(50)
 
+    const [messages, setMessages] = useState([]) 
     const [chats] = useCollectionData(query, {idField: 'id'})
+    // const { uid, photoURL, displayName, email } = auth.currentUser;
     
+    useEffect(()=>{
+        console.log(chats)
+        const { email } = auth.currentUser
+        console.log(email, "email ")
+        if(chats){
+            // const newMessages = chats.filter(chat => chat.user.uid === uid && chat.user.customer === customerEmail)
+            const newMessages = chats.filter(chat => chat.user.vendor === email && chat.user.customer === customerEmail)
+            
+            setMessages(newMessages)  
+        }
+    }, [chats, customerEmail])
+
     const [formChat, setFormChat] = useState('')
 
     const sendMessage = async (e) => {
         e.preventDefault();
     
-        const { uid, photoURL, displayName } = auth.currentUser;
-    
+        const { uid, email } = auth.currentUser
         await chatRef.add({
           text: formChat,
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           _id : Math.random().toString(36).substring(7),
           user: {
-            _id: uid,
-            name: displayName
-          },
-          user2: {
-
+              _id: uid,
+              name: email,
+              vendor: email,
+              customer: customerEmail
           }
         })
         setFormChat('');
@@ -59,12 +71,12 @@ const ChatRoom = () => {
     
     return (
         <div style={{marginTop: "0", width: "1000px", height: "100%"}}>
-            <h1 style={{textAlign: "center"}}> Chat {id} Room</h1>
-            {/* <button type="button" onClick={SignIn}>Login</button> */}
+            <h1 style={{textAlign: "center"}}> {customerEmail} Room</h1>
+            <button type="button" onClick={SignIn}>Login</button>
             <hr />
             <div className="container" style={{ width: "100%"}}>
                 <div className="container border" style={{height: "400px", width: "800px", overflow: "scroll"}}>
-                    {chats && chats.map(chat => <ChatMessage key={chat.id} chat={chat} />)}   
+                    {messages && messages.map(chat => <ChatMessage key={chat.id} chat={chat} />)}   
                     <span ref={dummy}></span>
                 </div>
                 <div className="container mt-3" style={{width: "800px"}}>
