@@ -58,7 +58,7 @@ export const fetchVenue = () => {
 export const bookNow = (data, success) => {
     
     return (dispatch, getState) => {
-        if(!data.subtotal || !data.vendor_type || !data.data.VendorId ) {
+        if(!data.subtotal || !data.vendor_type || !data.VendorId ) {
             console.log("BOOK FAIL <-________________________"); 
         } else{
             AsyncStorage.getItem('access_token')

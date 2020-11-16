@@ -1,9 +1,10 @@
 import React from 'react'
-import { Image, View } from 'react-native'
+import { Avatar } from "react-native-elements";
+import { StyleSheet,Image, ImageBackground, View } from 'react-native'
 import { Button, Divider, List, Text } from 'react-native-paper'
 import { useDispatch } from 'react-redux'
 import firebaseSDK from '../firebase'
-import {bookNow} from '../store/actions/wednessAction'
+import { bookNow } from '../store/actions/wednessAction'
 
 
 export default function ProfileScreen(props) {
@@ -17,42 +18,40 @@ export default function ProfileScreen(props) {
   console.log(data, "<><><><><><><><><");
   const handleChat = () => {
     console.log("chat")
-  }  
-    // subtotal: DataTypes.INTEGER, 
-    // vendor_type: DataTypes.STRING,
-    // VendorId: DataTypes.INTEGER,
-  const handleBook = () => {
-    console.log(id,"chat")
-    dispatch(bookNow({VendorId:id,vendor_type,subtotal:data.price},success))
   }
-  const success = () =>{
+  const handleBook = () => {
+    console.log(id, "chat")
+    dispatch(bookNow({ VendorId: id, vendor_type, subtotal: data.price }, success))
+  }
+  const success = () => {
     console.log("success");
     navigation.replace('Home')
   }
   return (
-    <View style={{ flex: 1, alignItems: 'center', flexDirection: 'column' }}>
-      {/* <Text>{JSON.stringify(data)}</Text> */}
-      <View
-        style={{
-          backgroundColor: "floralwhite",
-          width: '100%',
-          height: 250,
-          marginLeft: 15,
-          marginRight: 15,
-        }}
-      >
-        <Image
-          style={{ width: "100%", height: "100%", resizeMode: 'cover' }}
-          source={{
-            uri: `${data.avatar}`,
-          }}
-        />
+    <View style={{ flex: 1, alignItems: 'center', flexDirection: 'column' }}> 
+      <View style={styles.container}>
+        <ImageBackground source={ {uri: `${data.avatar}`}} blurRadius={2} style={styles.image}>
+          <View
+            style={{
+              alignSelf:'center',  
+            }}
+          >
+            <Avatar
+              size={120}
+              rounded
+              source={{
+                uri: `${data.avatar}`
+              }}
+            />
+          </View>
+        </ImageBackground>
       </View>
+
       <View style={{ paddingHorizontal: 20, width: '100%', }}>
         <List.Section titleStyle={{ fontSize: 20 }} title={data.title}>
           <List.Accordion
             title="Detail"
-          > 
+          >
             <View >
               <View style={{}}>
                 <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Phone Number: </Text>
@@ -78,8 +77,8 @@ export default function ProfileScreen(props) {
           </List.Accordion>
         </List.Section>
         <Divider style={{ marginVertical: 5 }} />
-          <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Decription: </Text>
-          <Text>{data.description}</Text>
+        <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Decription: </Text>
+        <Text>{data.description}</Text>
         <Divider style={{ marginVertical: 5 }} />
       </View>
       <Button onPress={handleChat}>Chat</Button>
@@ -90,3 +89,28 @@ export default function ProfileScreen(props) {
     </View>
   );
 }
+const styles = StyleSheet.create({
+  container: { 
+    flex:1,
+    // marginLeft:-400,
+    width:'100%',
+    maxHeight:250,
+    flexDirection: "column", 
+    justifyContent:'center', 
+    alignContent:'center'
+  },
+  image: { 
+    flex:1,
+    width:"100%",
+    resizeMode: "cover",
+    justifyContent: "center",
+    alignSelf: "center"
+  },
+  text: {
+    color: "white",
+    fontSize: 42,
+    fontWeight: "bold",
+    textAlign: "center",
+    backgroundColor: "#000000a0"
+  }
+});

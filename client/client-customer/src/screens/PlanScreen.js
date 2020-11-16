@@ -48,9 +48,11 @@ export default function PlanScreen() {
                         </View>
                         <View style={{flex:4, padding:10}}> 
                             <Text style={{fontSize:15, fontWeight:'600'}}>{plan.Vendor.name}</Text>
+                            <Text style={{fontSize:15, fontWeight:'600'}}>Status : {plan.Vendor.isApproved? 'Approved':'Waiting for approval' }</Text>
+                            <Button color="red">Delete</Button>
                         </View>
                     </View>
-                    <Divider />
+                    <Divider style={{marginVertical:8}}/>
                 </>
             ))
           }
