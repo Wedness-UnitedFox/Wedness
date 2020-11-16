@@ -2,7 +2,7 @@ import { SET_LOGIN, SET_VENUE, SET_ORGANIZER, SET_CATERING, LOGOUT, SET_PLANS} f
 
 const initialState = {
   userId: '',
-  token: '',
+  access_token: '',
   isLogin: false,
   plans:[],
   venues: [], 
