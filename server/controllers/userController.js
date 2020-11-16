@@ -32,9 +32,9 @@ class UserController {
   static userRegister(req, res, next){
     const role = 'customer'
     const { name, email, password, phone_number } = req.body
-    if( name === '' || email === '' || phone_number === '' || password === ''){
-      next({name: "Empty Column"})
-    }
+    // if( name === '' || email === '' || phone_number === '' || password === ''){
+    //   next({name: "Empty Column"})
+    // }
     User.create({
       name,
       email,
@@ -50,7 +50,7 @@ class UserController {
       })
     })
     .catch(err => {
-      next({name: "Internal Server Error"})
+      next(err)
     })
   }
 }

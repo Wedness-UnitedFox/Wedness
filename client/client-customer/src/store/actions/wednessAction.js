@@ -4,7 +4,7 @@ import axios from 'axios'
 
 const apiUrl = 'http://localhost:3000'
 
-export const login = (inputLogin) => {
+export const login = (inputLogin, cb) => {
     console.log(inputLogin, "<<<<<<<store login");
     return (dispatch) => {
         axios({
@@ -23,10 +23,29 @@ export const login = (inputLogin) => {
                 });
                 return AsyncStorage.setItem('access_token', data.access_token)
             })
-            .then(() => console.log("sukses"))
+            .then(() => {
+                console.log("sukses")
+                cb()
+            })
             .catch((err) => console.log("-----------error", err));
     };
 };
+
+export const register = (inputRegister, cb) => {
+    console.log("masuk register", inputRegister);
+    return (dispatch) => {
+        axios({
+            url: apiUrl + `/user/register`,
+            method: 'POST',
+            data: inputRegister
+        })
+        .then(({ data }) => {
+            console.log("Success in registering data", data)
+            cb()
+        })
+        .catch((err) => console.log("-----------error", err.response.data));
+    }
+}
 
 export const fetchVenue = () => {
     const access_token = AsyncStorage.getItem('access_token')
