@@ -1,29 +1,32 @@
-import React, { useState, useCallback, useEffect } from 'react'
-import firestore from '@react-native-firebase/firestore'
-import firebaseSDK from '../firebase'
-import * as firebase from 'firebase';
-import { View, Text } from 'react-native'
+// @refresh reset
 
+import React, { useState, useEffect, useCallback } from 'react'
 import { GiftedChat } from 'react-native-gifted-chat'
+import AsyncStorage from '@react-native-community/async-storage'
+import { StyleSheet, TextInput, View, YellowBox, Button, LogBox } from 'react-native'
+import * as firebase from 'firebase'
+import firebaseSDK, { config } from '../firebase'
+import 'firebase/firestore'
 
-const chatsRef = firebaseSDK.chatsRef
-export default function Chat(props) {
-  const { route, navigation } = props
-  const [messages, setMessages] = useState([]);
-  const { chatId } = route.params;
-  const [chatID, setChatID] = useState(chatId)
-  // if (!chatID) { 
-  //   firebaseSDK.db.collection('chats')
-  // }
+const chatsRef = firebaseSDK.chatsRef()
 
-  const user = {
-    name: 'jojo',
-    id: firebaseSDK.uid,
-    _id: firebaseSDK.uid
+export default function App(props) {
+  const { params } = props.route 
+  console.log({params});
+  const [user, setUser] = useState(null)
+  const [name, setName] = useState('')
+  const [messages, setMessages] = useState([])
+  const vendorEmail = params?.vendorEmail 
+
+  const userData = {
+    _id: firebaseSDK.uid,
+    name: firebaseSDK.email,
+    customer: firebaseSDK.email,
+    vendor: vendorEmail,
   }
 
   useEffect(() => {
-    readUser()
+    // readUser()
     const unsubscribe = chatsRef.onSnapshot((querySnapshot) => {
       const messagesFirestore = querySnapshot
         .docChanges()
@@ -42,75 +45,37 @@ export default function Chat(props) {
 
   const appendMessages = useCallback(
     (messages) => {
-      setMessages((previousMessages) => GiftedChat.append(previousMessages, messages))
+      console.log(messages, "<------messagesss");
+      const messages2 = messages.filter(d => d.user.customer === firebaseSDK.email && d.user.vendor === vendorEmail)
+      setMessages((previousMessages) => GiftedChat.append(previousMessages, messages2))
     },
     [messages]
   )
-
-
-  async function readUser() {
-    const user = await AsyncStorage.getItem('user')
-    if (user) {
-        setUser(JSON.parse(user))
+  async function handleSend(messages) {
+    const writes = messages.map((m) => {
+      chatsRef.add(m)
     }
-  }
-  const handlePress = async () => {
-      const _id = firebaseSDK.uid
-      const name = firebaseSDK.displayName
-      const user = { _id, name }
-      await AsyncStorage.setItem('user', JSON.stringify(user))
-      setUser(user)
-  }
-  const handleSend = async(messages) => {
-      const writes = messages.map((m) => chatsRef.add(m))
-      await Promise.all(writes)
+    )
+    await Promise.all(writes)
   }
 
-  handleButtonPress = () => {
-    if (roomName.length > 0) {
-      // create new thread using firebase & firestore
-      firestore()
-        .collection('MESSAGE_THREADS')
-        .add({
-          name: roomName,
-          latestMessage: {
-            text: `${roomName} created. Welcome!`,
-            createdAt: new Date().getTime()
-          }
-        })
-        .then(() => {
-          navigation.navigate('ChatRoom')
-        })
-    }
-  }
-
-  useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: 'Hello developer',
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: 'React Native',
-          avatar: 'https://placeimg.com/140/140/any',
-        },
-      },
-    ])
-  }, [])
-  useEffect(() => {
-    console.log({ chatId });
-  }, [])
-  const onSend = useCallback((messages = []) => {
-    setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
-  }, [])
-  return (
-    // <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}> 
-    <GiftedChat
-      messages={messages}
-      onSend={onSend}
-      user={user}
-    />
-    // </View>
-  );
+  return <GiftedChat messages={messages} user={userData} onSend={handleSend} />
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 30,
+  },
+  input: {
+    height: 50,
+    width: '100%',
+    borderWidth: 1,
+    padding: 15,
+    marginBottom: 20,
+    borderColor: 'gray',
+  },
+})
