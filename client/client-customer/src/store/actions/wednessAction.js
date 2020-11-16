@@ -2,7 +2,8 @@ import { SET_CATERING, SET_VENUE, SET_LOGIN, SET_ORGANIZER, REGISTER_SUCCESS, RE
 import AsyncStorage from '@react-native-community/async-storage'
 import axios from 'axios'
 
-const apiUrl = 'http://localhost:3000'
+const apiUrl = 'http://10.0.2.2:3000'
+// const apiUrl = 'http://localhost:3000'
 
 export const login = (inputLogin, cb) => {
     console.log(inputLogin, "<<<<<<<store login");
@@ -75,6 +76,63 @@ export const fetchVenue = () => {
     };
 };
 
+export const fetchCatering = () => {
+    const access_token = AsyncStorage.getItem('access_token')
+        .then(value => {
+            console.log(value);
+        })
+        .catch(err => {
+
+        })
+    console.log(access_token, '<<<<<<<<<<<<<<<AccessToken');
+    return (dispatch, getState) => {
+        const state = getState().Reducer
+        const access_token = state.access_token
+        axios({
+            url: apiUrl + `/user/catering`,
+            method: "GET",
+            headers: { access_token }
+        }).then(({ data }) => {
+            dispatch({
+                type: SET_CATERING,
+                payload: {
+                    data
+                }
+            });
+        })
+            .catch((err) => console.log("-----------error", err));
+    };
+};
+
+export const fetchOrganizer = () => {
+    const access_token = AsyncStorage.getItem('access_token')
+        .then(value => {
+            console.log(value);
+        })
+        .catch(err => {
+
+        })
+    console.log(access_token, '<<<<<<<<<<<<<<<AccessToken');
+    return (dispatch, getState) => {
+        const state = getState().Reducer
+        const access_token = state.access_token
+        axios({
+            url: apiUrl + `/user/organizer`,
+            method: "GET",
+            headers: { access_token }
+        }).then(({ data }) => {
+            dispatch({
+                type: SET_ORGANIZER,
+                payload: {
+                    data
+                }
+            });
+        })
+            .catch((err) => console.log("-----------error", err));
+    };
+};
+
+
 export const bookNow = (data, success) => { 
     return (dispatch, getState) => {
         if(!data.subtotal || !data.vendor_type || !data.VendorId ) {
@@ -127,6 +185,7 @@ export const fetchPlans = () => {
             })
     }
 }
+
 export const deletePlan = (id) => {
     return (dispatch, getState) => {
         AsyncStorage.getItem('access_token')
