@@ -19,7 +19,6 @@ beforeAll((done)=> {
     .send(userData)
     .end((err, response) => {
         access_token = response.body.access_token
-        console.log(access_token,"<<<");
         done()
     })
     // access_token = signToken({id: userData.id, email: userData.email, role: userData.role})
@@ -621,7 +620,7 @@ describe('Testing /deleteVenue', () => {
         test('Delete Venue Invalid Id', (done) => {
             let id = 0
             request(app)
-            .delete(`/vendor/venue/${id}`)
+            .delete(`/vendor/venue/`)
             .set('access_token', access_token)
             .set('Accept', 'application/json')
             .then(response => {
