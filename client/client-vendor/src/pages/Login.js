@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { userLogin } from '../store/actions/action'
+import { userLogin } from '../store/actions/action';
+import firebase from '../services/firebase'
+
+const auth = firebase.auth()
 
 const Login = () => {
 
@@ -11,14 +14,26 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(inputLogin, "<<<<<<page handlesubmit");
+        const { email, password } = inputLogin
         dispatch(userLogin(inputLogin))
-        history.push('/')
+        auth.signInWithEmailAndPassword(email, password)
+        .then(() => {
+            console.log('Login berhasil')
+            localStorage.setItem('currentUser', JSON.stringify(auth.currentUser))
+        })
+        .catch(function(error) {
+            // Handle Errors here.
+            var errorMessage = error.message;
+            var errorCode = error.code;
+            console.log(errorMessage, errorCode)
+            // ...
+        });
+        history.push('/home')
     };
 
     const handleRegister = (e) => {
         e.preventDefault();
-        history.push('/vendor/register')
+        history.push('/register')
     };
 
     const handleChange = (e) => {

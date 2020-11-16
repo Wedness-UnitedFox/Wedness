@@ -1,4 +1,6 @@
-const { Venue, User } = require("../models")
+const { Venue, User, Photo } = require("../models")
+const { Op } = require('sequelize')
+
 
 class VenueController { 
     static postVenue(req,res,next){ 

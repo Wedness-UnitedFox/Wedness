@@ -1,9 +1,9 @@
-const { Organizer, User } = require('../models')
+const { Organizer, User, Photo } = require('../models')
+const { Op } = require('sequelize')
 
 class OrganizerController {
     
     static postOrganizer(req,res,next){ 
-        // console.log(req.body, '<><><><<<><>masuk server controller');
         req.body.UserId = req.userData.id
         Organizer.create(req.body)
             .then(data=>{

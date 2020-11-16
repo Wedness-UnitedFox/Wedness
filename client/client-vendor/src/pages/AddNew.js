@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { addItem } from '../store/actions/action';
 
 const AddNew = () => {
-
+    
     const history = useHistory()
     const dispatch = useDispatch()
     const [inputNew, setNew] = useState([])
@@ -13,14 +13,14 @@ const AddNew = () => {
     const handleNew = (e) => {
         e.preventDefault();
         if (inputNew.service_type !== "")
-            console.log(inputNew, "<<<<<<page handle Add");
+        console.log(inputNew, "<<<<<<page handle Add");
         dispatch(addItem(inputNew, vendorType))
-        history.push('/')
+        history.push('/home')
     };
 
     const handleCancel = (e) => {
         e.preventDefault();
-        history.push('/')
+        history.push('/home')
     };
 
     const handleChange = (e) => {
@@ -96,21 +96,21 @@ const AddNew = () => {
                             required
                         />
                         {vendorType === 'venue' ?
-                            <><select required className="form-control" onChange={handleChange} name="type">
-                                <option default value="">Choose Venue Type</option>
-                                <option value="indoor">Indoor</option>
-                                <option value="outdoor">Outdoor</option>
-                            </select>
-                                <input
-                                    className="form-control"
-                                    label="Type"
-                                    name="capacity"
-                                    type="number"
-                                    placeholder="Input Capacity"
-                                    onChange={handleChange}
-                                    required
-                                /></>
-                            : ""
+                        <><select required className="form-control" onChange={handleChange} name="type">
+                            <option default value="">Choose Venue Type</option>
+                            <option value="indoor">Indoor</option>
+                            <option value="outdoor">Outdoor</option>
+                        </select>
+                        <input
+                            className="form-control"
+                            label="Type"
+                            name="capacity"
+                            type="number"
+                            placeholder="Input Capacity"
+                            onChange={handleChange}
+                            required
+                        /></>
+                        : ""
                         }
                         <input
                             className="form-control"
