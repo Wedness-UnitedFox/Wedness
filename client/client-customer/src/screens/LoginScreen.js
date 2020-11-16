@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import firebaseSDK from '../firebase/index';
 import AsyncStorage from '@react-native-community/async-storage'
 import { useDispatch, useSelector } from "react-redux"
 import {login} from '../store/actions/wednessAction'
+import { TextInput, Button } from 'react-native-paper';
 // import { Button } from 'react-native-paper';  
 
 export default function Login(props){
@@ -66,32 +67,31 @@ export default function Login(props){
 	const onChangeTextPassword = password => setUserData({...userData, password });
  
     return (
-        <View>
-            <Text style={styles.title}>Email:</Text>
+        <View style={{flex:1, justifyContent:'center', paddingHorizontal:10}}> 
             <TextInput
-                style={styles.nameInput}
-                placeHolder="test3@gmail.com"
+                style={styles.input} 
+                label="Email"
                 onChangeText={onChangeTextEmail}
                 value={userData.email}
-            />
-            <Text style={styles.title}>Password:</Text>
+            /> 
             <TextInput
-                style={styles.nameInput}
+                style={styles.input}
+                label="Paswsword"
                 onChangeText={onChangeTextPassword}
                 value={userData.password}
             />
             <Button
                 title="Login"
+                mode="contained"
                 style={styles.buttonText}
                 onPress={onPressLogin}
-            />
+                > Login </Button>
 
             <Button
                 title="Signup"
                 style={styles.buttonText}
-                color={'black'}
-                // onPress={() => props.navigation.navigate('Signup')}
-            />
+                color={'black'} 
+            > Sign up </Button>
         </View>
     ); 
 }
@@ -102,17 +102,20 @@ const styles = StyleSheet.create({
 		marginLeft: 16,
 		fontSize: 16
 	},
-	nameInput: {
-		height: 16 * 2,
-		margin: 16,
+	input: { 
+        borderRadius:15, 
+        borderTopLeftRadius:15,
+        borderTopRightRadius:15,
+        alignSelf:'center',
+        margin: 16,
+        width:"70%",
 		paddingHorizontal: 16,
-		borderColor: '#111111',
-		borderWidth: 1,
 		fontSize: 16
 	},
 	buttonText: {
-		marginLeft: 16,
+        alignSelf:'center', 
         fontSize: 42,
-        
+        paddingVertical:20, 
+        width:"70%",
 	}
 });
