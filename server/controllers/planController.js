@@ -9,7 +9,7 @@ class CheckoutController {
                 res.status(201).json(result) 
             })
             .catch(err=>{
-                console.log(err);
+                // console.log(err);
                 next(err)
             }) 
     }
@@ -132,7 +132,7 @@ class CheckoutController {
     }
 
     static async payCheckoutForCustomer(req, res, next){
-        console.log('masuk static fungsi')
+        // console.log('masuk static fungsi')
         const t = await sequelize.transaction()
         try {
             const userCheckouts = await User.findByPk(req.userData.id, {

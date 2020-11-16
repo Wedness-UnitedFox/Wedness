@@ -47,12 +47,12 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true
       }
     },
-    photos: {
-      type: DataTypes.STRING,
-      validate: {
-        notEmpty: true
-      }
-    },
+    // photos: {
+    //   type: DataTypes.STRING,
+    //   validate: {
+    //     notEmpty: true
+    //   }
+    // },
     price: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -80,6 +80,7 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true
       }
     },
+    service_type: DataTypes.STRING,
     UserId: DataTypes.INTEGER
   }, {
     sequelize,

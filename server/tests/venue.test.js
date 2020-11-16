@@ -6,26 +6,26 @@ const {signToken} = require('../helpers/jwt');
 const { response } = require('express');
 
 let id
-let access_token
+let access_token = signToken({id: 1, email: "testing@mail.com", role: "vendor"})
 let access_token_invalid = ''
 
-beforeAll((done)=> {
-    const userData = { 
-        email: 'testing@mail.com',
-        password: '123456'
-    }
-    request(app)
-    .post('/vendor/login')
-    .send(userData)
-    .end((err, response) => {
-        access_token = response.body.access_token
-        console.log(access_token,"<<<");
-        done()
-    })
-
-    // access_token = signToken({id: userData.id, email: userData.email, role: userData.role})
-    // done()
-})
+// beforeAll((done)=> {
+//     const userData = { 
+//         email: 'testing@mail.com',
+//         password: '123456',
+//         role:"vendor"
+//     }
+//     request(app)
+//     .post('/vendor/login')
+//     .send(userData)
+//     .end((err, response) => {
+//         access_token = response.body.access_token
+//         console.log(access_token,"<<<");
+//         done()
+//     })
+//     // access_token = signToken({id: userData.id, email: userData.email, role: userData.role})
+//     // done()
+// })
 
 afterAll((done) => {
     queryInterface.bulkDelete('Venues')
@@ -48,6 +48,7 @@ let data = {
     type: 'Outdoor',
     description: 'Lorem ipsum',
     capacity: 800,
+    service_type: "venue"
 }
 let dataPut = {
     name: 'Wedness Hall Update',
@@ -59,6 +60,7 @@ let dataPut = {
     type: 'Outdoor',
     description: 'Lorem ipsum Update',
     capacity: 1000,
+    service_type: "venue"
 }
 
 
@@ -71,6 +73,7 @@ describe('Testing /postVenue', () => {
             .set('access_token', access_token) 
             .then(response => {
                 const {status,body} = response 
+                console.log(body, "<<<<<<<<<<<<<<<body");
                 expect(status).toBe(201)
                 id = body.id
                 expect(body).toHaveProperty('id', expect.any(Number))
@@ -81,6 +84,7 @@ describe('Testing /postVenue', () => {
                 expect(body).toHaveProperty('type', data.type)
                 expect(body).toHaveProperty('description', data.description)
                 expect(body).toHaveProperty('avatar', data.avatar)
+                expect(body).toHaveProperty('service_type', data.service_type)
                 done()
             })
         })
@@ -268,9 +272,9 @@ describe('Testing /postVenue', () => {
     })
 })
 
-describe('Testing /getVenue', () => {
+describe('Testing /getVenues', () => {
 
-    describe('Success Case /getVenue', () => {
+    describe('Success Case /getVenues', () => {
         test('Should send array of object with Status Code 200', (done) => {
             request(app)
             .get('/vendor/venue')
@@ -288,15 +292,72 @@ describe('Testing /getVenue', () => {
                 expect(body[0]).toHaveProperty('type', data.type)
                 expect(body[0]).toHaveProperty('description', data.description)
                 expect(body[0]).toHaveProperty('avatar', data.avatar)
+                expect(body[0]).toHaveProperty('capacity', data.capacity)
+                expect(body[0]).toHaveProperty('service_type', data.service_type)
+                done()
+            })
+        })
+    })
+
+    describe('Failed Case /getVenues', () => {
+        test('User Not Authenticated', (done) => {
+            request(app)
+            .get('/vendor/venue')
+            .set('access_token', access_token_invalid)
+            .send(data)
+            .set('Accept', 'application/json')
+            .then(response => {
+                const {status, body} = response
+                expect(status).toBe(403)
+                done()
+            })
+        })
+    })
+})
+
+describe('Testing /getVenue', () => {
+
+    describe('Success Case /getVenue', () => {
+        test('Should send object with Status Code 200', (done) => {
+            request(app)
+            .get(`/vendor/venue/${id}`)
+            .set('access_token', access_token)
+            .send(data)
+            .set('Accept', 'application/json')
+            .then(response => {
+                const {status, body} = response
+                console.log(response, "<<<<<<<<<");
+                expect(status).toBe(200)
+                expect(body).toHaveProperty('id', expect.any(Number))
+                expect(body).toHaveProperty('name', data.name)
+                expect(body).toHaveProperty('address', data.address)
+                expect(body).toHaveProperty('phone_number', data.phone_number)
+                expect(body).toHaveProperty('price', data.price)
+                expect(body).toHaveProperty('type', data.type)
+                expect(body).toHaveProperty('description', data.description)
+                expect(body).toHaveProperty('avatar', data.avatar)
+                expect(body).toHaveProperty('service_type', data.service_type)
                 done()
             })
         })
     })
 
     describe('Failed Case /getVenue', () => {
+        test('Wrong Id', (done) => {
+            request(app)
+            .get('/vendor/venue' + 5 )
+            .set('access_token', access_token)
+            .send(data)
+            .set('Accept', 'application/json')
+            .then(response => {
+                const {status, body} = response
+                expect(status).toBe(404)
+                done()
+            })
+        })
         test('User Not Authenticated', (done) => {
             request(app)
-            .get('/vendor/venue')
+            .get('/vendor/venue' + id)
             .set('access_token', access_token_invalid)
             .send(data)
             .set('Accept', 'application/json')

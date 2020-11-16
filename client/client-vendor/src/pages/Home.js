@@ -2,18 +2,22 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import TableRow from '../components/TableRow'
-import { fetchVenue } from '../store/actions/action'
+import { fetchServices } from '../store/actions/action'
 
 const Home = () => {
 
     // const history = useHistory()
     const dispatch = useDispatch()
-    const { venue } = useSelector((state) => state)
+    const { services,loading,error } = useSelector((state) => state)
     
     useEffect(() => {
-        dispatch(fetchVenue())
+        dispatch(fetchServices())
     }, [dispatch])
     
+
+    if(loading) return <p>Loading....</p>
+    if(error) return <p>Error!</p>
+
     return (
         <div>
             <table className="table">
@@ -28,8 +32,9 @@ const Home = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    { !venue.data ? null :
-                    venue.data.map((data,id) => {
+                    {/* {JSON.stringify(services)} */}
+                    { !services ? null :
+                    services.map((data,id) => {
                         return <TableRow key={data.id} data={data} id={id}/>
                     })}
                 </tbody>

@@ -6,11 +6,7 @@ routes.get("/", venueController.getVenues)
 routes.get("/:id", venueController.getVenue)  
 routes.post("/", venueController.postVenue)
 
-// routes.put("/:id", venueAuthorization, venueController.putVenue)
-// routes.delete("/:id", venueAuthorization, venueController.deleteVenue) 
-
-routes.put("/:id", venueController.putVenue)
-routes.delete("/:id", venueController.deleteVenue) 
-
+routes.put("/:id", venueAuthorization, venueController.putVenue)
+routes.delete("/:id", venueAuthorization, venueController.deleteVenue) 
 
 module.exports = routes
