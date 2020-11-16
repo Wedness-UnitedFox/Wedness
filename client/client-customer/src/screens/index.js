@@ -5,6 +5,7 @@ import Conversations from './ConversationsScreen'
 import Profile from './ProfileScreen'
 import Detail from './DetailScreen'
 import Plan from './PlanScreen'
+import Register from './RegisterScreen'
 
 export const HomeScreen = Home
 export const ChatScreen = Chat
@@ -13,3 +14,4 @@ export const LoginScreen = Login
 export const ProfileScreen = Profile 
 export const DetailScreen = Detail
 export const PlanScreen = Plan
+export const RegisterScreen = Register

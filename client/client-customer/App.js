@@ -7,7 +7,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Provider } from 'react-redux';
 import store from './src/store';
 
-import { ChatScreen, LoginScreen, DetailScreen } from './src/screens'
+import { ChatScreen, LoginScreen, DetailScreen, RegisterScreen } from './src/screens'
 import HomeNavigation from './src/navigation/BottomTabNavigation'
 const Stack = createStackNavigator();
 export default function App() {
@@ -19,6 +19,11 @@ export default function App() {
             <Stack.Screen
               name="Login"
               component={LoginScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Register"
+              component={RegisterScreen}
               options={{ headerShown: false }}
             />
             <Stack.Screen name="Home" component={HomeNavigation}
