@@ -34,7 +34,7 @@ class FirebaseSDK {
 
     register = async (user, success_callback, failed_callback) => {
         await firebase.auth()
-        createUserWithEmailAndPassword(user.email, user.password)
+        .createUserWithEmailAndPassword(user.email, user.password)
             .then(() => {
                 success_callback('User account created & signed in!') 
             })

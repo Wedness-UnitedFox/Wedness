@@ -20,15 +20,18 @@ export default function Login(props){
 		avatar: ''
 	})
     
-    useEffect(()=>{ 
-        // if(data.isLogin || firebaseSDK.uid){
-            console.log(data.access_token,"<--- TOKEN",firebaseSDK.uid);
-        if(data.access_token){
-            console.log("user already Loggedin");
-            const response = firebaseSDK.login(userData,loginSuccess,loginFailed)
-        }
-    },[data])
+    // useEffect(()=>{ 
+    //     // if(data.isLogin || firebaseSDK.uid){
+    //         console.log(data.access_token,"<--- TOKEN",firebaseSDK.uid);
+    //     if(data.access_token){
+    //         console.log("user already Loggedin");
+    //     }
+    // },[data])
 
+    function trigger () {
+        const response = firebaseSDK.login(userData,loginSuccess,loginFailed)
+
+    }
 
 	const onPressLogin = async () => {
 		const user = {
@@ -37,8 +40,12 @@ export default function Login(props){
 			password: userData.password,
 			avatar: userData.avatar
         };
-        dispatch(login({email:user.email,password:user.password})) 
-	};
+        dispatch(login({email:user.email,password:user.password}, trigger)) 
+    };
+    
+    const onPressRegister = () => {
+        props.navigation.navigate('Register')
+    }
 
 	const loginSuccess = async () => {
         console.log('login successful, navigate to chat.'); 
@@ -76,7 +83,7 @@ export default function Login(props){
             /> 
             <TextInput
                 style={styles.input}
-                label="Paswsword"
+                label="Password"
                 onChangeText={onChangeTextPassword}
                 value={userData.password}
             />
@@ -91,6 +98,7 @@ export default function Login(props){
                 title="Signup"
                 style={styles.buttonText}
                 color={'black'} 
+                onPress={onPressRegister}
             > Sign up </Button>
         </View>
     ); 
