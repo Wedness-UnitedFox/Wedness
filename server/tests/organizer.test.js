@@ -24,11 +24,6 @@ beforeAll((done)=> {
 
 afterAll((done) => {
     queryInterface.bulkDelete('Organizers')
-    .then(()=> {
-        return User.destroy({where: {
-            email: userData.email
-        }})
-    })
     .then(() => {
         done()
     })
@@ -524,7 +519,7 @@ describe('Testing /deleteOrganizer', () => {
         test('Delete Organizer Invalid Id', (done) => {
             let id = 0
             request(app)
-            .delete(`/vendor/organizer/${id}`)
+            .delete(`/vendor/organizer/`)
             .set('access_token', access_token)
             .set('Accept', 'application/json')
             .then(response => {

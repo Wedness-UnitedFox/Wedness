@@ -27,15 +27,10 @@ beforeAll((done)=> {
 afterAll((done) => {
     queryInterface.bulkDelete('Caterings')
     .then(() => {
-        return User.destroy({where: {
-            email: userData.email
-        }})
-    })
-    .then(() => {
         done()
     })
     .catch(err => {
-        console.log(err)
+        // console.log(err)
         done()
     })
 })
@@ -72,7 +67,7 @@ describe('Testing /postCatering', () => {
             .set('Accept', 'application/json')
             .then(response => {
                 const {status,body} = response
-                console.log("Post success case", response.body)
+                // console.log("Post success case", response.body)
                 expect(status).toBe(201)
                 id = body.id
                 expect(body).toHaveProperty('id', expect.any(Number))
@@ -356,7 +351,7 @@ describe('Testing /putCatering', () => {
             .set('Accept', 'application/json')
             .then(response => {
                 const {status, body} = response
-                console.log(response, "put catering")
+                // console.log(response, "put catering")
                 expect(status).toBe(200)
                 expect(body).toHaveProperty('msg', 'Edit Successfully')
                 done()
@@ -526,9 +521,8 @@ describe('Testing /deleteCatering', () => {
             })
         })
         test('Delete catering Invalid Id', (done) => {
-            let id = 0
             request(app)
-            .delete(`/vendor/catering/${id}`)
+            .delete(`/vendor/catering/`)
             .set('access_token', access_token)
             .set('Accept', 'application/json')
             .then(response => {
