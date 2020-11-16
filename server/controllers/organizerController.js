@@ -24,19 +24,19 @@ class OrganizerController {
     
     static getOrganizer(req,res,next){ 
         Organizer.findByPk(req.params.id, {
-            include: [{
-                model: Photo,
-                where: {
-                    [Op.and]: [
-                        { vendor_id: req.params.id }, 
-                        { vendor_type: 'organizer' }
-                    ],                   
-                },
-                required: false
-            }, {
-                model: User,
-                attributes: {exclude: ['password']},
-            }]
+            // include: [{
+            //     model: Photo,
+            //     where: {
+            //         [Op.and]: [
+            //             { vendor_id: req.params.id }, 
+            //             { vendor_type: 'organizer' }
+            //         ],                   
+            //     },
+            //     required: false
+            // }, {
+            //     model: User,
+            //     attributes: {exclude: ['password']},
+            // }]
         })
             .then(data=>{
                 if (data) res.status(200).json(data)

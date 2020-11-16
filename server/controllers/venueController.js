@@ -40,14 +40,12 @@ class VenueController {
             }]
         })
         .then(venue=>{
-            console.log('masuk contorler,<<<<<');
                 if (venue) res.status(200).json(venue)
                 else next({name:'Not Found'})
             })
             .catch(err=>
-                console.log(err,'<<<<<<<<<<contorlerr')
-                // next(err)
-                )
+                next(err)
+            )
     } 
     static putVenue(req,res,next){ 
         Venue.update(req.body, {

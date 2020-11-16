@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">65.71% </span>
+                <span class="strong">81.25% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>23/35</span>
+                <span class='fraction'>26/32</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">55.56% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>5/9</span>
+                <span class='fraction'>6/8</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">65.71% </span>
+                <span class="strong">81.25% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>23/35</span>
+                <span class='fraction'>26/32</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -112,26 +112,24 @@
 <a name='L53'></a><a href='#L53'>53</a>
 <a name='L54'></a><a href='#L54'>54</a>
 <a name='L55'></a><a href='#L55'>55</a>
-<a name='L56'></a><a href='#L56'>56</a>
-<a name='L57'></a><a href='#L57'>57</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">74x</span>
-<span class="cline-any cline-yes">74x</span>
+<a name='L56'></a><a href='#L56'>56</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">90x</span>
+<span class="cline-any cline-yes">90x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">74x</span>
+<span class="cline-any cline-yes">90x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">46x</span>
-<span class="cline-any cline-yes">46x</span>
-<span class="cline-any cline-yes">59x</span>
+<span class="cline-any cline-yes">58x</span>
+<span class="cline-any cline-yes">58x</span>
+<span class="cline-any cline-yes">63x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">46x</span>
-<span class="cline-any cline-yes">46x</span>
-<span class="cline-any cline-yes">46x</span>
+<span class="cline-any cline-yes">58x</span>
+<span class="cline-any cline-yes">58x</span>
+<span class="cline-any cline-yes">58x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
@@ -149,9 +147,9 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -161,12 +159,12 @@
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">74x</span>
+<span class="cline-any cline-yes">90x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span></td><td class="text"><pre class="prettyprint lang-js">function errorHandler (err, req, res, next) {
@@ -184,22 +182,21 @@
             code = 400
             msg = `${errors}`
             break;
-<span class="branch-1 cbranch-no" title="branch not covered" >        case 'customMessage':</span>
-<span class="cstat-no" title="statement not covered" >            code = 403</span>
-<span class="cstat-no" title="statement not covered" >            msg = err.msg</span>
-<span class="cstat-no" title="statement not covered" >            break;</span>
-&nbsp;
+        // case 'customMessage':
+        //     code = 403
+        //     msg = err.msg
+        //     break;
         case 'Wrong Email or Password':
             code = 404
             msg = 'Wrong Email or Password'
             break
             
-<span class="branch-3 cbranch-no" title="branch not covered" >        case 'Not Found':</span>
+<span class="branch-2 cbranch-no" title="branch not covered" >        case 'Not Found':</span>
 <span class="cstat-no" title="statement not covered" >            code = 404</span>
 <span class="cstat-no" title="statement not covered" >            msg = 'Data not found'</span>
 <span class="cstat-no" title="statement not covered" >            break</span>
             
-<span class="branch-4 cbranch-no" title="branch not covered" >        case 'Unauthenticated':</span>
+<span class="branch-3 cbranch-no" title="branch not covered" >        case 'Unauthenticated':</span>
 <span class="cstat-no" title="statement not covered" >            code = 401</span>
 <span class="cstat-no" title="statement not covered" >            msg = 'Unauthenticated. You need to login first'</span>
 <span class="cstat-no" title="statement not covered" >            break</span>
@@ -216,10 +213,10 @@
             code = 400
             msg = 'This column should not be empty!'
             break
-<span class="branch-8 cbranch-no" title="branch not covered" >        default:</span>
-<span class="cstat-no" title="statement not covered" >            code = 500</span>
-<span class="cstat-no" title="statement not covered" >            msg = 'Internal Server Error'</span>
-<span class="cstat-no" title="statement not covered" >            break</span>
+        default:
+            code = 500
+            msg = 'Internal Server Error'
+            break
     }
 &nbsp;
   return res.status(code).json({msg})
@@ -232,7 +229,7 @@ module.exports = errorHandler</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon Nov 16 2020 02:57:06 GMT+0700 (Western Indonesia Time)
+                at Mon Nov 16 2020 15:27:30 GMT+0700 (Western Indonesia Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>
