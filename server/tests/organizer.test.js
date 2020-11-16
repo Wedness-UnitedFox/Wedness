@@ -6,12 +6,12 @@ const {signToken} = require('../helpers/jwt')
 
 let id
 let access_token
-let access_token_invalid = ''
 
 beforeAll((done)=> {
     const userData = {
         email: 'testing@mail.com',
         password: '123456',
+        role:"vendor"
     }
     request(app)
     .post('/vendor/login')
@@ -20,13 +20,16 @@ beforeAll((done)=> {
         access_token = response.body.access_token
         done()
     })
-    // access_token = signToken({id: userData.id, email: userData.email, role: userData.role})
-    // done()
 })
 
 afterAll((done) => {
     queryInterface.bulkDelete('Organizers')
     .then(()=> {
+        return User.destroy({where: {
+            email: userData.email
+        }})
+    })
+    .then(() => {
         done()
     })
     .catch(err => {
@@ -40,20 +43,20 @@ let data = {
     address: 'Jl. Organizer No.1, Pondok Indah, Jakarta Selatan',
     email: 'wedness_app@mail.com',
     phone_number: "08166669999",
-    photos:"https://www.kindpng.com/picc/m/78-785827_user-profile-avatar-login-account-male-user-icon.png",
     price: 10000000,
     description: 'Lorem ipsum',
     avatar: 'https://www.kindpng.com/picc/m/78-785827_user-profile-avatar-login-account-male-user-icon.png',
+    service_type: "organizer"
 }
 let dataPut = {
     name: 'Wedness Organizer Update',
     address: 'Jl. Organizer No.1, Pondok Indah, Jakarta Selatan Update',
-    email: 'wedness_app@mail.com Update',
+    email: 'update_wedness_app@mail.com',
     phone_number: "08166669999",
-    photos:"https://www.kindpng.com/picc/m/78-785827_user-profile-avatar-login-account-male-user-icon.png",
     price: 10000000,
     description: 'Lorem ipsum Update',
-    avatar: 'https://www.kindpng.com/picc/m/78-785827_user-profile-avatar-login-account-male-user-icon.png'
+    avatar: 'https://www.kindpng.com/picc/m/78-785827_user-profile-avatar-login-account-male-user-icon.png',
+    service_type: "organizer"
 }
 
 
@@ -72,10 +75,10 @@ describe('Testing /postOrganizer', () => {
                 expect(body).toHaveProperty('name', data.name)
                 expect(body).toHaveProperty('address', data.address)
                 expect(body).toHaveProperty('phone_number', data.phone_number)
-                expect(body).toHaveProperty('photos', data.photos)
                 expect(body).toHaveProperty('price', data.price)
                 expect(body).toHaveProperty('description', data.description)
                 expect(body).toHaveProperty('avatar', data.avatar)
+                expect(body).toHaveProperty('service_type', data.service_type)
                 done()
             })
         })
@@ -216,25 +219,39 @@ describe('Testing /postOrganizer', () => {
                 done()
             })
         })
-        test('User Not Authenticated', (done) => {
+        test('Validation Error Empty Vendor Type', (done) => {
+            var dataEmptyService = {
+                ...data, service_type: ''
+            }
             request(app)
             .post('/vendor/organizer')
-            .set('access_token', access_token_invalid)
-            .send(data)
+            .set('access_token', access_token)
+            .send(dataEmptyService)
             .set('Accept', 'application/json')
             .then(response => {
-                console.log(response, '<<<<<<<<auth err')
+                const {status,body} = response
+                expect(status).toBe(400)
+                done()
+            })
+        })
+        test('No access token, should return Unauthenticated', (done) => {
+            request(app)
+            .post('/vendor/catering')
+            .send(data) 
+            // .set('access_token', access_token)
+            .then(response => {
                 const {status,body} = response
                 expect(status).toBe(403)
+                expect(body).toHaveProperty('msg', 'You are not Authorized')
                 done()
             })
         })
     })
 })
 
-describe('Testing /getOrganizer', () => {
+describe('Testing /getOrganizers', () => {
 
-    describe('Success Case /getOrganizer', () => {
+    describe('Success Case /getOrganizers', () => {
         test('Should send array of object with Status Code 200', (done) => {
             request(app)
             .get('/vendor/organizer')
@@ -252,21 +269,73 @@ describe('Testing /getOrganizer', () => {
                 expect(body[0]).toHaveProperty('price', data.price)
                 expect(body[0]).toHaveProperty('avatar', data.avatar)
                 expect(body[0]).toHaveProperty('description', data.description)
+                expect(body[0]).toHaveProperty('service_type', data.service_type)
+                done()
+            })
+        })
+    })
+
+    describe('Failed Case /getOrganizers', () => {
+        test('No access token, should return Unauthenticated', (done) => {
+            request(app)
+            .get('/vendor/organizer')
+            .send(data)
+            .set('Accept', 'application/json')
+            .then(response => {
+                const {status, body} = response
+                expect(status).toBe(403)
+                done()
+            })
+        })
+    })
+})
+
+describe('Testing /getOrganizer', () => {
+
+    describe('Success Case /getOrganizer', () => {
+        test('Should send object with Status Code 200', (done) => {
+            request(app)
+            .get(`/vendor/organizer/${id}`)
+            .set('access_token', access_token)
+            .send(data)
+            .set('Accept', 'application/json')
+            .then(response => {
+                const {status, body} = response
+                expect(status).toBe(200)
+                expect(body).toHaveProperty('id', expect.any(Number))
+                expect(body).toHaveProperty('name', data.name)
+                expect(body).toHaveProperty('address', data.address)
+                expect(body).toHaveProperty('phone_number', data.phone_number)
+                expect(body).toHaveProperty('price', data.price)
+                expect(body).toHaveProperty('description', data.description)
+                expect(body).toHaveProperty('avatar', data.avatar)
+                expect(body).toHaveProperty('service_type', data.service_type)
                 done()
             })
         })
     })
 
     describe('Failed Case /getOrganizer', () => {
-        test('User Not Authenticated', (done) => {
+        test('Wrong Id', (done) => {
             request(app)
-            .get('/vendor/organizer')
-            .set('access_token', access_token_invalid)
+            .get('/vendor/organizer' + 0 )
+            .set('access_token', access_token)
             .send(data)
             .set('Accept', 'application/json')
             .then(response => {
                 const {status, body} = response
+                expect(status).toBe(404)
+                done()
+            })
+        })
+        test('No access token, should return Unauthenticated', (done) => {
+            request(app)
+            .post('/vendor/organizer/' + id)
+            .send(data) 
+            .then(response => {
+                const {status,body} = response
                 expect(status).toBe(403)
+                expect(body).toHaveProperty('msg', 'You are not Authorized')
                 done()
             })
         })
@@ -412,15 +481,14 @@ describe('Testing /putOrganizer', () => {
                 done()
             })
         })
-        test('User Unauthorized to Update Data', (done) => {
+        test('No access token, should return Unauthenticated', (done) => {
             request(app)
-            .put(`/vendor/organizer/${id}`)
-            .set('access_token', access_token_invalid)
-            .send(data)
-            .set('Accept', 'application/json')
+            .put('/vendor/organizer/' + id)
+            .send(dataPut) 
             .then(response => {
                 const {status,body} = response
                 expect(status).toBe(403)
+                expect(body).toHaveProperty('msg', 'You are not Authorized')
                 done()
             })
         })
@@ -443,10 +511,9 @@ describe('Testing /deleteOrganizer', () => {
         })
     })
     describe('Failed Case /deleteOrganizer', () => {
-        test('Delete Product User Unauthorized', (done) => {
+        test('No access token, should return Unauthenticated', (done) => {
             request(app)
             .delete(`/vendor/organizer/${id}`)
-            .set('access_token', access_token_invalid)
             .set('Accept', 'application/json')
             .then(response => {
                 const {status, body} = response
