@@ -55,8 +55,8 @@ export const fetchVenue = () => {
             .catch((err) => console.log("-----------error", err));
     };
 };
-export const bookNow = (data, success) => {
-    
+
+export const bookNow = (data, success) => { 
     return (dispatch, getState) => {
         if(!data.subtotal || !data.vendor_type || !data.VendorId ) {
             console.log("BOOK FAIL <-________________________"); 
@@ -80,20 +80,7 @@ export const bookNow = (data, success) => {
                     console.log(err.response.data);
                 })
         }
-    }
-    // return (dispatch, getState) => {
-    // const state = getState().Reducer 
-    // const access_token = state.access_token
-    // axios({
-    //     url: apiUrl + `/user/plan`,
-    //     method: "POST",
-    //     headers: { access_token },
-    //     data: data
-    // }).then(({ data }) => {
-    //     console.log("SUKSES ADD");
-    // })
-    //     .catch((err) => console.log("-----------error", err));
-    // };
+    } 
 };
 
 export const fetchPlans = () => {
@@ -113,6 +100,37 @@ export const fetchPlans = () => {
                     type: SET_PLANS,
                     payload: {
                         data
+                    }
+                });
+            })
+            .catch(err => {
+                console.log(err.response.data);
+            })
+    }
+}
+export const deletePlan = (id) => {
+    return (dispatch, getState) => {
+        AsyncStorage.getItem('access_token')
+            .then(value => { 
+                console.log(value, '<<<<<<<<<<<<<<<AccessToken  ', id);
+
+                return axios({
+                    url: apiUrl + `/user/plan/${id}`,
+                    method: "DELETE",
+                    headers: { access_token: value }, 
+                })
+            })
+            .then(({ data }) => {
+                console.log(data, "<--- RESULT"); 
+                let {plans} = getState().Reducer
+                // console.log(plans);
+                let newPlans = plans.filter(plan=>plan.id !== id) 
+                console.log(plans,"<---->",newPlans);
+                
+                dispatch({
+                    type: SET_PLANS,
+                    payload: {
+                        data:newPlans
                     }
                 });
             })

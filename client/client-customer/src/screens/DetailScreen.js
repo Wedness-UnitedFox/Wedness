@@ -34,15 +34,29 @@ export default function ProfileScreen(props) {
           <View
             style={{
               alignSelf:'center',  
+              width:120,
+              height:120,
+              borderRadius:100,
+              backgroundColor:'blue',
+              overflow:'hidden',
+              justifyContent:'center'
             }}
           >
-            <Avatar
+            <Image 
+              style={{width:"200%",height:"200%", alignSelf:'center'}}
+              resizeMode="cover"
+              source={{
+                uri: `${data.avatar}`
+              }}
+              />
+            {/* <Avatar
+              avatarStyle={{}}
               size={120}
               rounded
               source={{
                 uri: `${data.avatar}`
               }}
-            />
+            /> */}
           </View>
         </ImageBackground>
       </View>

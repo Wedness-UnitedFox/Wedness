@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'rea
 import { useDispatch, useSelector } from 'react-redux';
 import {Button, Divider} from 'react-native-paper'
 import CardService from '../components/CardService'
-import {fetchPlans} from '../store/actions/wednessAction'
+import {fetchPlans, deletePlan} from '../store/actions/wednessAction'
  
 
 export default function PlanScreen() { 
@@ -26,6 +26,10 @@ export default function PlanScreen() {
     console.log({type})
   }
 
+  const handleDelete = (id) =>{
+      console.log("DELETING");
+      dispatch(deletePlan(id))
+  }
   return (
     <View style={styles.container}>
       <View style={styles.vendorContainer}>
@@ -47,9 +51,13 @@ export default function PlanScreen() {
                             />
                         </View>
                         <View style={{flex:4, padding:10}}> 
-                            <Text style={{fontSize:15, fontWeight:'600'}}>{plan.Vendor.name}</Text>
-                            <Text style={{fontSize:15, fontWeight:'600'}}>Status : {plan.Vendor.isApproved? 'Approved':'Waiting for approval' }</Text>
-                            <Button color="red">Delete</Button>
+                            <View style={{flex:1}}>
+                                <Text style={{fontSize:17, fontWeight:'600', textAlign:'center'}}>{plan.Vendor.name}</Text>
+                                {/* <Text style={{fontSize:15, fontWeight:'600'}}>Status : {plan.isApproved? 'Approved':'Waiting for approval' }</Text> */}
+                            </View>
+
+                            <Button color={plan.isApproved ? 'green':'red'}>{plan.isApproved? 'Approved':'Waiting for approval' }</Button>
+                            <Button mode="outlined" onPress={()=>handleDelete(plan.id)} style={styles.button} color="red">Delete</Button>
                         </View>
                     </View>
                     <Divider style={{marginVertical:8}}/>
@@ -76,5 +84,12 @@ const styles = StyleSheet.create({
   },
   divider: {
       marginVertical:5
+  },
+  button: {
+      alignSelf:'center', 
+      borderWidth:1,
+      borderColor:'red',
+      fontSize: 42, 
+      width:"80%",
   }
 })
