@@ -2,20 +2,10 @@ import React from 'react'
 import {View} from 'react-native'
 import { Button, Text } from 'react-native-paper' 
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import {VenueScreen} from '../screens'
+import {VenueScreen, OrganizerScreen, CateringScreen} from '../screens'
 
 const Tab = createMaterialTopTabNavigator(); 
-
-function OrganizerScreen () {
-  return (
-    <Text>Organizer</Text>
-  )
-}
-function CateringScreen () {
-  return (
-    <Text>Catering</Text>
-  )
-}
+ 
 
 export default function VendorTab() {
   return (
