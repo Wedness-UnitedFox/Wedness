@@ -17,8 +17,20 @@ export const SidebarData = [
     cName: 'nav-text'
   },
   {
+    title: "Approve Customers' Bookings",
+    path: '/approve',
+    icon: <FaIcons.FaEnvelopeOpenText />,
+    cName: 'nav-text'
+  },
+  {
     title: 'Chat',
     path: '/chat',
+    icon: <FaIcons.FaEnvelopeOpenText />,
+    cName: 'nav-text'
+  },
+  {
+    title: 'Logout',
+    path: '/logout',
     icon: <FaIcons.FaEnvelopeOpenText />,
     cName: 'nav-text'
   },

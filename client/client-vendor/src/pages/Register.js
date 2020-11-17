@@ -17,12 +17,12 @@ const Register = () => {
         e.preventDefault();
         // console.log(inputRegister, "<<<<<<page handleRegister");
         dispatch(userRegister(inputRegister, trigger))
+        history.push('/login')
     };
 
     function trigger (email, password) {
         // console.log("triggered")
         auth.createUserWithEmailAndPassword(email, password)
-        .then(sth => console.log(sth))
         .catch(function(error) {
             // Handle Errors here.
             var errorCode = error.code;
