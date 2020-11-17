@@ -24,38 +24,32 @@ class CheckoutController {
             })   
             for(const plan of plans){
                 let vendor
-                if(plan.vendor_type === 'venue'){
-                    // console.log("found venue")
+                if(plan.vendor_type === 'venue'){ 
                     vendor = await Venue.findByPk(plan.VendorId)
-                }else if(plan.vendor_type === 'organizer'){
-                    // console.log("found Organizer")
+                }else if(plan.vendor_type === 'organizer'){ 
                     vendor = await Organizer.findByPk(plan.VendorId)
-                }else {
-                    // console.log("found catering")
+                }else { 
                     vendor = await Catering.findByPk(plan.VendorId)
-                }
-                if(await vendor) { 
-                    plan.dataValues.Vendor = await vendor
-                        
-                }
-            } 
-            // console.log(plans)
-            await res.status(200).json(plans)
-
-        } catch (err) {
-            // console.log(err);
-            next(err)
+                } 
+                plan.dataValues.Vendor = await vendor  
+            }  
+            await res.status(200).json(plans) 
+        } catch (err) { 
+            // next(err)
         }
     }
 
-    static getCheckout(req,res,next){ 
-        Checkout.findByPk(req.params.id)
-            .then(result=>{
-                if (result) res.status(200).json(result)
-                else next({name:'Not Found'})
-            })
-            .catch(err=>next(err))
-    } 
+    // static getCheckout(req,res,next){ 
+    //     Checkout.findByPk(req.params.id)
+    //         .then(result=>{
+    //             if (result) {
+    //                 res.status(200).json(result)
+    //             }else{ 
+    //                 next({name:'Not Found'})
+    //             }
+    //         })
+    //         .catch(err=>next(err))
+    // } 
  
     static deleteCheckout(req,res,next){ 
         Checkout.destroy({

@@ -47,6 +47,7 @@ const vendorAuthentication = (req, res, next) => {
 }
 
 const checkoutAuthorization = async (req, res, next) => {
+    console.log("MASUK AUTH CHECKOUT");
     const caterings = await Catering.findAll({where: {UserId: req.userData.id}})
     const venues = await Venue.findAll({where: {UserId: req.userData.id}})
     const organizers = await Organizer.findAll({where: {UserId: req.userData.id}})
@@ -80,29 +81,7 @@ const checkoutAuthorization = async (req, res, next) => {
         }) 
   }
 
-// middleware for user authorization
-const authorization = (req, res, next) => {
-    const userData = req.userData 
-    User.findOne({
-        where:{
-            email: userData.email
-        }
-    })
-        .then(result => {
-            if(result && result.role === 'vendor'){
-                next()
-            }
-            else if(result && result.role !== 'vendor'){
-                next({name:'Not Authorized', message: "You are not authorized."})
-            }
-            else if(!result){
-                next({name:'Wrong Email or Password', message: "User not found."})
-            } 
-        })
-        .catch(err => {
-            next(err)
-        }) 
-}
+// middleware for user authorization 
 
 
 const venueAuthorization = (req, res, next) => {
@@ -112,7 +91,7 @@ const venueAuthorization = (req, res, next) => {
         .then(data => {
             // console.log(data);
             if(!data){
-                next({message : 'Data not found'})
+                next({name : 'Not Found'})
             } else if(req.userData.id !== data.UserId){
                 next({message : 'You dont have access'})
             } else {
@@ -131,7 +110,7 @@ const organizerAuthorization = (req, res, next) => {
         .then(data => {
             // console.log(data);
             if(!data){
-                next({message : 'Data not found'})
+                next({name : 'Not Found'})
             } else if(req.userData.id !== data.UserId){
                 next({message : 'You dont have access'})
             } else {
@@ -148,7 +127,7 @@ const cateringAuthorization = (req, res, next) => {
     Catering.findByPk(id)
         .then(data => {
             if(!data){
-                next({message : 'Data not found'})
+                next({name : 'Not Found'})
             } else if(req.userData.id !== data.UserId){
                 next({message : 'You dont have access'})
             } else {
@@ -164,7 +143,7 @@ const cateringAuthorization = (req, res, next) => {
 //     Photo.findByPK(id)
 //         .then(data => {
 //             if(!data){
-//                 next({message : 'Data not found'})
+//                 next({name : 'Not Found'})
 //             } else if(req.userData.id !== data.vendor_id){
 //                 next({message : 'You dont have access'})
 //             } else {
@@ -177,8 +156,7 @@ const cateringAuthorization = (req, res, next) => {
 
 module.exports = {
     userAuthentication,
-    vendorAuthentication,
-    authorization,
+    vendorAuthentication, 
     venueAuthorization,
     organizerAuthorization,
     cateringAuthorization,

@@ -5,7 +5,7 @@ const venueRoutes = require('./venueRoutes')
 const organizerRoutes = require('./organizerRoutes')
 const cateringRoutes = require('./cateringRoutes')
 // const photoRoutes = require('./photoRoutes.txt')
-const {vendorAuthentication, authorization, checkoutAuthorization} = require("../middlewares/auth")
+const {vendorAuthentication, checkoutAuthorization} = require("../middlewares/auth")
 
 routes.post("/login", vendorController.userLogin)
 routes.post("/register", vendorController.userRegister)
