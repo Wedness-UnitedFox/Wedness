@@ -9,7 +9,7 @@ export default function ChatMessage(props) {
   const { text, user, photoURL } = props.chat;
   
   const messageClass = user['name'] === auth.currentUser.email ? 'sent' : 'received';
-  console.log(auth.currentUser.email);
+  // console.log(auth.currentUser.email);
   // const messageClass = user['_id'] === 'fg4udjSXFfUoBTfNr2jWshjtRKQ2' ? 'sent' : 'received';
 
   return (<>
