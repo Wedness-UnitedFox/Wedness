@@ -38,9 +38,9 @@ export default function PlanScreen() {
         <ScrollView style={{ flex: 1, padding:10}}>
           {
             plans.length===0 ? null:
-            plans.map((plan)=>( 
+            plans.map((plan, i)=>( 
                 <>
-                    <View style={{flex:1, flexDirection:'row', minHeight:200}}> 
+                    <View key={i} style={{flex:1, flexDirection:'row', minHeight:200}}> 
                         <View style={{flex:2}}>  
                             {/* <Text>{JSON.stringify(plan.)}</Text> */}
                             <Image

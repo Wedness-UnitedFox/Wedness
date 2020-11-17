@@ -56,7 +56,7 @@ export default function Conversations(props) {
     }, [conversations])
 
     const openChat = (vendorEmail) => {
-        navigation.navigate('ChatRoom', { vendorEmail })
+        navigation.navigate('ChatRoom', { vendorEmail, name:vendorEmail })
     }
 
     return (

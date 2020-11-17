@@ -10,14 +10,14 @@ import { bookNow } from '../store/actions/wednessAction'
 export default function ProfileScreen(props) {
   const dispatch = useDispatch()
   const { navigation, route } = props
-  const { id, name, type, data } = route.params
+  const { id, data } = route.params
   const [expanded, setExpanded] = React.useState(true);
   const vendor_type = 'venue'
 
   const handlePress = () => setExpanded(!expanded);
-  console.log(data, "<><><><><><><><><");
   const handleChat = () => {
-    console.log("chat")
+    console.log(data.User, "<><><><><><><><><"); 
+    navigation.navigate('ChatRoom', { vendorEmail:data.User.email, name:data.User.email })
   }
   const handleBook = () => {
     console.log(id, "chat")

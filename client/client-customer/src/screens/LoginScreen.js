@@ -20,13 +20,26 @@ export default function Login(props){
 		avatar: ''
 	})
     
-    // useEffect(()=>{ 
-    //     // if(data.isLogin || firebaseSDK.uid){
-    //         console.log(data.access_token,"<--- TOKEN",firebaseSDK.uid);
-    //     if(data.access_token){
-    //         console.log("user already Loggedin");
-    //     }
-    // },[data])
+    useEffect(()=>{ 
+        AsyncStorage.getItem('access_token')
+            .then(value=>{
+                console.log(value, "<--ASYNCSTORAGE");
+                if(value && firebaseSDK.uid){
+                    console.log("user already Loggedin"); 
+                    props.navigation.replace('Home', {
+                        name: userData.name,
+                        email: userData.email,
+                        avatar: userData.avatar
+                    });
+                }
+            })
+            .catch(err=>console.log(err))
+        // if(data.isLogin || firebaseSDK.uid){
+        //     console.log(data.access_token,"<--- TOKEN",firebaseSDK.uid);
+        // if(data.access_token){
+        //     console.log("user already Loggedin");
+        // }
+    },[])
 
     function trigger () {
         const response = firebaseSDK.login(userData,loginSuccess,loginFailed)

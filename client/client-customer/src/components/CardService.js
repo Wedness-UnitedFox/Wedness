@@ -6,7 +6,7 @@ export default function CardService(props) {
     const { vendor, type } = props
     const navigation = useNavigation()
     const goToDetail = () => {
-        navigation.navigate('Detail', { name: vendor.name, id: vendor.id, type: vendor.service_type, data: vendor })
+        navigation.navigate('Detail', { id: vendor.id, data: vendor })
     }
 
     return (
