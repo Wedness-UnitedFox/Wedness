@@ -14,7 +14,21 @@ class VenueController {
 
     static getVenues(req,res,next){  
         Venue.findAll({
-            // include:[User]
+            include: [
+                // {
+                // model: Photo,
+                // where: {
+                //     [Op.and]: [
+                //         { vendor_id: req.params.id }, 
+                //         { vendor_type: 'venue' }
+                //     ],                   
+                // },
+                // required: false
+            // }, 
+            {
+                model: User,
+                attributes: {exclude: ['password']},
+            }]
         })
             .then(venues=>{
                 res.status(200).json(venues)
