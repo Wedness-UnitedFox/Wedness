@@ -36,7 +36,7 @@ export const userLogin = (inputLogin) => {
     };
 };
 
-export const userRegister = (inputRegister) => {
+export const userRegister = (inputRegister, cb) => {
     return (dispatch) => {
         console.log(inputRegister, "<<<<<<<store regis");
         axios({
@@ -52,6 +52,7 @@ export const userRegister = (inputRegister) => {
                         data
                     }
                 });
+                cb(inputRegister.email, inputRegister.password)
             })
             .catch((err) => console.log("-----------error", err));
     };
