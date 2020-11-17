@@ -12,10 +12,12 @@ export default function ChatMessage(props) {
   // console.log(auth.currentUser.email);
   // const messageClass = user['_id'] === 'fg4udjSXFfUoBTfNr2jWshjtRKQ2' ? 'sent' : 'received';
 
-  return (<>
+  return (
+  <>
     <div className={`message ${messageClass}`}>
       <img className="avatar" src={`https://ui-avatars.com/api/?name=${user['name']}`} />
       <p>{text}</p>
     </div>
-  </>)
+  </>
+  )
 }

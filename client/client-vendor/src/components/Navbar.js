@@ -27,13 +27,10 @@ function Navbar() {
             <FaIcons.FaBars onClick={showSidebar} />
           </Link>
         </div>
-        <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
+        <nav className={sidebar ? 'nav-menu active' : 'nav-menu'} style={{zIndex: 9999}}>
           <ul className='nav-menu-items' onClick={showSidebar}>
-          <img className="img-fluid" src={myLogo} alt="" />
+          <img class="bg-auto" src={myLogo} alt="" />
             <li className='navbar-toggle'>
-              <Link to='#' className='menu-bars'>
-                <AiIcons.AiOutlineClose />
-              </Link>
             </li>
             {SidebarData.map((item, index) => {
               return (

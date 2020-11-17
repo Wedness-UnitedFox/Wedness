@@ -9,22 +9,22 @@ const DetailItem = () => {
     const dispatch = useDispatch()
     const history = useHistory()
     const { service, loading } = useSelector(state => state)
-    const { 
-        name, 
+    const {
+        name,
         avatar,
-        description, 
+        description,
         address,
         capacity,
         email,
         phone_number,
         price
     } = service
-    
+
     useEffect(() => {
         console.log(service, 'dalam useEffect detail')
         dispatch(fetchServiceById(id, service_type))
     }, [])
-    
+
     const closeHandler = function () {
         history.push('/home')
     }
@@ -86,6 +86,33 @@ const DetailItem = () => {
                 </div>
             </div>
         </div>
+        // <div>
+        //     <div class="md:flex shadow-lg  mx-6 md:mx-auto my-40 max-w-lg md:max-w-2xl h-64" style={{ height: "300px" }}>
+        //         <img class="h-full w-full md:w-1/3  object-cover rounded-lg rounded-r-none pb-5/6" src={avatar} alt="..." />
+        //         <div class="w-full md:w-2/3 px-4 py-4 bg-white rounded-lg">
+        //             <div class="flex items-center">
+        //                 <h2 class="text-xl text-gray-800 font-medium mr-auto">{name}</h2>
+        //                 <p class="text-gray-800 font-semibold tracking-tighter">
+        //     <div className="container">
+        //                         <h6 className="mb-2 text-left">Address:</h6>
+        //                         <h6 className="text-muted"></h6>
+        //                         <h6 className="mb-2 text-left">Email: </h6>
+        //                         <h6 className="text-muted"></h6>
+        //                         <h6 className="mb-2 text-left">Phone: </h6>
+        //                         <h6 className="text-muted">{phone_number}</h6>
+        //                     </div>
+        //                 </p>
+        //                 <p class="text-sm text-gray-700 mt-4">{address}</p>
+        //                 <p class="text-sm text-gray-700 mt-4">{address}</p>
+        //             </div>
+        //             <div class="flex items-center justify-end mt-4 top-auto">
+        //                 <button class="bg-white text-red-500 px-4 py-2 rounded mr-auto hover:underline">Delete</button>
+        //                 <button class=" bg-gray-200 text-blue-600 px-2 py-2 rounded-md mr-2">Edit</button>
+        //                 <button class=" bg-blue-600 text-gray-200 px-2 py-2 rounded-md ">Publish</button>
+        //             </div>
+        //         </div>
+        //     </div>
+        // </div>
     )
 }
 

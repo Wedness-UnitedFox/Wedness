@@ -74,15 +74,25 @@ const ChatRoom = () => {
     }
     
     return (
-        <div style={{marginTop: "0", width: "1000px", height: "100%"}}>
-            <h1 style={{textAlign: "center"}}> {customerEmail} Room</h1>
-            <hr />
-            <div className="container" style={{ width: "100%"}}>
-                <div className="container border" style={{height: "400px", width: "800px", overflow: "scroll"}}>
+        <div class="items-center flex-col " style={{padding:5}}> 
+            <div className="border shadow-xs" style={{padding:10}}> 
+                <div class="text-2xl mt-1 flex items-center ">
+                    <span class="text-gray-700">{customerEmail}</span>
+                    <span class="text-green-500">
+                        <svg width="10" height="10">
+                            <circle cx="5" cy="5" r="5" fill="currentColor"></circle>
+                        </svg>
+                    </span>
+                </div>
+                <span class="text-lg text-gray-600">Customer</span>
+            </div>
+            <div>
+            <div class="shadow-md" style={{ width: "100%", padding:10}}>
+                <div class="overflow-y-scroll scrolling-touch" style={{height:'60vh'}}>
                     {messages && messages.map(chat => <ChatMessage key={chat.id} chat={chat} />)}   
                     <span ref={dummy}></span>
                 </div>
-                <div className="container mt-3" style={{width: "800px"}}>
+                <div className="container mt-3" >
                     <form className="d-flex flex-row justify-content-center" onSubmit={sendMessage}>
                         <div className="form-group mx-sm-0 mb-2" style={{width: "100%"}}>
                             <input type="text" className="form-control" placeholder="Type here..." value={formChat} onChange={e => setFormChat(e.target.value)} />
@@ -91,6 +101,7 @@ const ChatRoom = () => {
                     </form>
                 </div>
             </div>
+        </div>
         </div>
     )
 }

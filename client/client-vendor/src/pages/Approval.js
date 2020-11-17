@@ -15,14 +15,24 @@ export default function Approval () {
     <div>
     {/* <h1>This is Approval</h1>
     <pre>{JSON.stringify(bookingApprovals, null, 2)}</pre> */}
-    <table className="table">
-      <thead className="thead-dark">
-        <tr>
-          <th scope="col">No</th>
-          <th scope="col">Name</th>
-          <th scope="col">Status</th>
-          <th scope="col">Booked by</th>
-          <th scope="col">Action</th>
+    <table class="min-w-full table-auto">
+      <thead class="justify-between">
+        <tr class="bg-gray-800">
+          <th class="px-16 py-2">
+            <span class="text-gray-300">No</span>
+          </th>
+          <th class="px-16 py-2">
+            <span class="text-gray-300">Name</span>
+          </th>
+          <th class="px-16 py-2">
+            <span class="text-gray-300">Status</span>
+          </th>
+          <th class="px-16 py-2">
+            <span class="text-gray-300">Booked by</span>
+          </th>
+          <th class="px-16 py-2">
+            <span class="text-gray-300">Action</span>
+          </th>
         </tr>
       </thead>
       <tbody>
