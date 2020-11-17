@@ -23,13 +23,15 @@ function App() {
             <>
             <Route path="/edit/:service_type/:id" component={EditItem} />
             <Route path="/vendor/:service_type/:id" component={DetailItem} />
-            <Route path="/register" component={Register} />
             <Route path="/chat" component={ChatConversation} />
             <Route path="/add" component={AddNew} />
             <Route path="/" component={Home} />
             </>
             :
+            <>
             <Route path="/" component={Login} />
+            <Route path="/register" component={Register} />
+            </>
           }
         </Switch>
     </Router>

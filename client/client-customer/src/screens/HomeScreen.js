@@ -1,13 +1,15 @@
-import React, { useCallback, useEffect, YellowBox, useState } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, Dimensions, Animated } from 'react-native'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, Dimensions } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Divider } from 'react-native-paper'
+import { Button } from 'react-native-paper'
 import CardService from '../components/CardService'
 import { fetchCatering, fetchOrganizer, fetchVenue } from '../store/actions/wednessAction'
 import Carousel from 'react-native-banner-carousel';
 import { BANNER1,BANNER2,BANNER3 } from '../../assets';
 
- 
+
+
+
 export default function HomeScreen() {
   const data = useSelector(state => state.Reducer)
   const [dataVenues, setDataVenues] = useState([])
@@ -23,11 +25,6 @@ export default function HomeScreen() {
     BANNER2,
     BANNER3
   ];
-  // const images = [
-  //   "../../assets/banner1.jpg",
-  //   "../../assets/banner2.jpg",
-  //   "../../assets/banner3.jpg",
-  // ];
 
   const renderPage = (image, index) =>{
     return (
@@ -83,53 +80,49 @@ export default function HomeScreen() {
       <Carousel
         autoplay
         autoplayTimeout={5000}
-        loop 
+        loop
         index={0}
         pageSize={BannerWidth}
       >
         {images.map((image, index) => renderPage(image, index))}
       </Carousel>
       </View>
-      <Divider style={{marginVertical:5}}/>
       <View style={styles.vendorContainer}>
         <Text style={{ marginLeft: 20, fontSize: 25, fontWeight: 'bold' }}>Venues</Text>
         <ScrollView horizontal={true} style={{ flex: 1, paddingVertical: 10 }}>
           {
             dataVenues?.length == 0 ? null :
-              dataVenues.map((venue, i) => (
-                <CardService vendor={venue} key={i}/>
+              dataVenues.map((venue) => (
+                <CardService vendor={venue} />
               ))
           }
         </ScrollView>
         <Button style={{ width: '80%', alignSelf: 'center' }} color="blue" mode="outlined" onPress={() => goToDetail('vendor')} >See All Venues</Button>
       </View>
-      <Divider style={{marginVertical:5}}/>
       <View style={styles.vendorContainer}>
         <Text style={{ marginLeft: 20, fontSize: 25, fontWeight: 'bold' }}>Caterings</Text>
         <ScrollView horizontal={true} style={{ flex: 1, paddingVertical: 10 }}>
           {
             dataCaterings?.length == 0 ? null :
-              dataCaterings.map((catering,i) => (
-                <CardService vendor={catering} key={i} />
+              dataCaterings.map((catering) => (
+                <CardService vendor={catering} />
               ))
           }
         </ScrollView>
         <Button style={{ width: '80%', alignSelf: 'center' }} color="blue" mode="outlined" onPress={() => goToDetail('vendor')} >See All Caterings</Button>
       </View>
-      <Divider style={{marginVertical:5}}/>
       <View style={styles.vendorContainer}>
         <Text style={{ marginLeft: 20, fontSize: 25, fontWeight: 'bold' }}>Organizers</Text>
         <ScrollView horizontal={true} style={{ flex: 1, paddingVertical: 10 }}>
           {
             dataOrganizers?.length == 0 ? null :
-              dataOrganizers.map((organizer,i) => (
-                <CardService vendor={organizer} key={i} />
+              dataOrganizers.map((organizer) => (
+                <CardService vendor={organizer} />
               ))
           }
         </ScrollView>
         <Button style={{ width: '80%', alignSelf: 'center' }} color="blue" mode="outlined" onPress={() => goToDetail('vendor')} >See All Organizers</Button>
       </View>
-      <Divider style={{marginVertical:5}}/>
     </ScrollView>
   );
 }
