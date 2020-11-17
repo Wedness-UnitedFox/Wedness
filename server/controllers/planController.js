@@ -1,5 +1,6 @@
 // const { Checkout: Checkout  } = require("../models")
 const { Checkout, Venue, Catering, Organizer, User, sequelize } = require("../models")
+const { Op } = require('sequelize')
 
 class CheckoutController { 
     static postCheckout(req,res,next){  // input => VendorId(services), vendor_type, subtotal
@@ -13,19 +14,6 @@ class CheckoutController {
                 next(err)
             }) 
     }
-
-    // static getCheckouts(req,res,next){    
-    //     Checkout.findAll({ 
-    //         include:[Venue]
-    //     })
-    //         .then(result=>{ 
-    //             res.status(200).json(result)
-    //         })
-    //         .catch(err=>{
-    //             console.log(err);
-    //             next(err)
-    //         })
-    // } 
 
     static async getCheckouts(req,res,next){   
         try {
@@ -48,14 +36,15 @@ class CheckoutController {
                 }
                 if(await vendor) { 
                     plan.dataValues.Vendor = await vendor
+                        
                 }
             } 
             // console.log(plans)
             await res.status(200).json(plans)
 
-        } catch (error) {
-            console.log(error);
-            next(error)
+        } catch (err) {
+            // console.log(err);
+            next(err)
         }
     }
 
@@ -69,7 +58,6 @@ class CheckoutController {
     } 
  
     static deleteCheckout(req,res,next){ 
-        console.log("deleting");
         Checkout.destroy({
             where:{
                 id:req.params.id
@@ -85,41 +73,132 @@ class CheckoutController {
             )
     }
 
+    // static async getCheckoutForVendor2(req, res, next){
+    //     const caterings = await Catering.findAll({where: {UserId: req.userData.id}})
+    //     const venues = await Venue.findAll({where: {UserId: req.userData.id}})
+    //     const organizers = await Organizer.findAll({where: {UserId: req.userData.id}})
+        
+    //     // console.log({caterings, venues, organizers}, "from vendor")
+
+    //     const checkouts = await Checkout.findAll({
+    //         include: [             
+    //             {
+    //                 model: User,
+    //                 attributes: {exclude: ['password', 'createdAt', 'updatedAt']}
+    //             },
+    //             {
+    //                 model: Venue,
+    //                 where: {
+                    
+    //                     UserId: req.userData.id  
+                                         
+    //                 },
+    //                 attributes: {
+    //                     exclude: ["id", "description", "address", "email", "phone_number", "price", "type", "capacity", "service_type", "UserId"]},
+    //                 required: false
+    //             },
+    //             {
+    //                 model: Catering,
+    //                 where: {
+    //                     UserId: req.userData.id                   
+    //                 },
+    //                 required: false
+    //             },
+    //             {
+    //                 model: Organizer,
+    //                 where: {
+    //                     UserId: req.userData.id                   
+    //                 },
+    //                 required: false
+    //             }
+    //         ]
+    //     })
+        // include: [
+            // {
+            // model: Photo,
+            // where: {
+            //     [Op.and]: [
+            //         { vendor_id: req.params.id }, 
+            //         { vendor_type: 'venue' }
+            //     ],                   
+            // },
+            // required: false
+        // }, 
+        // {
+        //     model: User,
+        //     attributes: {exclude: ['password']},
+        // }]
+        // console.log(checkouts, "from here")
+    //     let result = []
+    //     for(const checkout of checkouts){
+    //         if(checkout.vendor_type === 'venue'){
+    //             // console.log("found venue")
+    //             for(const venue of venues){
+    //                 if(checkout.VendorId === venue.id || !checkout.isApproved){
+    //                     result.push(checkout)
+    //                 }
+    //             }                
+    //         }else if(checkout.vendor_type === 'organizer'){
+    //             // console.log("found Organizer")
+    //             for(const organizer of organizers){
+    //                 if(checkout.VendorId === organizer.id || !checkout.isApproved){
+    //                     result.push(checkout)
+    //                 }
+    //             }                
+    //         }else {
+    //             // console.log(checkout, "found catering")
+    //             for(const catering of caterings){
+    //                 if(checkout.VendorId === catering.id || !checkout.isApproved){
+    //                     console.log("found")
+    //                     result.push(checkout)
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     // console.log(result, "from getCheckoutforVendor")
+    //     res.status(200).json(result)
+    // }
+
+
+
     static async getCheckoutForVendor(req, res, next){
         const caterings = await Catering.findAll({where: {UserId: req.userData.id}})
         const venues = await Venue.findAll({where: {UserId: req.userData.id}})
         const organizers = await Organizer.findAll({where: {UserId: req.userData.id}})
+         
+        const checkouts = await Checkout.findAll({include:[
+            {
+                model: User,
+                attributes: {exclude: ['password', 'createdAt', 'updatedAt']}
+            },
+        ]})
         
-        // console.log({caterings, venues, organizers}, "from vendor")
-
-        const checkouts = await Checkout.findAll()
-        // console.log(checkouts, "from here")
         let result = []
         for(const checkout of checkouts){
-            if(checkout.vendor_type === 'venue'){
-                // console.log("found venue")
+            if(checkout.vendor_type === 'venue'){ 
                 for(const venue of venues){
-                    if(checkout.VendorId === venue.id){
+                    if(checkout.VendorId === venue.id || !checkout.isApproved){
+                        checkout.dataValues.Service_name = venue.name
                         result.push(checkout)
                     }
                 }                
             }else if(checkout.vendor_type === 'organizer'){
-                // console.log("found Organizer")
                 for(const organizer of organizers){
-                    if(checkout.VendorId === organizer.id){
+                    if(checkout.VendorId === organizer.id || !checkout.isApproved){
+                        checkout.dataValues.Service_name = organizer.name
                         result.push(checkout)
                     }
                 }                
             }else {
-                // console.log(checkout, "found catering")
                 for(const catering of caterings){
-                    if(checkout.VendorId === catering.id){
-                        console.log("found")
+                    if(checkout.VendorId === catering.id || !checkout.isApproved){
+                        checkout.dataValues.Service_name = catering.name
                         result.push(checkout)
                     }
                 }
             }
-        }
+        } 
+
         // console.log(result, "from getCheckoutforVendor")
         res.status(200).json(result)
     }
@@ -151,7 +230,7 @@ class CheckoutController {
                     })
             }; 
             t.afterCommit(() => {
-                res.status(200).json({ message: 'Checkout completed' })
+                res.status(200).json({ msg: 'Checkout completed' })
             })
             await t.commit()
         }

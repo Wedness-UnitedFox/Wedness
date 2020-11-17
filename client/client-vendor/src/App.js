@@ -13,6 +13,7 @@ import ChatConversation from './pages/ChatConversation';
 import AddNew from './pages/AddNew';
 import DetailItem from './pages/DetailItem';
 import EditItem from './pages/EditItem';
+import Approval from './pages/Approval'
 
 function App() {
   return (
@@ -23,13 +24,16 @@ function App() {
             <>
             <Route path="/edit/:service_type/:id" component={EditItem} />
             <Route path="/vendor/:service_type/:id" component={DetailItem} />
-            <Route path="/register" component={Register} />
+            <Route path="/approve" component={Approval} />
             <Route path="/chat" component={ChatConversation} />
             <Route path="/add" component={AddNew} />
             <Route path="/" component={Home} />
             </>
             :
+            <>
             <Route path="/" component={Login} />
+            <Route path="/register" component={Register} />
+            </>
           }
         </Switch>
     </Router>
