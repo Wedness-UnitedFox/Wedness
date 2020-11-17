@@ -12,7 +12,7 @@ export default function Conversations(props) {
     const [loading, setLoading] = useState(true)
     const { route, navigation } = props
 
-    const [messages, setMessages] = useState([])
+    const [messages, setMessages] = useState([]) 
     const [conversations, setConversations] = useState([])
 
     useEffect(() => {
@@ -35,24 +35,34 @@ export default function Conversations(props) {
 
     const appendMessages = useCallback(
         (messages) => {
-            const messages2 = messages.filter(d => d.user.customer === firebaseSDK.email)
-            messages2.forEach(msg => {
-                let found = conversations.find(e => e.name === msg.user.vendor)
-                if (!found) {  
-                    setConversations([...conversations, { name: msg.user.vendor }])
-                }
-            })
-            // console.log(messages2, "<------messagesss");
+            // console.log(messages,"<><><><><>")
+            setMessages(messages)
         },
         [messages]
     )
+
+    useEffect(() => {
+        const messages2 = messages.filter(d => d.user.customer === firebaseSDK.email)
+            console.log(messages2,"<-- CONVERSATION");
+            var tmp = []
+            messages2.forEach(msg => {
+                let found = tmp.find(e => e === msg.user.vendor)
+                if (!found) {  
+                    console.log(found)
+                    tmp.push(msg.user.vendor)
+                }
+                console.log(tmp)
+                setConversations(tmp)
+            }) 
+    }, [messages])
+
     useEffect(() => {
         console.log("UID-->", firebaseSDK.uid);
         console.log("UID-->", firebaseSDK.displayName);
         console.log("UID-->", firebaseSDK.email);
     }, [])
     useEffect(() => {
-        console.log(conversations,"<-- CONVERSATION");
+        // console.log(conversations,"<-- CONVERSATION");
     }, [conversations])
 
     const openChat = (vendorEmail) => {
@@ -65,13 +75,13 @@ export default function Conversations(props) {
                 data={conversations}
                 keyExtractor={item => item._id}
                 renderItem={({ item }) => (
-                    <TouchableOpacity key={item._id} onPress={() => openChat(item.name)}>
+                    <TouchableOpacity key={item._id} onPress={() => openChat(item)}>
                         <View style={styles.row}>
                             <View style={styles.content}>
                                 <View style={styles.header}> 
                                     <View style={{flexDirection:'row'}}>
-                                        <Avatar.Text size={34} label={item.name[0]} /> 
-                                        <Text style={styles.nameText}>{item.name}</Text>
+                                        <Avatar.Text size={34} label={item[0]} /> 
+                                        <Text style={styles.nameText}>{item}</Text>
                                     </View> 
                                 </View>
                             </View>

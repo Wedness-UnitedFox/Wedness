@@ -1,18 +1,10 @@
 import React from 'react'
 import {View} from 'react-native'
-import { Button, Text } from 'react-native-paper'
-import { useDispatch } from 'react-redux'
-import firebaseSDK from '../firebase'
-
+import { Button, Text } from 'react-native-paper' 
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import {VenueScreen} from '../screens'
 
-const Tab = createMaterialTopTabNavigator();
-
-function VenueScreen () {
-  return (
-    <Text>Venue</Text>
-  )
-}
+const Tab = createMaterialTopTabNavigator(); 
 
 function OrganizerScreen () {
   return (
@@ -25,7 +17,7 @@ function CateringScreen () {
   )
 }
 
-export default function VendorScreen() {
+export default function VendorTab() {
   return (
     <Tab.Navigator style={{marginTop:30}}>
       <Tab.Screen name="Venues" component={VenueScreen} />
