@@ -30,6 +30,10 @@ class CateringController {
             }]
         })
         .then(caterings => {
+            if(req.userData.role === 'vendor'){
+                const filterCaterings = caterings.filter(catering => catering.UserId === req.userData.id)
+                return res.status(200).json(filterCaterings)
+            }
             res.status(200).json(caterings)
         })
         .catch(err => next(err))
