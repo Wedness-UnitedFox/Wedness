@@ -13,7 +13,21 @@ class CateringController {
 
     static getCaterings(req,res,next){ 
         Catering.findAll({
-            // include:[User]
+            include: [
+                // {
+                // model: Photo,
+                // where: {
+                //     [Op.and]: [
+                //         { vendor_id: req.params.id }, 
+                //         { vendor_type: 'venue' }
+                //     ],                   
+                // },
+                // required: false
+            // }, 
+            {
+                model: User,
+                attributes: {exclude: ['password']},
+            }]
         })
         .then(caterings => {
             res.status(200).json(caterings)

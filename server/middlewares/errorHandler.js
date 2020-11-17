@@ -2,7 +2,7 @@ function errorHandler (err, req, res, next) {
     let msg = ''
     let code = ''
     // console.log("ERROR HANDLER");
-    // console.log(err, "err from err Handler")
+    console.log(err, "err from err Handler")
     // console.log(err,"<--ERROR HANDLER");
     switch(err.name) {
         case 'SequelizeValidationError':
@@ -11,7 +11,8 @@ function errorHandler (err, req, res, next) {
                 errors.push(el.message);
             }); 
             code = 400
-            msg = `${errors}`
+            // msg = `${errors}`
+            msg = `${err.errors[0].message}`
             break;
         // case 'customMessage':
         //     code = 403

@@ -69,6 +69,7 @@ class CheckoutController {
     } 
  
     static deleteCheckout(req,res,next){ 
+        console.log("deleting");
         Checkout.destroy({
             where:{
                 id:req.params.id
@@ -76,8 +77,12 @@ class CheckoutController {
         }).then(result=>{
             if(result){
                 res.status(200).json({msg:'Deleted Successfully'})
+            }else{
+                next({name:"Not Found"})
             }
-        }).catch(err=> next(err))
+        }).catch(err=>  
+            next(err)
+            )
     }
 
     static async getCheckoutForVendor(req, res, next){
@@ -144,31 +149,7 @@ class CheckoutController {
                     },{
                         transaction: t
                     })
-            };
-            // for( const checkout of userCheckouts.Checkouts ) {
-            //     await Checkout.update({
-            //             isPaid: true
-            //         },{
-            //             where: { 
-            //                 id: checkout.id
-            //             } 
-            //         }, {
-            //             transaction: t
-            //         })
-            // };
-            // Checkouts.forEach(async (element) => {
-            //     console.log("masukkk")
-            //     await Checkout.update({
-            //             isPaid: true
-            //         },{
-            //             where: { 
-            //                 id: element.id
-            //             } 
-            //         }, 
-            //         { 
-            //             transaction: t 
-            //         })
-            // });
+            }; 
             t.afterCommit(() => {
                 res.status(200).json({ message: 'Checkout completed' })
             })
