@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-native-paper'
 import CardService from '../components/CardService'
 import { fetchCatering, fetchOrganizer, fetchVenue } from '../store/actions/wednessAction'
-import Carousel from 'react-native-banner-carousel';
+import Carousel from '@dkbrothers/react-native-banner-carousel';
 import { BANNER1,BANNER2,BANNER3 } from '../../assets';
 
 
@@ -24,8 +24,7 @@ export default function HomeScreen() {
     BANNER1,
     BANNER2,
     BANNER3
-  ];
-
+  ]; 
   const renderPage = (image, index) =>{
     return (
       <View key={index}>
@@ -97,7 +96,7 @@ export default function HomeScreen() {
               ))
           }
         </ScrollView>
-        <Button style={{ width: '80%', alignSelf: 'center' }} color="blue" mode="outlined" onPress={() => goToDetail('vendor')} >See All Venues</Button>
+        <Button style={{ width: '80%', alignSelf: 'center' }} color="blue" mode="outlined" onPress={() => goToDetail('vendors')} >See All Venues</Button>
       </View>
       <View style={styles.vendorContainer}>
         <Text style={{ marginLeft: 20, fontSize: 25, fontWeight: 'bold' }}>Caterings</Text>
@@ -109,19 +108,19 @@ export default function HomeScreen() {
               ))
           }
         </ScrollView>
-        <Button style={{ width: '80%', alignSelf: 'center' }} color="blue" mode="outlined" onPress={() => goToDetail('vendor')} >See All Caterings</Button>
+        <Button style={{ width: '80%', alignSelf: 'center' }} color="blue" mode="outlined" onPress={() => goToDetail('caterings')} >See All Caterings</Button>
       </View>
       <View style={styles.vendorContainer}>
         <Text style={{ marginLeft: 20, fontSize: 25, fontWeight: 'bold' }}>Organizers</Text>
         <ScrollView horizontal={true} style={{ flex: 1, paddingVertical: 10 }}>
           {
             dataOrganizers?.length == 0 ? null :
-              dataOrganizers.map((organizer) => (
-                <CardService vendor={organizer} />
+              dataOrganizers.map((organizer,i) => ( 
+                <CardService vendor={organizer} key={i} /> 
               ))
           }
         </ScrollView>
-        <Button style={{ width: '80%', alignSelf: 'center' }} color="blue" mode="outlined" onPress={() => goToDetail('vendor')} >See All Organizers</Button>
+        <Button style={{ width: '80%', alignSelf: 'center' }} color="blue" mode="outlined" onPress={() => goToDetail('organizers')} >See All Organizers</Button>
       </View>
     </ScrollView>
   );

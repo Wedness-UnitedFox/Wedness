@@ -90,7 +90,6 @@ export const fetchServices = () => {
         })
         .then(({data}) => {
             arr = [...arr, ...data]
-            console.log(arr, '<<<<<<<<<<<<<<<arrr action');
             dispatch({
                 type: "FETCH_SERVICES",
                 payload: 
@@ -219,5 +218,60 @@ export const editItem = (id, service_type, input_data) => {
             .catch(err => {
                 console.log(err)
             })
+    }
+}
+
+export const fetchBookingApprovals = () => {
+    // console.log("booking Approvals trggred");
+    return (dispatch) => {
+        axios({
+            url: apiUrl + `/vendor/checkout`,
+            method: "GET",
+            headers: {
+                access_token: localStorage.getItem('access_token')
+            }
+        })
+        .then(({ data }) => {
+            // console.log(data, "after fetching");
+            dispatch({
+                type: "FETCH_BOOKING_APPROVALS",
+                payload: data
+            })
+        })
+        .catch(err => {
+            // console.log("kena err", err)
+            dispatch(setError(err))
+        })
+    }
+}
+
+export const approveBookings = (id) => {
+    return (dispatch, getState) => {
+        axios({
+            url: apiUrl + `/vendor/checkout/${id}`,
+            method: "PUT",
+            headers: {
+                access_token: localStorage.getItem('access_token')
+            }
+        })
+        .then(({ data }) => {
+            console.log(data, "after approval has been given");
+            const state = getState()
+            const newBookings = state.bookingApprovals.map(bookingApproval => {
+                if(bookingApproval.id === id){
+                    bookingApproval.isApproved = true
+                }
+                return bookingApproval
+            })
+            dispatch({
+                type: "FETCH_BOOKING_APPROVALS",
+                payload: newBookings
+            })
+
+        })
+        .catch(err => {
+            // console.log("kena err", err)
+            dispatch(setError(err))
+        })
     }
 }

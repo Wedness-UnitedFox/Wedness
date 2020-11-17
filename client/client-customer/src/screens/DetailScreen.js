@@ -21,7 +21,7 @@ export default function ProfileScreen(props) {
   }
   const handleBook = () => {
     console.log(id, "chat")
-    dispatch(bookNow({ VendorId: id, vendor_type, subtotal: data.price }, success))
+    dispatch(bookNow({ VendorId: id, vendor_type:data.service_type, subtotal: data.price }, success))
   }
   const success = () => {
     console.log("success");
@@ -48,15 +48,7 @@ export default function ProfileScreen(props) {
               source={{
                 uri: `${data.avatar}`
               }}
-              />
-            {/* <Avatar
-              avatarStyle={{}}
-              size={120}
-              rounded
-              source={{
-                uri: `${data.avatar}`
-              }}
-            /> */}
+              /> 
           </View>
         </ImageBackground>
       </View>

@@ -6,11 +6,15 @@ import Profile from './ProfileScreen'
 import Detail from './DetailScreen'
 import Plan from './PlanScreen'
 import Register from './RegisterScreen'
-import Vendors from './VendorsScreen'
+import Venue from './VenueSreen'
+import Catering from './CateringScreen'
+import Organizer from './OrganizerScreen'
 
 
 export const HomeScreen = Home
-export const VendorsScreen = Vendors
+export const VenueScreen = Venue
+export const CateringScreen = Catering
+export const OrganizerScreen = Organizer
 export const ChatScreen = Chat
 export const ConversationsScreen = Conversations
 export const LoginScreen = Login

@@ -39,21 +39,20 @@ export default function PlanScreen() {
           {
             plans.length===0 ? null:
             plans.map((plan, i)=>( 
-                <>
-                    <View key={i} style={{flex:1, flexDirection:'row', minHeight:200}}> 
-                        <View style={{flex:2}}>  
-                            {/* <Text>{JSON.stringify(plan.)}</Text> */}
+                <View key={i}>
+                    <View  style={{flex:1, flexDirection:'row', minHeight:200}}> 
+                        <View style={{flex:2}}>   
                             <Image
                                 style={{ width: "100%", height: "100%", resizeMode: 'cover' }}
                                 source={{
-                                    uri: `${plan.Vendor.avatar}`,
+                                    uri: `${plan.Vendor?.avatar}`,
                                 }}
                             />
                         </View>
                         <View style={{flex:4, padding:10}}> 
                             <View style={{flex:1}}>
-                                <Text style={{fontSize:17, fontWeight:'600', textAlign:'center'}}>{plan.Vendor.name}</Text>
-                                {/* <Text style={{fontSize:15, fontWeight:'600'}}>Status : {plan.isApproved? 'Approved':'Waiting for approval' }</Text> */}
+                                <Text style={{fontSize:17, fontWeight:'600', textAlign:'center'}}>{plan.Vendor?.name}</Text>
+                                {/* <Text style={{fontSize:15, fontWeight:'600'}}>{plan.Vendor?.avatar}</Text> */}
                             </View>
 
                             <Button color={plan.isApproved ? 'green':'red'}>{plan.isApproved? 'Approved':'Waiting for approval' }</Button>
@@ -61,9 +60,9 @@ export default function PlanScreen() {
                         </View>
                     </View>
                     <Divider style={{marginVertical:8}}/>
-                </>
+                </View>
             ))
-          }
+          } 
         </ScrollView>
         {/* <Button style={{width:'80%', alignSelf:'center'}} color="blue" mode="outlined" onPress={()=>goToDetail('vendor')} >See All Venues</Button> */}
       </View> 

@@ -20,29 +20,12 @@ const Home = () => {
     if (error) return <p>Error!</p>
 
     return (
-        <div>
-            {/* <table className="table">
-                <thead className="thead-dark">
-                    <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Item</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Phone Number</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {services ? services.map((data, id) => {
-                        return <TableRow key={`${data.id}${data.service_type}${data.name}`} data={data} id={id} />
-                    }) : ''}
-                </tbody>
-            </table> */}
-            <div>
-                <table class="min-w-full table-auto">
+        <div> 
+            <div >
+                <table class="table-auto  w-full" >
                     <thead class="justify-between">
-                        <tr class="bg-gray-800">
-                            <th class="px-16 py-2">
+                        <tr class="bg-gray-800 text-center">
+                            <th class="px-10 py-2" >
                                 <span class="text-gray-300">No</span>
                             </th>
                             <th class="px-16 py-2">
@@ -65,9 +48,9 @@ const Home = () => {
                         </tr>
                     </thead>
                     <tbody class="bg-gray-200">
-                    {services ? services.map((data, id) => {
-                        return <TableRow key={`${data.id}${data.service_type}${data.name}`} data={data} id={id} />
-                    }) : ''}
+                        {services ? services.map((data, id) => {
+                            return <TableRow key={`${data.id}${data.service_type}${data.name}`} data={data} id={id} />
+                        }) : ''}
                     </tbody>
                 </table>
             </div>

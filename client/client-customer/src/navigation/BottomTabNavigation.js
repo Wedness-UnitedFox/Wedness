@@ -9,14 +9,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { HomeScreen, PlanScreen, ConversationsScreen, ProfileScreen, VendorsScreen } from '../screens'
 import AsyncStorage from '@react-native-community/async-storage'
-import { Button } from 'react-native-paper';
-import firebaseSDK from '../firebase';
+import VendorTopNavigation from './VendorTopNavigation'
 
 
 const Tab = createMaterialBottomTabNavigator();
 
 
-export default function MyTabs() {
+export default function BottomTab() {
 
   const readUser = async () => {
     const user = await AsyncStorage.getItem('user')
@@ -41,7 +40,7 @@ export default function MyTabs() {
       />
       <Tab.Screen
         name="Vendors"
-        component={VendorsScreen}
+        component={VendorTopNavigation}
         options={{
           tabBarLabel: 'Vendors',
           tabBarIcon: ({ color }) => (

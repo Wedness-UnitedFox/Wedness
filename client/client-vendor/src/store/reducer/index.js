@@ -1,11 +1,12 @@
-import { ADD_ITEM, ADD_REGISTER, DELETE, EDIT, FETCH_SERVICES, SET_LOGIN, SET_ERROR, SET_LOADING, FETCH_SERVICE } from '../actions'
+import { ADD_ITEM, ADD_REGISTER, FETCH_BOOKING_APPROVALS, FETCH_SERVICES, SET_LOGIN, SET_ERROR, SET_LOADING, FETCH_SERVICE } from '../actions'
 
 const initialState = {
     loading: false,
     error: null,
     services: [],
     service: {},
-    isLogin: false
+    isLogin: false,
+    bookingApprovals: []
 }
 
 export default function reducer(state = initialState, action) {
@@ -25,6 +26,8 @@ export default function reducer(state = initialState, action) {
             return { ...state, loading: action.payload }
         case SET_ERROR:
             return { ...state, error: action.payload }
+        case FETCH_BOOKING_APPROVALS:
+            return {...state, bookingApprovals: action.payload}        
         default:
             return state
     }

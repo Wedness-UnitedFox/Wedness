@@ -14,7 +14,7 @@ class VenueController {
                 next(err)})
     }
 
-    static getVenues(req,res,next){  
+    static getVenues(req,res,next){
         Venue.findAll({
             include: [
                 // {
@@ -33,6 +33,10 @@ class VenueController {
             }]
         })
             .then(venues=>{
+                if(req.userData.role === 'vendor'){
+                    const filterVenues = venues.filter(venue => venue.UserId === req.userData.id)
+                    return res.status(200).json(filterVenues)
+                }
                 res.status(200).json(venues)
             })
             .catch(err=>next(err))
