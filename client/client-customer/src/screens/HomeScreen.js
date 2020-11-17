@@ -22,13 +22,7 @@ export default function HomeScreen() {
     BANNER1,
     BANNER2,
     BANNER3
-  ];
-  // const images = [
-  //   "../../assets/banner1.jpg",
-  //   "../../assets/banner2.jpg",
-  //   "../../assets/banner3.jpg",
-  // ];
-
+  ]; 
   const renderPage = (image, index) =>{
     return (
       <View key={index}>
@@ -80,7 +74,7 @@ export default function HomeScreen() {
   return (
     <ScrollView style={styles.container}>
       <View>
-      <Carousel
+      {/* <Carousel
         autoplay
         autoplayTimeout={5000}
         loop 
@@ -88,7 +82,7 @@ export default function HomeScreen() {
         pageSize={BannerWidth}
       >
         {images.map((image, index) => renderPage(image, index))}
-      </Carousel>
+      </Carousel> */}
       </View>
       <Divider style={{marginVertical:5}}/>
       <View style={styles.vendorContainer}>
@@ -101,7 +95,7 @@ export default function HomeScreen() {
               ))
           }
         </ScrollView>
-        <Button style={{ width: '80%', alignSelf: 'center' }} color="blue" mode="outlined" onPress={() => goToDetail('vendor')} >See All Venues</Button>
+        <Button style={{ width: '80%', alignSelf: 'center' }} color="blue" mode="outlined" onPress={() => goToDetail('vendors')} >See All Venues</Button>
       </View>
       <Divider style={{marginVertical:5}}/>
       <View style={styles.vendorContainer}>
@@ -114,7 +108,7 @@ export default function HomeScreen() {
               ))
           }
         </ScrollView>
-        <Button style={{ width: '80%', alignSelf: 'center' }} color="blue" mode="outlined" onPress={() => goToDetail('vendor')} >See All Caterings</Button>
+        <Button style={{ width: '80%', alignSelf: 'center' }} color="blue" mode="outlined" onPress={() => goToDetail('caterings')} >See All Caterings</Button>
       </View>
       <Divider style={{marginVertical:5}}/>
       <View style={styles.vendorContainer}>
@@ -122,12 +116,12 @@ export default function HomeScreen() {
         <ScrollView horizontal={true} style={{ flex: 1, paddingVertical: 10 }}>
           {
             dataOrganizers?.length == 0 ? null :
-              dataOrganizers.map((organizer,i) => (
-                <CardService vendor={organizer} key={i} />
+              dataOrganizers.map((organizer,i) => ( 
+                <CardService vendor={organizer} key={i} /> 
               ))
           }
         </ScrollView>
-        <Button style={{ width: '80%', alignSelf: 'center' }} color="blue" mode="outlined" onPress={() => goToDetail('vendor')} >See All Organizers</Button>
+        <Button style={{ width: '80%', alignSelf: 'center' }} color="blue" mode="outlined" onPress={() => goToDetail('organizers')} >See All Organizers</Button>
       </View>
       <Divider style={{marginVertical:5}}/>
     </ScrollView>

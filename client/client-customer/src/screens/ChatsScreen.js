@@ -45,7 +45,7 @@ export default function App(props) {
 
   const appendMessages = useCallback(
     (messages) => {
-      console.log(messages, "<------messagesss");
+      // console.log(messages, "<------messagesss");
       const messages2 = messages.filter(d => d.user.customer === firebaseSDK.email && d.user.vendor === vendorEmail)
       setMessages((previousMessages) => GiftedChat.append(previousMessages, messages2))
     },
