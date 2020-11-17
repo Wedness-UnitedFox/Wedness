@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { userRegister } from '../store/actions/action'
+import { userRegister } from '../store/actions/action';
+import firebase from '../services/firebase';
+
+const auth = firebase.auth()
 
 const Register = () => {
 
@@ -12,12 +15,24 @@ const Register = () => {
 
     const handleRegister = (e) => {
         e.preventDefault();
-        console.log(inputRegister, "<<<<<<page handleRegister");
-        dispatch(userRegister(inputRegister))
+        // console.log(inputRegister, "<<<<<<page handleRegister");
+        dispatch(userRegister(inputRegister, trigger))
+        history.push('/login')
     };
 
-    const handleCancel = (e) => {
-        e.preventDefault();
+    function trigger (email, password) {
+        // console.log("triggered")
+        auth.createUserWithEmailAndPassword(email, password)
+        .catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log(errorCode, "errCode", errorMessage, "errMessage");
+            // ...
+        });
+    }
+
+    const handleCancel = () => {
         history.push('/login')
     };
 
@@ -73,7 +88,7 @@ const Register = () => {
 
                     </div>
                 </form>
-                <button className="btn btn-info" onClick={(e) => handleCancel(e)}>Cancel</button>
+                <button className="btn btn-info" onClick={handleCancel}>Cancel</button>
             </div>
 
         </div>
