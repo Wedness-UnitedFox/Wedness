@@ -191,13 +191,8 @@ class CheckoutController {
                 }                
             }else {
                 for(const catering of caterings){
-<<<<<<< HEAD
                     if(checkout.VendorId === catering.id || !checkout.isApproved){
                         checkout.dataValues.Service_name = catering.name
-=======
-                    if(checkout.VendorId === catering.id){
-                        // console.log("found")
->>>>>>> bc60c4f4c121c861092b55a86dbbe4c26a27d8ee
                         result.push(checkout)
                     }
                 }
