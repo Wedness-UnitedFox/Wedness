@@ -53,9 +53,9 @@ class CheckoutController {
             // console.log(plans)
             await res.status(200).json(plans)
 
-        } catch (error) {
-            console.log(error);
-            next(error)
+        } catch (err) {
+            // console.log(err);
+            next(err)
         }
     }
 
@@ -69,7 +69,6 @@ class CheckoutController {
     } 
  
     static deleteCheckout(req,res,next){ 
-        console.log("deleting");
         Checkout.destroy({
             where:{
                 id:req.params.id
@@ -114,7 +113,7 @@ class CheckoutController {
                 // console.log(checkout, "found catering")
                 for(const catering of caterings){
                     if(checkout.VendorId === catering.id){
-                        console.log("found")
+                        // console.log("found")
                         result.push(checkout)
                     }
                 }
@@ -151,7 +150,7 @@ class CheckoutController {
                     })
             }; 
             t.afterCommit(() => {
-                res.status(200).json({ message: 'Checkout completed' })
+                res.status(200).json({ msg: 'Checkout completed' })
             })
             await t.commit()
         }
