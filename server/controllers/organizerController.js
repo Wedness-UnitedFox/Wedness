@@ -14,7 +14,21 @@ class OrganizerController {
 
     static getOrganizers(req,res,next){ 
         Organizer.findAll({
-            // include:[User]
+            include: [
+                // {
+                // model: Photo,
+                // where: {
+                //     [Op.and]: [
+                //         { vendor_id: req.params.id }, 
+                //         { vendor_type: 'venue' }
+                //     ],                   
+                // },
+                // required: false
+            // }, 
+            {
+                model: User,
+                attributes: {exclude: ['password']},
+            }]
         })
             .then(data=>{
                 res.status(200).json(data)
