@@ -10,32 +10,14 @@ const auth = firebase.auth()
 const firestore = firebase.firestore()
 
 const ChatConversations = () => {
-    const history = useHistory()
+    // const history = useHistory()
     const { path, url } = useRouteMatch()
-    // console.log(path, url, "Mantapp")
-
+    
     const chatRef = firestore.collection('chats')
     const query = chatRef.orderBy('createdAt') 
     const [chats] = useCollectionData(query, {idField: 'id'})
     const [conversationNames, setConversationNames] = useState([])
     
-    
-    // useEffect(()=> { //backup
-    //     let conversations = []
-    //     console.log("chats",chats.length;
-    //     if(chats){
-    //         chats.forEach(collection => {
-    //             if(collection.user.customer){
-    //                 conversations.forEach(conversation => {
-    //                     if(conversation !== collection.user.customer){
-    //                         conversations.push(collection.user.customer)
-    //                     }
-    //                 })
-    //             }
-    //         })
-    //         setConversationNames(conversations)
-    //     }
-    // }, [chats])
 
     useEffect(()=> {
         console.log(chats?.length,"<<<<<<<<< CHATS");
@@ -53,19 +35,12 @@ const ChatConversations = () => {
             setConversationNames(conversations)
         }
     }, [chats])
-
-    // useEffect(()=>{
-    //     console.log(conversationNames, "<<< conv")
-    // },[conversationNames])
     
     return (
         <div className="d-flex" style={{width: "400px", height: "100%"}}>
             <div className="border" style={{width: "400px"}}>
                 <h1>Conversations:  </h1>
                 <hr />
-                {/* <Link to={`${url}/testing@mail.com`}>testing@mail.com</Link>
-                <Link to={`${url}/testing2@mail.com`}>testing2@mail.com</Link>
-                 */}
                 <ul> 
                     {conversationNames?.length===0? null:
                         conversationNames.map(name=>{

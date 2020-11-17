@@ -76,7 +76,6 @@ const ChatRoom = () => {
     return (
         <div style={{marginTop: "0", width: "1000px", height: "100%"}}>
             <h1 style={{textAlign: "center"}}> {customerEmail} Room</h1>
-            {/* <button type="button" onClick={SignIn}>Login</button> */}
             <hr />
             <div className="container" style={{ width: "100%"}}>
                 <div className="container border" style={{height: "400px", width: "800px", overflow: "scroll"}}>
