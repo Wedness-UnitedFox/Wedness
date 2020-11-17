@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
+import { Divider } from 'react-native-paper';
 
 export default function CardService(props) {
     const { vendor, type } = props
@@ -10,14 +11,13 @@ export default function CardService(props) {
     }
 
     return (
-        <TouchableOpacity onPress={() => goToDetail()} style={{ justifyContent: 'center', alignContent: 'center' }}>
+        <>
+        <TouchableOpacity onPress={() => goToDetail()} style={{ justifyContent: 'center', alignContent: 'center' , paddingHorizontal:5}}>
             <View
                 style={{
-                    flex: 1,
-                    backgroundColor: "floralwhite",
+                    flex: 1, 
                     width: 200,
-                    marginLeft: 15,
-                    marginRight: 15,
+                    alignSelf:'center'
                 }}
             >
                 <Image
@@ -27,15 +27,19 @@ export default function CardService(props) {
                     }}
                 />
             </View>
-            <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center' }}>{vendor.name}</Text>
-            <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>
-                Rp.{vendor.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
-                { 
-                vendor.service_type === "venue" ? ` | Capacity: ${vendor.capacity}`
-                : null
-                }
-            </Text>
-
+            <View style={{flexWrap:'wrap', alignSelf:'center'}}> 
+                <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center' }}>{vendor.name}</Text>
+                <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>
+                    Rp.{vendor.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                    { 
+                    vendor.service_type === "venue" ? ` | Capacity: ${vendor.capacity}`
+                    : null
+                    }
+                </Text>
+            </View> 
         </TouchableOpacity>
+
+        <Divider style={{ width: 1, height: '100%', marginHorizontal:5 }} />
+        </>
     )
 }
