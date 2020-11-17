@@ -30,8 +30,12 @@ class OrganizerController {
                 attributes: {exclude: ['password']},
             }]
         })
-            .then(data=>{
-                res.status(200).json(data)
+            .then(organizers =>{
+                if(req.userData.role === 'vendor'){
+                    const filterOrganizers = organizers.filter(organizer => organizer.UserId === req.userData.id)
+                    return res.status(200).json(filterOrganizers)
+                }
+                res.status(200).json(organizers)
             })
             .catch(err=>next(err))
     } 

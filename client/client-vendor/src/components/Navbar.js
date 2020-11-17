@@ -2,15 +2,22 @@ import React, { useState } from 'react';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import myLogo from '../assets/Wedness_white_transparant.svg'
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { SidebarData } from './SidebarData';
 import './Navbar.css';
 import { IconContext } from 'react-icons';
+import * as ImIcons from "react-icons/im";
 
 function Navbar() {
+  const history = useHistory()
   const [sidebar, setSidebar] = useState(false);
 
   const showSidebar = () => setSidebar(!sidebar);
+
+  const logoutHandler = () => {
+    localStorage.clear()
+    history.push('/')
+  }
 
   return (
     <div>
@@ -38,7 +45,12 @@ function Navbar() {
                 </li>
               );
             })}
-          </ul>
+            <li className='nav-text'>
+              <Link to='#' onClick={logoutHandler} >
+                <ImIcons.ImExit /><span>Logout</span>
+              </Link>
+            </li>
+            </ul>
           <p></p>
         </nav>
       </IconContext.Provider>

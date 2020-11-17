@@ -1,5 +1,5 @@
 const { verifyToken } = require('../helpers/jwt.js')
-const { User, Venue, Catering, Organizer, Photo } = require('../models/index.js') 
+const { User, Venue, Catering, Organizer, Checkout, Photo } = require('../models/index.js') 
 
 // middleware for user authentication
 const userAuthentication = (req, res, next) => {
@@ -53,6 +53,7 @@ const checkoutAuthorization = async (req, res, next) => {
     const {id} = req.params  
     Checkout.findByPk(+id)
         .then(data => {
+            
             let found
             if(!data){
                 next({name : 'Not Found'})
@@ -69,7 +70,10 @@ const checkoutAuthorization = async (req, res, next) => {
               }
             }
             if(found) next()
-            else next({name: 'Not Authorized'})
+            else {
+                console.log("masuk not authorized");
+                next({name: 'Not Authorized'})
+            }
         })
         .catch(err => {
             next(err)
