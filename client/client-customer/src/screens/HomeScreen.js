@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button, Divider } from 'react-native-paper'
 import CardService from '../components/CardService'
 import { fetchCatering, fetchOrganizer, fetchVenue } from '../store/actions/wednessAction'
-import Carousel from 'react-native-banner-carousel';
+import Carousel from '@dkbrothers/react-native-banner-carousel';
 import { BANNER1,BANNER2,BANNER3 } from '../../assets';
 
  
@@ -74,7 +74,7 @@ export default function HomeScreen() {
   return (
     <ScrollView style={styles.container}>
       <View>
-      {/* <Carousel
+      <Carousel
         autoplay
         autoplayTimeout={5000}
         loop 
@@ -82,7 +82,7 @@ export default function HomeScreen() {
         pageSize={BannerWidth}
       >
         {images.map((image, index) => renderPage(image, index))}
-      </Carousel> */}
+      </Carousel>
       </View>
       <Divider style={{marginVertical:5}}/>
       <View style={styles.vendorContainer}>
