@@ -5,6 +5,10 @@ import AsyncStorage from '@react-native-community/async-storage'
 import { useDispatch, useSelector } from "react-redux"
 import {login} from '../store/actions/wednessAction'
 import { TextInput, Button } from 'react-native-paper';
+import firebase from 'firebase';
+import Constants from 'expo-constants';
+import * as Notifications from 'expo-notifications';
+import * as Permissions from 'expo-permissions';
 // import { Button } from 'react-native-paper';  
 
 export default function Login(props){
@@ -18,7 +22,9 @@ export default function Login(props){
 		email: 'testing@mail.com',
 		password: '123456',
 		avatar: ''
-	})
+    })
+    
+    const [currentUser, setCurrentUser] = useState(null)
     
     useEffect(()=>{ 
         AsyncStorage.getItem('access_token')
@@ -39,6 +45,7 @@ export default function Login(props){
         // if(data.access_token){
         //     console.log("user already Loggedin");
         // }
+
     },[])
 
     function trigger () {
@@ -63,6 +70,9 @@ export default function Login(props){
 	const loginSuccess = async () => {
         console.log('login successful, navigate to chat.'); 
         setStorage()
+        const curr_user = await firebase.auth().currentUser
+        setCurrentUser(curr_user)
+        await registerForPushNotificationsAsync()
 		props.navigation.replace('Home', {
 			name: userData.name,
 			email: userData.email,
@@ -140,3 +150,47 @@ const styles = StyleSheet.create({
         width:"70%",
 	}
 });
+
+const registerForPushNotificationsAsync = async () => {
+    let token;
+    if (Constants.isDevice) {
+      const { status: existingStatus } = await Permissions.getAsync(
+        Permissions.NOTIFICATIONS
+      );
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Permissions.askAsync(
+          Permissions.NOTIFICATIONS
+        );
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+      }
+      token = (await Notifications.getExpoPushTokenAsync()).data;
+      console.log(token, '===> token after login');
+    } else {
+      alert('Must use physical device for Push Notifications');
+    }
+  
+    if(token){
+      const res = await firebase
+      .firestore()
+      .collection("users")
+      .doc(firebase.auth().currentUser.email)
+      .set({token}, { merge: true })
+    }
+    
+  
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
+    }
+  
+    return token;
+}

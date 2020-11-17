@@ -35,11 +35,15 @@ const ChatRoom = () => {
     const [messages, setMessages] = useState([]) 
     const [chats] = useCollectionData(query, {idField: 'id'})
     // const { uid, photoURL, displayName, email } = auth.currentUser;
+
+    const [tokenLocal, setTokenLocal] = useState('')
     
+    
+
     useEffect(()=>{
-        console.log(chats, "chat room")
+        // console.log(chats, "chat room")
         const { email } = auth.currentUser
-        console.log(email, "email ")
+        // console.log(email, "email ")
         if(chats){
             // const newMessages = chats.filter(chat => chat.user.uid === uid && chat.user.customer === customerEmail)
             const newMessages = chats.filter(chat => chat.user.vendor === email && chat.user.customer === customerEmail)
@@ -48,16 +52,27 @@ const ChatRoom = () => {
         }
     }, [chats, customerEmail])
 
-    // useEffect(() => {
-    //     console.log(messages,"<-- masuk state CHATROOM") 
-    // }, [messages])
+    useEffect(() => {
+        const userRef = firestore.collection('users').doc(customerEmail)
+        userRef.get()
+        .then(doc => {
+            if(doc.exists){
+                console.log(doc.data(), "userRef");
+                setTokenLocal(doc.data().token)
+            }
+            else{
+                console.log("Kosong")
+            }
+        })
+        .catch(err => console.log(err))
+    }, [customerEmail])
 
     const [formChat, setFormChat] = useState('')
 
     const sendMessage = async (e) => {
         e.preventDefault();
     
-        const { uid, email } = auth.currentUser
+        const { uid, email, token } = auth.currentUser
         await chatRef.add({
           text: formChat,
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -69,8 +84,13 @@ const ChatRoom = () => {
               customer: customerEmail
           }
         })
+       
+        const input = { email: email, chat: formChat }
         setFormChat('');
         dummy.current.scrollIntoView({ behavior: 'smooth' });
+        if(tokenLocal){
+            await sendPushNotification(tokenLocal, input)
+        }
     }
     
     return (
@@ -107,3 +127,25 @@ const ChatRoom = () => {
 }
 
 export default ChatRoom
+
+async function sendPushNotification(expoPushToken, input) {
+    // const { email, chat } = input
+    const message = {
+      to: expoPushToken,
+      sound: 'default',
+      title: input.email,
+      body: input.chat,
+      data: { data: 'goes here' },
+    };
+  
+    await fetch('https://exp.host/--/api/v2/push/send', {
+      'mode': 'no-cors',
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Accept-encoding': 'gzip, deflate',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(message),
+    });
+  }

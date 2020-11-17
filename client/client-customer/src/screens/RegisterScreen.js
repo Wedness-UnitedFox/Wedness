@@ -5,9 +5,11 @@ import { TextInput, Button } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 import { register } from '../store/actions/wednessAction';
 import firebaseSDK from '../firebase/index';
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 export default function RegisterScreen (props) {
   const [user, setUser] = useState({})
+  const [showAlert, setShowAlert] = useState(false)
   const dispatch = useDispatch()
 
   const onPressLogin = () => {
@@ -16,7 +18,8 @@ export default function RegisterScreen (props) {
 
   const onPressSubmit = () => {
     console.log(user)
-    dispatch(register(user, trigger))
+    // dispatch(register(user, trigger))
+    showAlert()
     
   }
 
@@ -40,6 +43,14 @@ export default function RegisterScreen (props) {
   const registerFailed = (message) => {
     console.log(message);
     alert(message);
+  };
+
+  showAlert = () => {
+    setShowAlert(true)
+  };
+ 
+  hideAlert = () => {
+    setShowAlert(false)
   };
 
   return(
@@ -89,6 +100,25 @@ export default function RegisterScreen (props) {
         onPress={onPressLogin}
       > Sign in </Button>
       </ScrollView>
+      <AwesomeAlert
+          show={showAlert}
+          showProgress={false}
+          title="AwesomeAlert"
+          message="I have a message for you!"
+          closeOnTouchOutside={true}
+          closeOnHardwareBackPress={false}
+          showCancelButton={true}
+          showConfirmButton={true}
+          cancelText="No, cancel"
+          confirmText="Yes, delete it"
+          confirmButtonColor="#DD6B55"
+          onCancelPressed={() => {
+            hideAlert();
+          }}
+          onConfirmPressed={() => {
+            hideAlert();
+          }}
+        />
     </View>
   )
 }
