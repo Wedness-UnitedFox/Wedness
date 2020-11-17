@@ -33,19 +33,15 @@ const vendorAuthentication = (req, res, next) => {
       User.findByPk(req.userData.id)
           .then(user => {
               if(!user || user.role !== 'vendor'){
-                // console.log('masukkk if<<<<<<<<<<<<<<');
                   next({name: 'Unauthenticated'})
               }
-            //   console.log(' iniiiiiiiiii masuk abru<<<<<<<<<<<<<<');
               next()
           })
           .catch(err => {
-            // console.log('errrrrrrrrrrrr <<<<<<<<<<<<<<');
-              next(err)
+            next(err)
           })
   }
   else{
-    //   console.log('masuk else>>>>>>>>>>>>>>>>');
       next({name: 'Not Authorized', message: "Invalid access!"})
   }
 }
@@ -112,9 +108,9 @@ const venueAuthorization = (req, res, next) => {
         .then(data => {
             // console.log(data);
             if(!data){
-                res.status(404).json({message : 'Data not found'})
+                next({message : 'Data not found'})
             } else if(req.userData.id !== data.UserId){
-                res.status(403).json({message : 'You dont have access'})
+                next({message : 'You dont have access'})
             } else {
                 next()
             }
@@ -126,15 +122,14 @@ const venueAuthorization = (req, res, next) => {
 }
 
 const organizerAuthorization = (req, res, next) => {
-    // console.log("<<<<<organizer auth", req.params)
     const {id} = req.params  
     Organizer.findByPk(+id)
         .then(data => {
             // console.log(data);
             if(!data){
-                res.status(404).json({message : 'Data not found'})
+                next({message : 'Data not found'})
             } else if(req.userData.id !== data.UserId){
-                res.status(403).json({message : 'You dont have access'})
+                next({message : 'You dont have access'})
             } else {
                 next()
             }
@@ -149,9 +144,9 @@ const cateringAuthorization = (req, res, next) => {
     Catering.findByPk(id)
         .then(data => {
             if(!data){
-                res.status(404).json({message : 'Data not found'})
+                next({message : 'Data not found'})
             } else if(req.userData.id !== data.UserId){
-                res.status(403).json({message : 'You dont have access'})
+                next({message : 'You dont have access'})
             } else {
                 next()
             }
@@ -159,15 +154,15 @@ const cateringAuthorization = (req, res, next) => {
         .catch(err => {
             res.status(500).json({message : err.message})
         }) 
-// }
+}
 // const photosAuthorization = (req, res, next) => {
 //     const {id} = req.params  
 //     Photo.findByPK(id)
 //         .then(data => {
 //             if(!data){
-//                 res.status(404).json({message : 'Data not found'})
+//                 next({message : 'Data not found'})
 //             } else if(req.userData.id !== data.vendor_id){
-//                 res.status(403).json({message : 'You dont have access'})
+//                 next({message : 'You dont have access'})
 //             } else {
 //                 next()
 //             }
@@ -175,7 +170,6 @@ const cateringAuthorization = (req, res, next) => {
 //         .catch(err => {
 //             res.status(500).json({message : err.message})
 //         }) 
-}
 
 module.exports = {
     userAuthentication,

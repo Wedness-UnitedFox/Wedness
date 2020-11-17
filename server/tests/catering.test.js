@@ -4,65 +4,33 @@ const {sequelize, User} = require('../models')
 const {queryInterface} = sequelize
 const {signToken} = require('../helpers/jwt')
 
+
 let id
 let access_token
-let access_token_invalid = ''
-const userData = {
-    name: 'Testing',
-    email: 'testing2@mail.com',
-    password: '123456',
-    phone_number: '08999666999',
-    role: 'vendor'
-}
-const userLogin = {
-    email: userData.email,
-    password: userData.password
-}
 
 beforeAll((done)=> {
-    
-    return User.create(userData)
-    .then(user => {
-        access_token = signToken({id: user.id, email: user.email, role: user.role})
-        console.log(access_token, "before all")
-        done()
-    })
-    .catch(err => {
-        done(err)
-    })
-    request(app)
-        .post('/vendor/register')
-        .send(userData)
-        .end((err, response)=>{
-            console.log("REGISTER, ",response.body);
-            // access_token = signToken({id: response.body.id, email: userData.email, role: userData.role})
-            done()
-        })
+    const userData = { 
+        email: 'testing@mail.com',
+        password: '123456',
+        role:"vendor"
+    }
     request(app)
     .post('/vendor/login')
-    .send(userLogin)
-    .set('Accept', 'application/json')
+    .send(userData)
     .end((err, response) => {
-        console.log(response.body,'<<<<<<<<<<<response')
         access_token = response.body.access_token
-        console.log(access_token)
+        // console.log(access_token,"<<<");
         done()
     })
-    done()
 })
 
 afterAll((done) => {
     queryInterface.bulkDelete('Caterings')
     .then(() => {
-        return User.destroy({where: {
-            email: userData.email
-        }})
-    })
-    .then(() => {
         done()
     })
     .catch(err => {
-        console.log(err)
+        // console.log(err)
         done()
     })
 })
@@ -72,27 +40,26 @@ let data = {
     address: 'Jl. Catering No.1, Pondok Indah, Jakarta Selatan',
     email: 'wedness_app@mail.com',
     phone_number: "08166669999",
-    // type: 'Indonesian',
     price: 10000000,
     description: 'Lorem ipsum',
     avatar: 'https://www.kindpng.com/picc/m/78-785827_user-profile-avatar-login-account-male-user-icon.png',
+    service_type: "catering"
 }
 let dataPut = {
     name: 'Wedness Catering Update',
     address: 'Jl. Catering No.1, Pondok Indah, Jakarta Selatan Update',
     email: 'update_wedness_app@mail.com',
     phone_number: "08166669999",
-    // type: 'Indonesian',
     price: 10000000,
     description: 'Lorem ipsum Update',
     avatar: 'https://www.kindpng.com/picc/m/78-785827_user-profile-avatar-login-account-male-user-icon.png',
+    service_type: "catering"
 }
 
 
 describe('Testing /postCatering', () => {
     describe('Success case /postCatering', () => {
         test('Successfully Add Catering', (done) => {
-            console.log('<<<<<<<<<<<<<<<<<<<<<masuk sini')
             request(app)
             .post("/vendor/catering")
             .set('access_token', access_token)
@@ -100,7 +67,7 @@ describe('Testing /postCatering', () => {
             .set('Accept', 'application/json')
             .then(response => {
                 const {status,body} = response
-                console.log("Post success case", response.body)
+                // console.log("Post success case", response.body)
                 expect(status).toBe(201)
                 id = body.id
                 expect(body).toHaveProperty('id', expect.any(Number))
@@ -108,7 +75,10 @@ describe('Testing /postCatering', () => {
                 expect(body).toHaveProperty('address', data.address)
                 expect(body).toHaveProperty('phone_number', data.phone_number)
                 expect(body).toHaveProperty('price', data.price)
+                expect(body).toHaveProperty('type', data.type)
                 expect(body).toHaveProperty('description', data.description)
+                expect(body).toHaveProperty('avatar', data.avatar)
+                expect(body).toHaveProperty('service_type', data.service_type)
                 done()
             })
         })
@@ -249,23 +219,37 @@ describe('Testing /postCatering', () => {
                 done()
             })
         })
-        test('User Not Authenticated', (done) => {
+        test('Validation Error Empty Vendor Type', (done) => {
+            var dataEmptyService = {
+                ...data, service_type: ''
+            }
             request(app)
             .post('/vendor/catering')
-            .set('access_token', access_token_invalid)
-            .send(data)
+            .set('access_token', access_token)
+            .send(dataEmptyService)
             .set('Accept', 'application/json')
             .then(response => {
                 const {status,body} = response
+                expect(status).toBe(400)
+                done()
+            })
+        })
+        test('No access token, should return Unauthenticated', (done) => {
+            request(app)
+            .post('/vendor/catering')
+            .send(data) 
+            .then(response => {
+                const {status,body} = response
                 expect(status).toBe(403)
+                expect(body).toHaveProperty('msg', 'You are not Authorized')
                 done()
             })
         })
     })
 })
 
-describe('Testing /getCatering', () => {
-    describe('Success Case /getCatering', () => {
+describe('Testing /getCaterings', () => {
+    describe('Success Case /getCaterings', () => {
         test('Should send array of object with Status Code 200', (done) => {
             request(app)
             .get('/vendor/catering')
@@ -281,7 +265,7 @@ describe('Testing /getCatering', () => {
                 expect(body[0]).toHaveProperty('phone_number', data.phone_number)
                 expect(body[0]).toHaveProperty('email', data.email)
                 expect(body[0]).toHaveProperty('price', data.price)
-                // expect(body[0]).toHaveProperty('type', data.type)
+                expect(body[0]).toHaveProperty('service_type', data.service_type)
                 expect(body[0]).toHaveProperty('avatar', data.avatar)
                 expect(body[0]).toHaveProperty('description', data.description)
                 done()
@@ -289,16 +273,67 @@ describe('Testing /getCatering', () => {
         })
     })
 
-    describe('Failed Case /getCatering', () => {
-        test('User Not Authenticated', (done) => {
+    describe('Failed Case /getCaterings', () => {
+        test('No access token, should return Unauthenticated', (done) => {
             request(app)
             .get('/vendor/catering')
-            .set('access_token', access_token_invalid)
             .send(data)
             .set('Accept', 'application/json')
             .then(response => {
                 const {status, body} = response
                 expect(status).toBe(403)
+                done()
+            })
+        })
+    })
+})
+
+describe('Testing /getCatering', () => {
+
+    describe('Success Case /getCatering', () => {
+        test('Should send object with Status Code 200', (done) => {
+            request(app)
+            .get(`/vendor/catering/${id}`)
+            .set('access_token', access_token)
+            .send(data)
+            .set('Accept', 'application/json')
+            .then(response => {
+                const {status, body} = response
+                expect(status).toBe(200)
+                expect(body).toHaveProperty('id', expect.any(Number))
+                expect(body).toHaveProperty('name', data.name)
+                expect(body).toHaveProperty('address', data.address)
+                expect(body).toHaveProperty('phone_number', data.phone_number)
+                expect(body).toHaveProperty('price', data.price)
+                expect(body).toHaveProperty('description', data.description)
+                expect(body).toHaveProperty('avatar', data.avatar)
+                expect(body).toHaveProperty('service_type', data.service_type)
+                done()
+            })
+        })
+    })
+
+    describe('Failed Case /getCatering', () => {
+        test('Wrong Id', (done) => {
+            request(app)
+            .get('/vendor/catering' + 0 )
+            .set('access_token', access_token)
+            .send(data)
+            .set('Accept', 'application/json')
+            .then(response => {
+                const {status, body} = response
+                expect(status).toBe(404)
+                done()
+            })
+        })
+        test('No access token, should return Unauthenticated', (done) => {
+            request(app)
+            .post('/vendor/catering/' + id)
+            .send(data) 
+            .then(response => {
+                const {status,body} = response
+                expect(status).toBe(403)
+                expect(body).toHaveProperty('msg', 'You are not Authorized')
                 done()
             })
         })
@@ -316,7 +351,7 @@ describe('Testing /putCatering', () => {
             .set('Accept', 'application/json')
             .then(response => {
                 const {status, body} = response
-                console.log(response, "put catering")
+                // console.log(response, "put catering")
                 expect(status).toBe(200)
                 expect(body).toHaveProperty('msg', 'Edit Successfully')
                 done()
@@ -445,15 +480,14 @@ describe('Testing /putCatering', () => {
                 done()
             })
         })
-        test('User Unauthorized to Update Data', (done) => {
+        test('No access token, should return Unauthenticated', (done) => {
             request(app)
-            .put(`/vendor/catering/${id}`)
-            .set('access_token', access_token_invalid)
-            .send(data)
-            .set('Accept', 'application/json')
+            .put('/vendor/catering/' + id)
+            .send(dataPut) 
             .then(response => {
                 const {status,body} = response
                 expect(status).toBe(403)
+                expect(body).toHaveProperty('msg', 'You are not Authorized')
                 done()
             })
         })
@@ -476,10 +510,9 @@ describe('Testing /deleteCatering', () => {
         })
     })
     describe('Failed Case /deleteCatering', () => {
-        test('Delete Product User Unauthorized', (done) => {
+        test('No access token, should return Unauthenticated', (done) => {
             request(app)
             .delete(`/vendor/catering/${id}`)
-            .set('access_token', access_token_invalid)
             .set('Accept', 'application/json')
             .then(response => {
                 const {status, body} = response
@@ -488,9 +521,8 @@ describe('Testing /deleteCatering', () => {
             })
         })
         test('Delete catering Invalid Id', (done) => {
-            let id = 0
             request(app)
-            .delete(`/vendor/catering/${id}`)
+            .delete(`/vendor/catering/`)
             .set('access_token', access_token)
             .set('Accept', 'application/json')
             .then(response => {

@@ -1,9 +1,9 @@
-const { Organizer, User } = require('../models')
+const { Organizer, User, Photo } = require('../models')
+const { Op } = require('sequelize')
 
 class OrganizerController {
     
     static postOrganizer(req,res,next){ 
-        // console.log(req.body, '<><><><<<><>masuk server controller');
         req.body.UserId = req.userData.id
         Organizer.create(req.body)
             .then(data=>{
@@ -38,19 +38,19 @@ class OrganizerController {
     
     static getOrganizer(req,res,next){ 
         Organizer.findByPk(req.params.id, {
-            include: [{
-                model: Photo,
-                where: {
-                    [Op.and]: [
-                        { vendor_id: req.params.id }, 
-                        { vendor_type: 'organizer' }
-                    ],                   
-                },
-                required: false
-            }, {
-                model: User,
-                attributes: {exclude: ['password']},
-            }]
+            // include: [{
+            //     model: Photo,
+            //     where: {
+            //         [Op.and]: [
+            //             { vendor_id: req.params.id }, 
+            //             { vendor_type: 'organizer' }
+            //         ],                   
+            //     },
+            //     required: false
+            // }, {
+            //     model: User,
+            //     attributes: {exclude: ['password']},
+            // }]
         })
             .then(data=>{
                 if (data) res.status(200).json(data)

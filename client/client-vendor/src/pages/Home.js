@@ -8,12 +8,13 @@ const Home = () => {
 
     // const history = useHistory()
     const dispatch = useDispatch()
-    const { services,loading,error } = useSelector((state) => state)
+    const { services, loading, error } = useSelector((state) => state)
     
     useEffect(() => {
         dispatch(fetchServices())
     }, [dispatch])
     
+    console.log(services)   
 
     if(loading) return <p>Loading....</p>
     if(error) return <p>Error!</p>
@@ -32,11 +33,9 @@ const Home = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {/* {JSON.stringify(services)} */}
-                    { !services ? null :
-                    services.map((data,id) => {
-                        return <TableRow key={data.id} data={data} id={id}/>
-                    })}
+                    { services ? services.map((data,id) => {
+                        return <TableRow key={`${data.id}${data.service_type}${data.name}`} data={data} id={id}/>
+                    }) : '' }
                 </tbody>
             </table>
         </div>

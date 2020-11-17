@@ -1,5 +1,5 @@
 const routes = require('express').Router() 
-const photoController = require("../controllers/photoController")
+const photoController = require("../controllers/photoController.txt")
 // const { photosAuthorization } = require("../middlewares/auth")
 
 routes.get("/", photoController.getPhotos)

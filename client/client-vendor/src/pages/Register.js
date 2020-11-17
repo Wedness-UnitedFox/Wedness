@@ -18,7 +18,7 @@ const Register = () => {
 
     const handleCancel = (e) => {
         e.preventDefault();
-        history.push('/vendor/login')
+        history.push('/login')
     };
 
     const handleChange = (e) => {
