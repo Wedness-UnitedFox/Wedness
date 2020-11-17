@@ -42,9 +42,9 @@ class CheckoutController {
             // console.log(plans)
             await res.status(200).json(plans)
 
-        } catch (error) {
-            console.log(error);
-            next(error)
+        } catch (err) {
+            // console.log(err);
+            next(err)
         }
     }
 
@@ -58,7 +58,6 @@ class CheckoutController {
     } 
  
     static deleteCheckout(req,res,next){ 
-        console.log("deleting");
         Checkout.destroy({
             where:{
                 id:req.params.id
@@ -192,8 +191,13 @@ class CheckoutController {
                 }                
             }else {
                 for(const catering of caterings){
+<<<<<<< HEAD
                     if(checkout.VendorId === catering.id || !checkout.isApproved){
                         checkout.dataValues.Service_name = catering.name
+=======
+                    if(checkout.VendorId === catering.id){
+                        // console.log("found")
+>>>>>>> bc60c4f4c121c861092b55a86dbbe4c26a27d8ee
                         result.push(checkout)
                     }
                 }
@@ -231,7 +235,7 @@ class CheckoutController {
                     })
             }; 
             t.afterCommit(() => {
-                res.status(200).json({ message: 'Checkout completed' })
+                res.status(200).json({ msg: 'Checkout completed' })
             })
             await t.commit()
         }
