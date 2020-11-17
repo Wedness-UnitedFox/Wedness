@@ -6,13 +6,13 @@ import CardServiceBig from '../components/CardServiceBig'
 
 export default function HomeScreen() {
   const data = useSelector(state => state.Reducer)
-  const [dataVenues, setDataVenues] = useState([])
+  const [dataOrganizer, setDataOrganizer] = useState([])
 
 
-  const { venues, organizers, caterings } = data
+  const {organizers, caterings } = data
   useEffect(() => {
-    setDataVenues(venues)
-    console.log(dataVenues, "<<<");
+    setDataOrganizer(organizers)
+    console.log(dataOrganizer, "<<<");
   }, [])
   const goToDetail = (type) => {
     console.log({ type })
@@ -20,16 +20,16 @@ export default function HomeScreen() {
 
   return (
     <ScrollView style={styles.container}>
-      <Text>Venues</Text>
+      <Text>Wedding Organizers</Text>
       <Divider />
       { 
-        dataVenues?.length == 0 ? null :
-          dataVenues.map((venue, i) => (
-            <CardServiceBig vendor={venue} key={i}/>
-            // <Text>{dataVenues.length}</Text>
+        dataOrganizer?.length == 0 ? null :
+          dataOrganizer.map((organizer, i) => (
+            <CardServiceBig vendor={organizer} key={i}/>
+            // <Text>{dataOrganizer.length}</Text>
           )) 
       }
-      {/* <Text>{JSON.stringify(dataVenues)}</Text> */}
+      {/* <Text>{JSON.stringify(dataOrganizer)}</Text> */}
     </ScrollView>
   );
 }

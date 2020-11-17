@@ -2,11 +2,16 @@ const { afterAll } = require('@jest/globals')
 const request = require('supertest')
 const app = require('../app.js')
 const { User } = require('../models/index')
+const {signToken} =  require("../helpers/jwt") 
 
 const user = {
   email: "safrul@mail.com",
   password: "123456"
 }
+let token
+const failedToken = signToken({id:0,email: "safrul@mail.com",role:'customer'})
+
+const failedToken2 = signToken({id:'x',email: "safrul@mail.com",role:'customer'})
 
 const newUser = {
   name: 'Safrul',
@@ -114,6 +119,7 @@ describe('POST /login', () => {
       .then(response => {
         console.log(response.body)
         const { status, body } = response
+        token = body.access_token
         expect(status).toBe(200)
         expect(body).toHaveProperty('access_token', expect.any(String))
 
@@ -176,5 +182,58 @@ describe('POST /login', () => {
         expect(body).toHaveProperty('msg', expect.any(String))
         done()
       })
-  })
+  }) 
+
+  test('Failed login due to broken token', done => { 
+    request(app)
+      .get('/vendor/venue')
+      .set('access_token', failedToken)
+      .set('Accept', 'application/json')
+      .then(response => { 
+        const {status,body} = response
+        console.log(status, "<-- -->" , body)
+        expect(status).toBe(401) 
+        expect(body).toHaveProperty('msg', expect.any(String))
+        done()
+      })
+  }) 
+  test('Failed login due to broken token', done => { 
+    request(app)
+      .get('/vendor/venue')
+      .set('access_token', failedToken2)
+      .set('Accept', 'application/json')
+      .then(response => { 
+        const {status,body} = response
+        console.log(status, "<-- -->" , body)
+        expect(status).toBe(500) 
+        expect(body).toHaveProperty('msg', expect.any(String))
+        done()
+      })
+  }) 
+  test('Failed login due to broken token', done => { 
+    request(app)
+      .get('/user/venue')
+      .set('access_token', failedToken2)
+      .set('Accept', 'application/json')
+      .then(response => { 
+        const {status,body} = response
+        console.log(status, "<-- -->" , body)
+        expect(status).toBe(500) 
+        expect(body).toHaveProperty('msg', expect.any(String))
+        done()
+      })
+  }) 
+  test('success get all venue  ', done => { 
+    request(app)
+      .get('/user/venue')
+      .set('access_token', token)
+      .set('Accept', 'application/json')
+      .then(response => { 
+        const {status,body} = response
+        console.log(status, "<--asdasd -->" , body)
+        expect(status).toBe(200) 
+        done()
+      })
+  }) 
+
 }) 

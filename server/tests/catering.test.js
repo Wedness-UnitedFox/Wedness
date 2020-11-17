@@ -271,6 +271,40 @@ describe('Testing /getCaterings', () => {
                 done()
             })
         })
+
+        test('Success get All user customer', async (done) => { 
+
+            const userDataCustomer = { 
+                email: 'testingcustomer@mail.com',
+                password: '123456', 
+            }
+            const vendorLogin = await request(app)
+            .post('/user/login')
+            .send(userDataCustomer)   
+            const access_token_customer = await vendorLogin.body.access_token  
+            console.log(vendorLogin, "<--")
+    
+            request(app)
+                .get(`/user/catering`)
+                .set('access_token',await access_token_customer)
+                .set('Accept', 'application/json')
+                .then(response => {
+                    console.log(access_token);
+                    console.log(response.body, "RESPONSEVENDOR");
+                    const { status, body } = response
+                    expect(status).toBe(200)
+                    expect(body[0]).toHaveProperty('id', expect.any(Number))
+                    expect(body[0]).toHaveProperty('name', data.name)
+                    expect(body[0]).toHaveProperty('address', data.address)
+                    expect(body[0]).toHaveProperty('phone_number', data.phone_number)
+                    expect(body[0]).toHaveProperty('email', data.email)
+                    expect(body[0]).toHaveProperty('price', data.price)
+                    expect(body[0]).toHaveProperty('service_type', data.service_type)
+                    expect(body[0]).toHaveProperty('avatar', data.avatar)
+                    expect(body[0]).toHaveProperty('description', data.description)
+                    done()
+                }) 
+        })
     })
 
     describe('Failed Case /getCaterings', () => {
@@ -285,8 +319,21 @@ describe('Testing /getCaterings', () => {
                 done()
             })
         })
+        test('should return Unauthenticated', (done) => {
+            request(app)
+            .get('/user/venue')
+            .set('access_token', access_token)
+            .send(data) 
+            .then(response => {
+                const {status, body} = response
+                expect(status).toBe(401)
+                done()
+            })
+        })
     })
 })
+
+
 
 describe('Testing /getCatering', () => {
 
@@ -316,13 +363,25 @@ describe('Testing /getCatering', () => {
     describe('Failed Case /getCatering', () => {
         test('Wrong Id', (done) => {
             request(app)
-            .get('/vendor/catering' + 0 )
+            .get('/vendor/catering/0' )
             .set('access_token', access_token)
             .send(data)
             .set('Accept', 'application/json')
             .then(response => {
                 const {status, body} = response
                 expect(status).toBe(404)
+                done()
+            })
+        })
+        test('Wrong Id', (done) => {
+            request(app)
+            .get('/vendor/catering/x' )
+            .set('access_token', access_token)
+            .send(data)
+            .set('Accept', 'application/json')
+            .then(response => {
+                const {status, body} = response
+                expect(status).toBe(500)
                 done()
             })
         })
@@ -520,13 +579,25 @@ describe('Testing /deleteCatering', () => {
                 done()
             })
         })
-        test('Delete catering Invalid Id', (done) => {
+        test('Delete catering Invalid Id input string', (done) => {
             request(app)
-            .delete(`/vendor/catering/`)
+            .delete(`/vendor/catering/x`)
             .set('access_token', access_token)
             .set('Accept', 'application/json')
             .then(response => {
                 const {status, body} = response
+                expect(status).toBe(500)
+                done()
+            })
+        })
+        test('Delete catering Invalid Id no data', (done) => {
+            request(app)
+            .delete(`/vendor/catering/0`)
+            .set('access_token', access_token)
+            .set('Accept', 'application/json')
+            .then(response => {
+                const {status, body} = response
+                console.log(status,"<><>" ,body);
                 expect(status).toBe(404)
                 done()
             })

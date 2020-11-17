@@ -285,8 +285,7 @@ describe('Testing /postVenue', () => {
     })
 })
 
-describe('Testing /getVenues', () => {
-
+describe('Testing /getVenues', () => { 
     describe('Success Case /getVenues', () => {
         test('Should send array of object with Status Code 200', (done) => {
             request(app)
@@ -296,6 +295,7 @@ describe('Testing /getVenues', () => {
             .set('Accept', 'application/json')
             .then(response => {
                 const {status, body} = response
+                console.log(body,status,"<-------");
                 expect(status).toBe(200)
                 expect(body[0]).toHaveProperty('id', expect.any(Number))
                 expect(body[0]).toHaveProperty('name', data.name)
@@ -616,15 +616,27 @@ describe('Testing /deleteVenue', () => {
                 expect(body).toHaveProperty('msg', 'You are not Authorized')
                 done()
             })
-        })
-        test('Delete Venue Invalid Id', (done) => {
-            let id = 0
+        }) 
+
+        test('Delete catering Invalid Id input string', (done) => {
             request(app)
-            .delete(`/vendor/venue/`)
+            .delete(`/vendor/venue/x`)
             .set('access_token', access_token)
             .set('Accept', 'application/json')
             .then(response => {
                 const {status, body} = response
+                expect(status).toBe(500)
+                done()
+            })
+        })
+        test('Delete catering Invalid Id no data', (done) => {
+            request(app)
+            .delete(`/vendor/venue/0`)
+            .set('access_token', access_token)
+            .set('Accept', 'application/json')
+            .then(response => {
+                const {status, body} = response
+                console.log(status,"<><>" ,body);
                 expect(status).toBe(404)
                 done()
             })

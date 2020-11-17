@@ -39,8 +39,8 @@ export default function PlanScreen() {
           {
             plans.length===0 ? null:
             plans.map((plan, i)=>( 
-                <>
-                    <View key={i} style={{flex:1, flexDirection:'row', minHeight:200}}> 
+                <View key={i}>
+                    <View  style={{flex:1, flexDirection:'row', minHeight:200}}> 
                         <View style={{flex:2}}>   
                             <Image
                                 style={{ width: "100%", height: "100%", resizeMode: 'cover' }}
@@ -60,7 +60,7 @@ export default function PlanScreen() {
                         </View>
                     </View>
                     <Divider style={{marginVertical:8}}/>
-                </>
+                </View>
             ))
           } 
         </ScrollView>

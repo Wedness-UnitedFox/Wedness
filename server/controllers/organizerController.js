@@ -76,7 +76,8 @@ class OrganizerController {
             next(err)})
     }
 
-    static deleteOrganizer(req,res,next){ 
+    static deleteOrganizer(req,res,next){  
+        console.log(req.params.id,"errrror");
         Organizer.destroy({
             where:{
                 id:req.params.id
@@ -84,8 +85,11 @@ class OrganizerController {
         }).then(result=>{
             if(result){
                 res.status(200).json({msg:'Deleted Successfully'})
+            }else {
+                next({name: "Not Found"})
             }
-        }).catch(err=> next(err))
+        }).catch(err=> {
+            next(err)})
     }
 
 }

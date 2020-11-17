@@ -28,8 +28,8 @@ export default function CardService(props) {
                 />
             </View>
             <View style={{flexWrap:'wrap', alignSelf:'center'}}> 
-                <Text style={{ fontSize: 15, fontWeight: 'bold', textAlign: 'center' }}>{vendor.name}</Text>
-                <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>
+                <Text style={{ fontSize: 15, textAlign: 'center' }}>{vendor.name}</Text>
+                <Text style={{ textAlign: 'center' }}>
                     Rp.{vendor.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
                     { 
                     vendor.service_type === "venue" ? ` | Capacity: ${vendor.capacity}`
