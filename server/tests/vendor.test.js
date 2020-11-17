@@ -2,6 +2,11 @@ const { afterAll } = require('@jest/globals')
 const request = require('supertest')
 const app = require('../app.js')
 const { User } = require('../models/index')
+const {signToken} =  require("../helpers/jwt")
+
+
+const failedToken = signToken({id:'x',email: "safrul@mail.com"})
+
 
 const user = {
   email: "safrul@mail.com",
@@ -106,7 +111,8 @@ describe('POST /register', () => {
 })
 
 describe('POST /login', () => {
-  test('Login Successfully', done => {
+
+  test('Login Successfully',done => {
     request(app)
       .post('/vendor/login')
       .send(user)
@@ -177,4 +183,18 @@ describe('POST /login', () => {
         done()
       })
   })
+
+  test('Failed to access due to broken token', done => {
+    request(app)
+      .get('/vendor/venue')
+      .set('access_token', failedToken)
+      .set('Accept', 'application/json')
+      .then(response => { 
+        const { status, body } = response
+        console.log(status,"<><><><" ,body)
+        expect(status).toBe(500) 
+        expect(body).toHaveProperty('msg', expect.any(String))
+        done()
+      })
+  }) 
 }) 

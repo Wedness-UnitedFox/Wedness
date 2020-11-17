@@ -323,6 +323,30 @@ describe('Testing /getOrganizer', () => {
                 done()
             })
         })
+        test('Wrong Id', (done) => {
+            request(app)
+            .get('/vendor/organizer/00' )
+            .set('access_token', access_token)
+            .send(data)
+            .set('Accept', 'application/json')
+            .then(response => {
+                const {status, body} = response
+                expect(status).toBe(404)
+                done()
+            })
+        })
+        test('Wrong Id string', (done) => {
+            request(app)
+            .get('/vendor/organizer/xx' )
+            .set('access_token', access_token)
+            .send(data)
+            .set('Accept', 'application/json')
+            .then(response => {
+                const {status, body} = response
+                expect(status).toBe(500)
+                done()
+            })
+        })
         test('No access token, should return Unauthenticated', (done) => {
             request(app)
             .post('/vendor/organizer/' + id)
@@ -515,15 +539,27 @@ describe('Testing /deleteOrganizer', () => {
                 expect(status).toBe(403)
                 done()
             })
-        })
-        test('Delete Organizer Invalid Id', (done) => {
-            let id = 0
+        }) 
+
+        test('Delete catering Invalid Id input string', (done) => {
             request(app)
-            .delete(`/vendor/organizer/`)
+            .delete(`/vendor/organizer/aaaa`)
             .set('access_token', access_token)
             .set('Accept', 'application/json')
             .then(response => {
                 const {status, body} = response
+                expect(status).toBe(500)
+                done()
+            })
+        })
+        test('Delete catering Invalid Id no data', (done) => {
+            request(app)
+            .delete(`/vendor/organizer/00`)
+            .set('access_token', access_token)
+            .set('Accept', 'application/json')
+            .then(response => {
+                const {status, body} = response
+                console.log(status,"<>delete<>" ,body);
                 expect(status).toBe(404)
                 done()
             })

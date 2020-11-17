@@ -83,6 +83,7 @@ class CateringController {
         })
         .then(result=>{
             if(result) res.status(200).json({msg:'Deleted Successfully'})
+            else next({name: "Not Found"})
         })
         .catch(err=> next(err))
     }
