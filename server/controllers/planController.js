@@ -171,21 +171,21 @@ class CheckoutController {
         for(const checkout of checkouts){
             if(checkout.vendor_type === 'venue'){ 
                 for(const venue of venues){
-                    if(checkout.VendorId === venue.id || !checkout.isApproved){
+                    if((checkout.VendorId === venue.id && !checkout.isApproved) || (checkout.VendorId === venue.id)){
                         checkout.dataValues.Service_name = venue.name
                         result.push(checkout)
                     }
                 }                
             }else if(checkout.vendor_type === 'organizer'){
                 for(const organizer of organizers){
-                    if(checkout.VendorId === organizer.id || !checkout.isApproved){
+                    if((checkout.VendorId === organizer.id && !checkout.isApproved) || (checkout.VendorId === organizer.id)){
                         checkout.dataValues.Service_name = organizer.name
                         result.push(checkout)
                     }
                 }                
             }else {
                 for(const catering of caterings){
-                    if(checkout.VendorId === catering.id || !checkout.isApproved){
+                    if((checkout.VendorId === catering.id && !checkout.isApproved) || (checkout.VendorId === catering.id)){
                         checkout.dataValues.Service_name = catering.name
                         result.push(checkout)
                     }

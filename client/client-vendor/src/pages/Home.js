@@ -6,9 +6,14 @@ import { fetchServices } from '../store/actions/action'
 
 const Home = () => {
 
-    // const history = useHistory()
+    const history = useHistory()
     const dispatch = useDispatch()
+
     const { services, loading, error } = useSelector((state) => state)
+
+    useEffect(() => {
+        if (!localStorage.access_token) history.push('/login')
+    }, [])
 
     useEffect(() => {
         dispatch(fetchServices())
@@ -20,30 +25,30 @@ const Home = () => {
     if (error) return <p>Error!</p>
 
     return (
-        <div> 
+        <div>
             <div >
                 <table class="table-auto  w-full" >
                     <thead class="justify-between">
                         <tr class="bg-gray-800 text-center">
-                            <th class="px-10 py-2" >
-                                <span class="text-gray-300">No</span>
+                            <th class="px-10 py-2 text-center text-gray-300" >
+                                No
                             </th>
-                            <th class="px-16 py-2">
-                                <span class="text-gray-300">Item</span>
+                            <th class="px-16 py-2 text-center text-gray-300">
+                                Item
                             </th>
-                            <th class="px-16 py-2">
-                                <span class="text-gray-300">Name</span>
+                            <th class="px-16 py-2 text-center text-gray-300">
+                                Name
                             </th>
-                            <th class="px-16 py-2">
-                                <span class="text-gray-300">Price</span>
-                            </th>
-
-                            <th class="px-16 py-2">
-                                <span class="text-gray-300">Category</span>
+                            <th class="px-16 py-2 text-center text-gray-300">
+                                Price
                             </th>
 
-                            <th class="px-16 py-2">
-                                <span class="text-gray-300">Action</span>
+                            <th class="px-16 py-2 text-center text-gray-300">
+                                Category
+                            </th>
+
+                            <th class="px-16 py-2 text-center text-gray-300">
+                                Action
                             </th>
                         </tr>
                     </thead>

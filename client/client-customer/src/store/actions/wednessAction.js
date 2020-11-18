@@ -2,8 +2,8 @@ import { SET_CATERING, SET_VENUE, SET_LOGIN, SET_ORGANIZER, REGISTER_SUCCESS, RE
 import AsyncStorage from '@react-native-community/async-storage'
 import axios from 'axios'
 
-// const apiUrl = 'http://10.0.2.2:3000'
-const apiUrl = 'http://localhost:3000'
+const apiUrl = 'http://10.0.2.2:3000'
+// const apiUrl = 'http://localhost:3000'
 
 export const login = (inputLogin, cb) => {
     console.log(inputLogin, "<<<<<<<store login");
