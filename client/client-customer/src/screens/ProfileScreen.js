@@ -73,6 +73,9 @@ export default function ProfileScreen(props) {
     AsyncStorage.clear()
     navigation.replace('Login')
   }
+  const goToInvitation = () =>{
+    navigation.push('Invitation', {data})
+  }
 
   const checkData = () => {
     invitationRef
@@ -143,7 +146,8 @@ export default function ProfileScreen(props) {
                 <AntDesign name="sharealt" size={24} color="black" />
             {/* <Icon name='logo-whatsapp' style={{color: '#395894', fontSize: 30, marginRight: 10}}/> */}
           </TouchableOpacity>
-          <Button onPress={() => setShowForm(true)}>Edit data</Button>
+          <Button onPress={() => setShowForm(true)}>Edit dataa</Button>
+          <Button onPress={() => goToInvitation()}>View Invitation Card</Button>
           </>
           
           }
