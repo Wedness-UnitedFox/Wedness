@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux'
 import { AntDesign } from '@expo/vector-icons';
 import firebaseSDK from '../firebase'
 import { LOGIN_FAIL } from '../store/actions';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 
 const invitationRef = firebaseSDK.invitationRef()
 export default function ProfileScreen(props) {
@@ -119,10 +119,11 @@ export default function ProfileScreen(props) {
   return (
     <View style={{ flex: 1, marginTop: 55, alignItems: 'center', flexDirection: "column" }}>
       <Button style={{ alignSelf: 'flex-end', marginRight: 20 }} color="red" mode="outlined" onPress={logout}>LOGOUT</Button>
-      <View style={{ width: '100%', flexDirection: "row", justifyContent: "center", paddingVertical: 20 }}>
+      <View style={{ width: '100%', flexDirection: "row", justifyContent: "center", paddingVertical: 10 }}>
         <Text style={{ fontSize: 25 }}>Hai </Text>
         <Text style={{ fontSize: 26 }}>{firebaseSDK.displayName ? firebaseSDK.displayName : firebaseSDK.email}!</Text>
       </View>
+      <ScrollView style={{width: "100%"}}>
       <View style={{ height: "60%", justifyContent: 'flex-start', paddingVertical: 20, width: '100%', paddingHorizontal: 10 }}>
 
         {Object.keys(data).length < 4 ?
@@ -156,7 +157,7 @@ export default function ProfileScreen(props) {
               <View style={{ flexDirection: 'row' }}>
                 <TextInput
                   style={{ flex: 1, marginRight: 5 }}
-                  label="Bride Name"
+                  label="Bride's Name"
                   mode="outlined"
                   defaultValue={data.brideName}
                   // value={text}
@@ -164,7 +165,7 @@ export default function ProfileScreen(props) {
                 />
                 <TextInput
                   style={{ flex: 1 }}
-                  label="Groom Name"
+                  label="Groom's Name"
                   defaultValue={data.groomName}
                   mode="outlined"
                   // value={text} 
@@ -180,7 +181,7 @@ export default function ProfileScreen(props) {
                   value={(new Date(data.date)).toLocaleDateString()}  
                 // defaultValue={`${(new Date(data?.date))?.getMonth()}`}  value={data?.date? "":data?.date?.toLocaleString('id')} 
                 />
-                <Button style={{ justifyContent: 'center', }} onPress={showDatePicker} >Pick Date</Button>
+                <Button style={{ justifyContent: 'center', }} onPress={showDatePicker} >Pick A Date</Button>
               </View>
               <TextInput
                 style={{ marginRight: 5 }}
@@ -202,12 +203,13 @@ export default function ProfileScreen(props) {
                 onCancel={hideDatePicker}
               />
             </Card>
-
+            
         }
         {/* </View> */}
         {/* <Text style={{fontSize:15}}> Input your wedding data to create Invitation</Text> */}
 
       </View>
+      </ScrollView>
     </View>
   );
 }

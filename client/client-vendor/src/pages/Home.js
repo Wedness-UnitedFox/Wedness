@@ -16,7 +16,7 @@ const Home = () => {
         if (!localStorage.access_token) history.push('/login')
     }, [])
 
-    console.log(services)
+    console.log(services, "hasil ngefetch nih")
 
     if (loading) return <p>Loading....</p>
     if (error) return <p>Error!</p>
