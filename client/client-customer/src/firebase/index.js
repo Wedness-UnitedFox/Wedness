@@ -48,8 +48,7 @@ class FirebaseSDK {
                 }
 
                 console.error(error);
-            });
-
+            }); 
     }
 
     onLogout = user => {

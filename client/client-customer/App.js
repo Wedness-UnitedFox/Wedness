@@ -48,16 +48,26 @@ export default function App() {
 
 const theme = {
   ...DefaultTheme,
+  roundness: 2,
   colors: {
     ...DefaultTheme.colors,
-    primary: 'tomato',
-    accent: 'yellow',
+    primary: '#F2D0D9',
+    accent: '#97A6A0',
+    // background: '#F2D0D9' 
   },
 };
+// const theme = {
+//   ...DefaultTheme,
+//   colors: {
+//     ...DefaultTheme.colors,
+//     primary: '#F2D0D9',
+//     accent: '#97A6A0',
+//   },
+// };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#97A6A0',
     alignItems: 'center',
     justifyContent: 'center',
   },

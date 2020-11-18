@@ -1,5 +1,6 @@
 import { useNavigation } from '@react-navigation/native'
 import React, { useCallback, useEffect, YellowBox, useState } from 'react'
+import { Ionicons } from '@expo/vector-icons';import { Entypo } from '@expo/vector-icons';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, Dimensions, Animated, ImageBackground } from 'react-native'
 import { Button } from 'react-native-paper'
 
@@ -25,11 +26,14 @@ export default function CardService(props) {
                             justifyContent: 'space-between',
                         }}>
                             <View style={{ flexDirection: "row", alignSelf: 'center' }}>
-                                <Text style={{ fontSize: 20, textAlign: "center", color: 'white', backgroundColor: 'rgba(52, 52, 52, 0.6)', padding: 5 }}>Balai Makarti Muktitama</Text>
+                                <Text style={{ fontSize: 20, textAlign: "center", color: 'white', backgroundColor: 'rgba(52, 52, 52, 0.6)', padding: 5 }}>{vendor?.name}</Text>
                             </View>
                             <View style={{ flexDirection: "row", justifyContent: 'space-between' }}>
-                                <Text style={{ fontSize: 15, textAlign: "center", color: 'white', backgroundColor: 'rgba(52, 52, 52, 0.6)', padding: 5 }}>Outdoor</Text>
-                                <Text style={{ fontSize: 15, textAlign: "center", color: 'white', backgroundColor: 'rgba(52, 52, 52, 0.6)', padding: 5 }}>Rp. {vendor?.price.toLocaleString("id")}</Text>
+                                {vendor.service_type !== 'venue' ? null:
+
+                                <Text style={{ fontSize: 15, textAlign: "center", color: 'white', backgroundColor: 'rgba(52, 52, 52, 0.6)', padding: 5 }}>{vendor?.type}</Text>
+                                }
+                                <Text style={{alignSelf:'flex-end', fontSize: 15, textAlign: "center", color: 'white', backgroundColor: 'rgba(52, 52, 52, 0.6)', padding: 5 }}>Rp. {vendor?.price.toLocaleString("id")}</Text>
                             </View>
                         </View>
                     </ImageBackground>
@@ -42,14 +46,15 @@ export default function CardService(props) {
                                 uri: `${vendor.avatar}`,
                             }}
                         />
-                        <View style={{ flexWrap:'wrap', maxWidth:300}}>
+                        <View style={{ flexWrap:'wrap', maxWidth:215}}>
                             <Text style={{flex:1, marginLeft: 10, fontSize: 15, color: 'black', textAlignVertical: "center" }}>{vendor.name}</Text>
                             <Text style={{flex:1, marginLeft: 10, fontSize: 12, color: 'black', textAlignVertical: "center" }}>{vendor.phone_number} </Text>
                         </View>
                     </View>
                     <View style={{ alignSelf: 'center', marginHorizontal: 10, }}>
-                        <Button mode='contained' onPress={()=>handleChat()} >
-                            Chat Now
+                        <Button mode='outline' color="#81A68A" onPress={()=>handleChat()} >
+                            <Ionicons name="md-chatboxes" size={30} color="#81A68A" />
+                            {/* <Entypo name="chat" size={24} color="black" /> */}
                         </Button>
                     </View>
                 </View>
