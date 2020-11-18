@@ -28,9 +28,9 @@ export default function BottomTab() {
   return (
     <Tab.Navigator
       initialRouteName="Home"
-      activeColor="#81A68A"
-      inactiveColor="#808C88"
-      barStyle={{ backgroundColor: '#808C88' }}
+      activeColor="white"
+      inactiveColor="white"
+      barStyle={{ backgroundColor: '#81A68A' }}
     >
       <Tab.Screen
         name="Home"
@@ -38,7 +38,7 @@ export default function BottomTab() {
         options={{
           tabBarLabel: 'Home',
           tabBarIcon: ({ color }) => (
-            <AntDesign name="home" size={24} color="black" />
+            <FontAwesome name="home" size={24} color="white" />
           ),
         }}
       />
@@ -48,7 +48,7 @@ export default function BottomTab() {
         options={{
           tabBarLabel: 'Vendors',
           tabBarIcon: ({ color }) => (
-            <Entypo name="shop" size={24} color="black" />
+            <Entypo name="shop" size={24} color="white" />
           ),
         }}
       />
@@ -58,7 +58,7 @@ export default function BottomTab() {
         options={{
           tabBarLabel: 'Conversations',
           tabBarIcon: ({ color }) => (
-            <Ionicons name="ios-chatboxes" size={24} color="black" />
+            <Ionicons name="ios-chatboxes" size={24} color="white" />
           ),
         }}
       />
@@ -68,7 +68,7 @@ export default function BottomTab() {
         options={{
           tabBarLabel: 'Your Plan',
           tabBarIcon: ({ color }) => (
-            <FontAwesome name="list-alt" size={24} color="black" />
+            <FontAwesome name="list-alt" size={24} color="white" />
           ),
         }}
       />
@@ -78,7 +78,7 @@ export default function BottomTab() {
         options={{
           tabBarLabel: 'Profile',
           tabBarIcon: ({ color }) => (
-            <Octicons name="person" size={24} color="black" />
+            <Octicons name="person" size={24} color="white" />
           ),
         }}
       />

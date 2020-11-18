@@ -8,8 +8,6 @@ import Carousel from '@dkbrothers/react-native-banner-carousel';
 import { BANNER1, BANNER2, BANNER3 } from '../../assets';
 
 
-
-
 export default function HomeScreen(props) {
   const { route, navigation } = props
   const data = useSelector(state => state.Reducer)
@@ -19,11 +17,11 @@ export default function HomeScreen(props) {
   const dispatch = useDispatch()
 
   const BannerWidth = Dimensions.get('window').width;
-  const BannerHeight = 200;
+  const BannerHeight = 180;
 
   const images = [
-    BANNER1,
     BANNER2,
+    BANNER1,
     BANNER3
   ];
   const renderPage = (image, index) => {
@@ -65,11 +63,11 @@ export default function HomeScreen(props) {
           {images.map((image, index) => renderPage(image, index))}
         </Carousel>
       </View>
-      <Divider style={styles.divider} />
+      {/* <Divider style={styles.divider} /> */}
 
       <View style={styles.vendorContainer}> 
         <View style={{ flexDirection: "row", justifyContent: 'space-between' }}>
-          <Text style={{ marginLeft: 20, fontSize: 25, }}>Venues</Text>
+          <Text style={{ marginLeft: 20, fontSize: 22, color:"#81A68A", fontWeight:"bold"}}>Venues</Text>
           <Button style={{ marginRight: 10 }} color="#81A68A" mode="outlined" onPress={() => goToDetail('Venues')} >See All</Button>
         </View>
         <ScrollView horizontal={true} style={{ flex: 1, paddingVertical: 10 }}>
@@ -80,12 +78,12 @@ export default function HomeScreen(props) {
               ))
           }
         </ScrollView>
-        <Divider style={styles.divider} /> 
+        {/* <Divider style={styles.divider} />  */}
       </View>
  
       <View style={styles.vendorContainer}>
         <View style={{ flexDirection: "row", justifyContent: 'space-between' }}>
-          <Text style={{ marginLeft: 20, fontSize: 25, }}>Caterings</Text>
+          <Text style={{ marginLeft: 20, fontSize: 22, color:"#81A68A", fontWeight:"bold"}}>Caterings</Text>
           <Button style={{ marginRight: 10 }} color="#81A68A" mode="outlined" onPress={() => goToDetail('Caterings')} >See All</Button>
         </View>
         <ScrollView horizontal={true} style={{ flex: 1, paddingVertical: 10 }}>
@@ -100,14 +98,14 @@ export default function HomeScreen(props) {
 
       <View style={styles.vendorContainer}>
         <View style={{ flexDirection: "row", justifyContent: 'space-between' }}>
-          <Text style={{ marginLeft: 20, fontSize: 25, }}>Organizers</Text>
+          <Text style={{ marginLeft: 20, fontSize: 22, color:"#81A68A", fontWeight:"bold"}}>Organizers</Text>
           <Button style={{ marginRight: 10 }} color="#81A68A" mode="outlined" onPress={() => goToDetail('Organizers')} >See All</Button>
         </View>
         <ScrollView horizontal={true} style={{ flex: 1, paddingVertical: 10 }}>
           {
-            dataOrganizers?.length == 0 ? null :
-              dataOrganizers.map((organizer, i) => (
-                <CardService vendor={organizer} key={i} />
+            dataCaterings?.length == 0 ? null :
+              dataCaterings.map((catering, i) => (
+                <CardService vendor={catering} key={i} />
               ))
           }
         </ScrollView> 
@@ -127,6 +125,7 @@ const styles = StyleSheet.create({
 
   vendorContainer: {
     flex: 1,
+    marginTop: 15,
     minHeight: 250,
     maxHeight: 250
   },

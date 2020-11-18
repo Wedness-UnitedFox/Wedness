@@ -36,7 +36,7 @@ export default function PlanScreen({ navigation }) {
     if(type==='delete'){ 
       setMessage({type:'delete',message:"Are you sure?",title:"Deleting Plan"})
     }else{
-      setMessage({type:'payment',message:"Proceed to payment?",title:"Checkout Payment"})
+      setMessage({type:'payment',message:"Proceed to Booking?",title:"Checkout Booking"})
     }
     setId(id)
     showSwal(true)
@@ -100,13 +100,13 @@ export default function PlanScreen({ navigation }) {
         }}
       />
       <View style={styles.vendorContainer}>
-        <Text style={{ fontSize: 25, textAlign: "center" }}>Your Plan</Text>
+        <Text style={{ fontSize: 25, textAlign: "center", fontWeight:"bold",color:"white", paddingTop:20, paddingBottom:10,backgroundColor:"#81A68A"}}>Your Plan</Text>
         <Divider style={styles.divider} />
         {
           dataPlan.length === 0 ?
             <View style={{ flex: 1, justifyContent: "center", alignItems: "center", }}>
               <Image style={{ height: 150, width: 150 }} source={{ uri: 'https://cdn4.iconfinder.com/data/icons/user-interface-131/32/sad_store-512.png' }} />
-              <Text>Empty plan list, Go find something to add here</Text>
+              <Text>Book Something to see your Plan Here!</Text>
             </View>
 
             :
@@ -116,7 +116,7 @@ export default function PlanScreen({ navigation }) {
                   <View style={{ flex: 1, flexDirection: 'row', minHeight: 200 }}>
                     <View style={{ flex: 2 }}>
                       <Image
-                        style={{ width: "100%", height: "100%", resizeMode: 'cover' }}
+                        style={{ width: "100%", height: "100%", resizeMode: 'cover'  }}
                         source={{
                           uri: `${plan.Vendor?.avatar}`,
                         }}
@@ -124,19 +124,20 @@ export default function PlanScreen({ navigation }) {
                     </View>
                     <View style={{ flex: 4, padding: 10 }}>
                       <View style={{ flex: 1 }}>
-                        <Text style={{ fontSize: 17, fontWeight: '600', textAlign: 'center' }}>{plan.Vendor?.name}</Text>
+                      <Text style={{ fontSize: 17, fontWeight: '600', textAlign: 'center', fontWeight:"bold" }}>{plan.Vendor?.service_type.toUpperCase()}</Text>
+                        <Text style={{ fontSize: 14, fontWeight: '600', textAlign: 'center' }}>{plan.Vendor?.name.toUpperCase()}</Text>
                         {/* <Text style={{fontSize:15, fontWeight:'600'}}>{plan.Vendor?.avatar}</Text> */}
                       </View>
 
                       <Button color={plan.isApproved ? 'green' : 'red'}>{plan.isApproved ? 'Approved' : 'Waiting for approval'}</Button>
-                      <Button mode="outlined" onPress={() => handleChat(plan)} style={styles.buttonChat} color="green">Chat</Button>
-                      <Button mode="outlined" onPress={() => showConfirm('delete', plan.id)} style={styles.button} color="red">Delete</Button>
+                      <Button mode="outlined" onPress={() => handleChat(plan)} style={styles.buttonChat} color="#81A68A">Chat</Button>
+                      <Button mode="outlined" onPress={() => showConfirm('delete', plan.id)} style={styles.button} color="#e6a6b7">Cancel</Button>
                     </View>
                   </View>
                   <Divider style={{ marginVertical: 8 }} />
                 </View>
               ))}
-              <Button  style={{ width: '80%', alignSelf: 'center', marginVertical: 20 }} color="blue" mode="outlined" onPress={() => showConfirm('checkout')} >Checkout</Button>
+              <Button  style={{ width: '80%', alignSelf: 'center', marginVertical: 20 }} color="#81A68A" mode="outlined" onPress={() => showConfirm('checkout')} >Checkout</Button>
             </ScrollView>
         }
       </View>
@@ -155,6 +156,7 @@ const styles = StyleSheet.create({
 
   vendorContainer: {
     flex: 1,
+
   },
   divider: {
     marginVertical: 5
@@ -162,14 +164,14 @@ const styles = StyleSheet.create({
   button: {
     alignSelf: 'center',
     borderWidth: 1,
-    borderColor: 'red',
+    borderColor: '#e6a6b7',
     fontSize: 42,
     width: "80%",
   },
   buttonChat: {
     alignSelf: 'center',
     borderWidth: 1,
-    borderColor: 'green',
+    borderColor: '#81A68A',
     fontSize: 42,
     width: "80%",
     marginBottom:5

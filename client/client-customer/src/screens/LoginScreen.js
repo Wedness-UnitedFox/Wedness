@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View , Image} from 'react-native';
+import { StyleSheet, Text, View , Image, ImageBackground} from 'react-native';
 import firebaseSDK from '../firebase/index';
 import AsyncStorage from '@react-native-community/async-storage'
 import { useDispatch, useSelector } from "react-redux"
 import { login } from '../store/actions/wednessAction'
-import { TextInput, Button } from 'react-native-paper';
+import { TextInput, Button, Card } from 'react-native-paper';
 import firebase from 'firebase';
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
 import AwesomeAlert from 'react-native-awesome-alerts';
 // import { Button } from 'react-native-paper';  
+import LANDING from '../../assets/landing.jpg'
 
 export default function Login(props) {
   const data = useSelector(state => state.Reducer)
@@ -120,8 +121,8 @@ export default function Login(props) {
   const onChangeTextPassword = password => setUserData({ ...userData, password });
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', paddingHorizontal: 10 }}>
-
+    <View style={{ flex: 1, justifyContent: 'center', backgroundColor: "#808C88"}}>
+       <ImageBackground source={LANDING} style={styles.image}>
        <AwesomeAlert
           show={swal}
           showProgress={true}
@@ -141,6 +142,7 @@ export default function Login(props) {
             hideAlert();
           }}
         />
+      <View style={{justifyContent: 'center', backgroundColor: "rgba(22, 22, 22, 0.23)", paddingVertical:40, marginHorizontal:30}}>
       <TextInput
         mode="outlined"
         style={styles.input}
@@ -160,12 +162,13 @@ export default function Login(props) {
         title="Login"
         mode="contained"
         style={styles.buttonText}
+        color={'white'}
         onPress={onPressLogin}
       > Login </Button>
 
       <Button
         title="Signup"
-        style={styles.buttonText}
+        style={styles.buttonSignup}
         color={'black'}
         onPress={onPressRegister}
       > Sign up </Button>
@@ -175,6 +178,8 @@ export default function Login(props) {
           <Image style={{height:'100%', width:'100%'}} source={{uri:'https://www.bluechipexterminating.com/wp-content/uploads/2020/02/loading-gif-png-5.gif'}}/>
         </View>
         }
+        </View>
+        </ImageBackground>
     </View>
   );
 }
@@ -190,6 +195,10 @@ const styles = StyleSheet.create({
     shadowRadius:0,
     height: 180, 
   },
+  image: {
+    flex: 1,
+    justifyContent: "center",
+  },
   title: {
     marginTop: 16,
     marginLeft: 16,
@@ -203,13 +212,24 @@ const styles = StyleSheet.create({
     margin: 16,
     width: "70%",
     paddingHorizontal: 16,
+    backgroundColor: "rgba(255, 255, 255, 0.91)",
     fontSize: 16
   },
   buttonText: {
     alignSelf: 'center',
     fontSize: 42,
-    paddingVertical: 15,
-    width: "70%",
+    paddingVertical: 2,
+    width: "60%",
+    backgroundColor: "rgba(170, 217, 192, 0.62)",
+    marginTop: 15
+  },
+  buttonSignup: {
+    alignSelf: 'center',
+    fontSize: 42,
+    paddingVertical: 2,
+    width: "60%",
+    backgroundColor: "rgba(170, 217, 192, 0.62)",
+    marginTop: 15
   }
 });
 
