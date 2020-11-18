@@ -9,6 +9,7 @@ const AddNew = () => {
     const dispatch = useDispatch()
     const [inputNew, setNew] = useState([])
     const [vendorType, setVendorType] = useState("")
+    const [image, setImage] = useState("")
 
     useEffect(() => {
         if (!localStorage.access_token) history.push('/login')
@@ -16,16 +17,37 @@ const AddNew = () => {
 
     const handleNew = (e) => {
         e.preventDefault();
-        if (inputNew.service_type !== "")
+        inputNew.avatar = image
+        if (inputNew.service_type !== ""){
             console.log(inputNew, "<<<<<<page handle Add");
-        dispatch(addItem(inputNew, vendorType))
+            dispatch(addItem(inputNew, vendorType))
+            history.push('/home')
+        }
+    };
+
+    const handleCancel = () => {
         history.push('/home')
     };
 
-    const handleCancel = (e) => {
-        e.preventDefault();
-        history.push('/home')
-    };
+    const handlePhoto = async (e) => {
+        const files = e.target.files
+        const data = new FormData()
+        data.append('file', files[0])
+        data.append('upload_preset', 'frfd811y')
+        const res = await fetch(
+            'https://api.cloudinary.com/v1_1/safruls/image/upload',
+            {
+                method: 'POST',
+                body: data
+            }
+        )
+
+        const file = await res.json()
+        console.log(file, "after uploaded to cloudinary")
+        if(file.secure_url) setImage(file.secure_url)
+        else console.log("Error during upload")
+        
+    }
 
     const handleChange = (e) => {
         if (e.target.name === "price") e.target.value = +e.target.value
@@ -34,106 +56,6 @@ const AddNew = () => {
     };
 
     return (
-        // <div className="container shadow">
-        //     <h3 className="text-center">Add New Item</h3>
-        //     <div className="container mt-3">
-        //         <form onSubmit={handleNew}>
-        //             <select required className="form-control" onChange={handleChange} name="service_type">
-        //                 <option>Choose Vendor Type</option>
-        //                 <option value="venue">Venue</option>
-        //                 <option value="catering">Catering</option>
-        //                 <option value="organizer">Organizer</option>
-        //             </select>
-        //             <div className="form-group">
-        //                 <input
-        //                     className="form-control"
-        //                     label="Name"
-        //                     name="name"
-        //                     type="text"
-        //                     placeholder="Input Name"
-        //                     onChange={handleChange}
-        //                     required
-        //                 />
-        //                 <input
-        //                     className="form-control"
-        //                     label="Description"
-        //                     name="description"
-        //                     type="text"
-        //                     placeholder="Input Description"
-        //                     onChange={handleChange}
-        //                     required
-        //                 />
-        //                 <input
-        //                     className="form-control"
-        //                     label="Email"
-        //                     name="email"
-        //                     type="email"
-        //                     placeholder="Input Email"
-        //                     onChange={handleChange}
-        //                     required
-        //                 />
-        //                 <input
-        //                     className="form-control"
-        //                     label="Address"
-        //                     name="address"
-        //                     type="text"
-        //                     placeholder="Input Address"
-        //                     onChange={handleChange}
-        //                     required
-        //                 />
-        //                 <input
-        //                     className="form-control"
-        //                     label="Phone Number"
-        //                     name="phone_number"
-        //                     type="text"
-        //                     placeholder="Input Phone Number"
-        //                     onChange={handleChange}
-        //                     required
-        //                 />
-        //                 <input
-        //                     className="form-control"
-        //                     label="Price"
-        //                     name="price"
-        //                     type="number"
-        //                     placeholder="Input Price"
-        //                     onChange={handleChange}
-        //                     required
-        //                 />
-        //                 {vendorType === 'venue' ?
-        //                 <><select required className="form-control" onChange={handleChange} name="type">
-        //                     <option default value="">Choose Venue Type</option>
-        //                     <option value="indoor">Indoor</option>
-        //                     <option value="outdoor">Outdoor</option>
-        //                 </select>
-        //                 <input
-        //                     className="form-control"
-        //                     label="Type"
-        //                     name="capacity"
-        //                     type="number"
-        //                     placeholder="Input Capacity"
-        //                     onChange={handleChange}
-        //                     required
-        //                 /></>
-        //                 : ""
-        //                 }
-        //                 <input
-        //                     className="form-control"
-        //                     label="Avatar"
-        //                     name="avatar"
-        //                     type="text"
-        //                     placeholder="Input Photo"
-        //                     onChange={handleChange}
-        //                     required
-        //                 />
-        //                 <button type="submit" className="btn btn-primary">
-        //                     Submit
-        //                 </button>
-        //             </div>
-        //         </form>
-        //         <button className="btn btn-info" onClick={(e) => handleCancel(e)}>Cancel</button>
-        //     </div>
-        // </div>
-
         <div>
             <div class="antialiased text-gray-900">
                 <div class="mx-4 card bg-white p-10 md:rounded-lg my-8 mx-auto" style={{ width: 600 }}>
@@ -173,9 +95,11 @@ const AddNew = () => {
                             type="number"
                             onChange={handleChange}
                             required />
-                        <input placeholder="Photo Url" class="border p-2 w-full mt-3" name="avatar"
-                            type="text"
-                            onChange={handleChange}
+                        <input placeholder="Photo Url" class="border p-2 w-full mt-3" 
+                            name="avatar"
+                            type="file"
+                            onChange={handlePhoto}
+                            style={{overflow: "hidden"}}
                             required />
 
 
@@ -210,6 +134,9 @@ const AddNew = () => {
                             <button type="submit" class=" w-full bg-blue-600 shadow-lg text-white px-4 py-2 hover:bg-blue-700 mt-8 text-center font-semibold focus:outline-none ">Submit</button>
                         </div>
                     </form>
+                        <div class="submit">
+                            <button type="button" onClick={handleCancel} class=" w-full bg-gray-900 shadow-lg text-white px-4 py-2 hover:bg-blue-700 mt-8 text-center font-semibold focus:outline-none ">Cancel</button>
+                        </div>
                 </div>
             </div>
         </div>

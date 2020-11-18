@@ -12,10 +12,10 @@ module.exports = {
         type: Sequelize.STRING
       },
       description: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       address: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       email: {
         type: Sequelize.STRING
