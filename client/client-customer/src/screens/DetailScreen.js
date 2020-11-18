@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Avatar } from "react-native-elements";
-import { StyleSheet,Image, ImageBackground, View } from 'react-native'
+import { StyleSheet, Image, ImageBackground, View } from 'react-native'
 import { Button, Divider, List, Text } from 'react-native-paper'
 import { useDispatch } from 'react-redux'
 import firebaseSDK from '../firebase'
@@ -18,10 +18,10 @@ export default function ProfileScreen(props) {
 
   const handlePress = () => setExpanded(!expanded);
   const handleChat = () => {
-    console.log(data.User, "<><><><><><><><><"); 
-    navigation.navigate('ChatRoom', { vendorEmail:data.User.email, name:data.User.email })
+    console.log(data.User, "<><><><><><><><><");
+    navigation.navigate('ChatRoom', { vendorEmail: data.User.email, name: data.User.email })
   }
-  const handleConfirm = () =>{
+  const handleConfirm = () => {
     showSwal(true)
   }
 
@@ -30,7 +30,7 @@ export default function ProfileScreen(props) {
   };
   const handleBook = () => {
     console.log(id, "chat")
-    dispatch(bookNow({ VendorId: id, vendor_type:data.service_type, subtotal: data.price }, success))
+    dispatch(bookNow({ VendorId: id, vendor_type: data.service_type, subtotal: data.price }, success))
 
   }
   const success = () => {
@@ -39,73 +39,85 @@ export default function ProfileScreen(props) {
     hideAlert()
   }
   return (
-    <View style={{ flex: 1, alignItems: 'center', flexDirection: 'column' }}> 
+    <View style={{ flex: 1, alignItems: 'center', flexDirection: 'column' }}>
 
-        <AwesomeAlert
-          show={swal}
-          showProgress={true}
-          title="Book this service"
-          // message={message.message}
-          closeOnTouchOutside={true}
-          closeOnHardwareBackPress={false}
-          showCancelButton={true}
-          showConfirmButton={true}
-          cancelText="Cancel"
-          confirmText="Yes, Book now"
-          confirmButtonColor="green"
-          onCancelPressed={() => {
-            hideAlert();
-          }}
-          onConfirmPressed={() => {
-            handleBook();
-          }}
-        />
+      <AwesomeAlert
+        show={swal}
+        showProgress={true}
+        title="Book this service"
+        // message={message.message}
+        closeOnTouchOutside={true}
+        closeOnHardwareBackPress={false}
+        showCancelButton={true}
+        showConfirmButton={true}
+        cancelText="Cancel"
+        confirmText="Yes, Book now"
+        confirmButtonColor="green"
+        onCancelPressed={() => {
+          hideAlert();
+        }}
+        onConfirmPressed={() => {
+          handleBook();
+        }}
+      />
       <View style={styles.container}>
-        <ImageBackground source={ {uri: `${data.avatar}`}} blurRadius={2} style={styles.image}>
+        <ImageBackground source={{ uri: `${data.avatar}` }} blurRadius={2} style={styles.image}>
           <View
             style={{
-              alignSelf:'center',  
-              width:120,
-              height:120,
-              borderRadius:100,
-              backgroundColor:'blue',
-              overflow:'hidden',
-              justifyContent:'center'
+              alignSelf: 'center',
+              width: 120,
+              height: 120,
+              borderRadius: 100,
+              backgroundColor: 'blue',
+              overflow: 'hidden',
+              justifyContent: 'center'
             }}
           >
-            <Image 
-              style={{width:"200%",height:"200%", alignSelf:'center'}}
+            <Image
+              style={{ width: "200%", height: "200%", alignSelf: 'center' }}
               resizeMode="cover"
               source={{
                 uri: `${data.avatar}`
               }}
-              /> 
+            />
           </View>
         </ImageBackground>
       </View>
-
+      <View style={{ flexDirection: 'row', marginTop: 20 }}>
+        <Button color="white" style={{ borderWidth: 2, backgroundColor: "#808C88" }} onPress={handleConfirm}>Book Now</Button>
+        <Button color="white" style={{ marginLeft: 10, borderWidth: 2, width: 120, backgroundColor: "#808C88" }} onPress={handleChat}>Chat</Button>
+      </View>
       <View style={{ paddingHorizontal: 20, width: '100%', }}>
-        <List.Section titleStyle={{ fontSize: 20 }} title={data.title}>
+        <List.Section titleStyle={{ fontSize: 16, fontWeight: "bold" }}>
           <List.Accordion
-            title="Detail"
+            title={data.name} titleStyle={{ fontSize: 18, fontWeight: "bold" }}
           >
             <View >
               <View style={{}}>
                 <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Phone Number: </Text>
                 <Text>{data.phone_number}</Text>
               </View>
+              <Divider style={{ marginVertical: 5 }} />
+              {data.service_type === "venue" ?
+                <View>
+                  <View>
+                    <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Type: </Text>
+                    <Text>{data.type}</Text>
+                  </View>
+                  <Divider style={{ marginVertical: 5 }} />
+                  <View>
+                    <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Capacity: </Text>
+                    <Text>{data.capacity}</Text>
+                  </View>
+                </View>
+                : null
+              }
+              <Divider style={{ marginVertical: 5 }} />
               <View>
-                <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Type: </Text>
-                <Text>{data.type}</Text>
+                <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Price: </Text>
+                <Text>Rp. {data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</Text>
               </View>
-              <View>
-                <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Capacity: </Text>
-                <Text>{data.capacity}</Text>
-              </View>
-              <View>
-                <Text style={{ fontSize: 15, fontWeight: 'bold' }}>price: </Text>
-                <Text>{data.price}</Text>
-              </View>
+              <Divider style={{ marginVertical: 5 }} />
               <View>
                 <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Address: </Text>
                 <Text>{data.address}</Text>
@@ -114,14 +126,11 @@ export default function ProfileScreen(props) {
           </List.Accordion>
         </List.Section>
         <Divider style={{ marginVertical: 5 }} />
-        <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Decription: </Text>
+        <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Description: </Text>
         <Text>{data.description}</Text>
-        <Divider style={{ marginVertical: 5 }} />
+        <Divider style={{ marginVertical: 20 }} />
       </View>
-      <View style={{flexDirection:'row', marginTop:20}}>
-        <Button color="#81A68A" onPress={handleConfirm}>Book Now</Button>
-        <Button color="#81A68A" style={{marginLeft:10}} onPress={handleChat}>Chat</Button>
-      </View>
+
       <View>
         {/* <Text>{JSON.stringify(data)}</Text> */}
       </View>
@@ -129,18 +138,18 @@ export default function ProfileScreen(props) {
   );
 }
 const styles = StyleSheet.create({
-  container: { 
-    flex:1,
+  container: {
+    flex: 1,
     // marginLeft:-400,
-    width:'100%',
-    maxHeight:250,
-    flexDirection: "column", 
-    justifyContent:'center', 
-    alignContent:'center'
+    width: '100%',
+    maxHeight: 250,
+    flexDirection: "column",
+    justifyContent: 'center',
+    alignContent: 'center'
   },
-  image: { 
-    flex:1,
-    width:"100%",
+  image: {
+    flex: 1,
+    width: "100%",
     resizeMode: "cover",
     justifyContent: "center",
     alignSelf: "center"

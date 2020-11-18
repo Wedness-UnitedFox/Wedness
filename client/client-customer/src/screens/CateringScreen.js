@@ -17,7 +17,6 @@ export default function HomeScreen() {
 
   return (
     <ScrollView style={styles.container}>
-      <Text>Caterings</Text>
       <Divider />
       { 
         dataCatering?.length == 0 ? null :

@@ -20,8 +20,6 @@ export default function HomeScreen() {
 
   return (
     <ScrollView style={styles.container}>
-      <Text>Venues</Text>
-      <Divider />
       { 
         dataVenues?.length == 0 ? null :
           dataVenues.map((venue, i) => (

@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-community/async-storage'
 import React, { useEffect, useState } from 'react'
-import { Linking, View } from 'react-native'
+import { StyleSheet, ImageBackground, Linking, View } from 'react-native'
 import { Button, Card, Paragraph, Text, TextInput, Title } from 'react-native-paper'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useDispatch } from 'react-redux'
@@ -37,23 +37,23 @@ export default function ProfileScreen(props) {
 
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => { 
+    const unsubscribe = navigation.addListener('focus', () => {
       fetchData()
     });
 
     return unsubscribe;
   }, [navigation]);
 
-  const fetchData = () =>{ 
+  const fetchData = () => {
     invitationRef
       .doc(firebaseSDK.uid)
       .get()
       .then(doc => {
-        if (doc.exists) {  
-          let data = doc.data() 
+        if (doc.exists) {
+          let data = doc.data()
           console.log(data.date.time, "<<<<<<<<<<");
           // let newDate = new Date( data.date.t.seconds * 1000 + data.date.t.nanoseconds/1000000) 
-          let newData = { ...data } 
+          let newData = { ...data }
           setData(newData)
           setIsDataExist(true)
         } else {
@@ -72,6 +72,9 @@ export default function ProfileScreen(props) {
     })
     AsyncStorage.clear()
     navigation.replace('Login')
+  }
+  const goToInvitation = () => {
+    navigation.push('Invitation', { data })
   }
 
   const checkData = () => {
@@ -96,17 +99,17 @@ export default function ProfileScreen(props) {
     if (data.brideName === "" || data.groomName === "" || data.location === "" || data.date === "" || Object.keys(data).length < 4) {
       console.log("empty input");
     } else {
-      const newData = {...data, date:(data.date.toString()).toString()}
+      const newData = { ...data, date: (data.date.toString()).toString() }
       console.log({ data });
       invitationRef
         .doc(firebaseSDK.uid)
         .set(newData)
         .then((ref) => {
 
-    setShowForm(false)
+          setShowForm(false)
           checkData()
         })
-        
+
     }
   }
   const handleCancel = () => {
@@ -130,8 +133,8 @@ export default function ProfileScreen(props) {
             </Card>
           </View> :
           <>
-          <Text style={{alignSelf:'center'}}>asdada/{firebaseSDK.uid}</Text>
-          <TouchableOpacity onPress={() => {
+            {/* <Text style={{alignSelf:'center'}}>asdada/{firebaseSDK.uid}</Text> */}
+            {/* <TouchableOpacity onPress={() => {
                 let url = `whatsapp://send?text=asdada/${firebaseSDK.uid}`;
                 Linking.openURL(url).then((data) => {
                   console.log('open whatsapp', data)
@@ -140,13 +143,13 @@ export default function ProfileScreen(props) {
                 });
               }} >
                 <Text>Share</Text>
-                <AntDesign name="sharealt" size={24} color="black" />
-            {/* <Icon name='logo-whatsapp' style={{color: '#395894', fontSize: 30, marginRight: 10}}/> */}
-          </TouchableOpacity>
-          <Button onPress={() => setShowForm(true)}>Edit data</Button>
+                <AntDesign name="sharealt" size={24} color="black" /> 
+          </TouchableOpacity> */}
+            <Button onPress={() => goToInvitation()}>View Invitation Card</Button>
+            <Button onPress={() => setShowForm(true)}>Edit data</Button>
           </>
-          
-          }
+
+        }
         {
           !showForm ? null :
             <Card style={{ width: '100%', padding: 10, paddingTop: 15 }}>
@@ -174,7 +177,7 @@ export default function ProfileScreen(props) {
                   label="Date"
                   mode="outlined"
                   editable={false}
-                  value={(new Date(data.date)).toLocaleDateString()}  
+                  value={(new Date(data.date)).toLocaleDateString()}
                 // defaultValue={`${(new Date(data?.date))?.getMonth()}`}  value={data?.date? "":data?.date?.toLocaleString('id')} 
                 />
                 <Button style={{ justifyContent: 'center', }} onPress={showDatePicker} >Pick Date</Button>
@@ -203,8 +206,15 @@ export default function ProfileScreen(props) {
         }
         {/* </View> */}
         {/* <Text style={{fontSize:15}}> Input your wedding data to create Invitation</Text> */}
-
+        
       </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  image: {
+    flex: 1,
+    justifyContent: "center"
+  }
+})

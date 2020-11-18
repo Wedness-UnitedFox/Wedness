@@ -20,7 +20,6 @@ export default function HomeScreen() {
 
   return (
     <ScrollView style={styles.container}>
-      <Text>Wedding Organizers</Text>
       <Divider />
       { 
         dataOrganizer?.length == 0 ? null :

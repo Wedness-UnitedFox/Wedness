@@ -100,7 +100,7 @@ export default function PlanScreen({ navigation }) {
         }}
       />
       <View style={styles.vendorContainer}>
-        <Text style={{ fontSize: 25, textAlign: "center", fontWeight:"bold" }}>Your Plan</Text>
+        <Text style={{ fontSize: 25, textAlign: "center", fontWeight:"bold",color:"white", paddingTop:20, paddingBottom:10,backgroundColor:"#81A68A"}}>Your Plan</Text>
         <Divider style={styles.divider} />
         {
           dataPlan.length === 0 ?
@@ -116,7 +116,7 @@ export default function PlanScreen({ navigation }) {
                   <View style={{ flex: 1, flexDirection: 'row', minHeight: 200 }}>
                     <View style={{ flex: 2 }}>
                       <Image
-                        style={{ width: "100%", height: "100%", resizeMode: 'cover' }}
+                        style={{ width: "100%", height: "100%", resizeMode: 'cover'  }}
                         source={{
                           uri: `${plan.Vendor?.avatar}`,
                         }}
@@ -137,7 +137,7 @@ export default function PlanScreen({ navigation }) {
                   <Divider style={{ marginVertical: 8 }} />
                 </View>
               ))}
-              <Button  style={{ width: '80%', alignSelf: 'center', marginVertical: 20 }} color="blue" mode="outlined" onPress={() => showConfirm('checkout')} >Checkout</Button>
+              <Button  style={{ width: '80%', alignSelf: 'center', marginVertical: 20 }} color="#81A68A" mode="outlined" onPress={() => showConfirm('checkout')} >Checkout</Button>
             </ScrollView>
         }
       </View>

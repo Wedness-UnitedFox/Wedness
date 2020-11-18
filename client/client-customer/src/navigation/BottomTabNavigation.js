@@ -38,7 +38,7 @@ export default function BottomTab() {
         options={{
           tabBarLabel: 'Home',
           tabBarIcon: ({ color }) => (
-            <AntDesign name="home" size={24} color="white" />
+            <FontAwesome name="home" size={24} color="white" />
           ),
         }}
       />

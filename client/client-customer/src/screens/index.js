@@ -9,6 +9,9 @@ import Register from './RegisterScreen'
 import Venue from './VenueSreen'
 import Catering from './CateringScreen'
 import Organizer from './OrganizerScreen'
+import Invitation from './InvitationScreen'
+
+
 
 
 export const HomeScreen = Home
@@ -22,3 +25,4 @@ export const ProfileScreen = Profile
 export const DetailScreen = Detail
 export const PlanScreen = Plan
 export const RegisterScreen = Register
+export const InvitationScreen = Invitation

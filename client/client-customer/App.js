@@ -1,43 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { DefaultTheme,configureFonts, Provider as PaperProvider } from 'react-native-paper';
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Provider } from 'react-redux';
 import store from './src/store';
 
+
 import { ChatScreen, LoginScreen, DetailScreen, RegisterScreen } from './src/screens'
 import HomeNavigation from './src/navigation/BottomTabNavigation'
 const Stack = createStackNavigator();
 export default function App() {
-
-  const fontConfig = {
-    default: {
-      regular: {
-        fontFamily: 'PlayfairDisplay-Regular',
-        fontWeight: 'normal',
-      },
-      medium: {
-        fontFamily: 'PlayfairDisplay-Medium',
-        fontWeight: 'normal',
-      },
-      light: {
-        fontFamily: 'PlayfairDisplay-Bold',
-        fontWeight: 'normal',
-      },
-      thin: {
-        fontFamily: 'PlayfairDisplay-SemiBold',
-        fontWeight: 'normal',
-      },
-    },
-  };
-  
-  const theme = {
-    ...DefaultTheme,
-    fonts: configureFonts(fontConfig),
-  };
-  
   return (
     <Provider store={store}>
       <PaperProvider theme={theme}>
@@ -78,8 +52,8 @@ const theme = {
   roundness: 2,
   colors: {
     ...DefaultTheme.colors,
-    primary: '#F2D0D9',
-    accent: '#97A6A0',
+    primary: 'black',
+    accent: '#9dc9a8',
     // background: '#F2D0D9' 
   },
 };
