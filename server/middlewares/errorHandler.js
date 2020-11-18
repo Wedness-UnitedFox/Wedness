@@ -2,22 +2,33 @@ function errorHandler (err, req, res, next) {
     let msg = ''
     let code = ''
     // console.log("ERROR HANDLER");
-    console.log(err, "err from err Handler")
+    console.log(err.errors, "err from err Handler", err.name)
     // console.log(err,"<--ERROR HANDLER");
-    switch(err.name) {
-        case 'SequelizeValidationError':
             let errors = [];
+    switch(err.name) {
+        case 'SequelizeValidationError': 
             err.errors.forEach(el => {
                 errors.push(el.message);
             }); 
             code = 400
-            // msg = `${errors}`
-            msg = `${err.errors[0].message}`
-            break;
+            // msg = `${errors}` 
+            msg = `${err.errors[0].message}` 
+            break
+        case 'SequelizeUniqueConstraintError':  
+            // err.errors.forEach(el => {
+            //     errors.push(el.message);
+            // }); 
+            code = 400
+            // msg = `${errors}` 
+            msg = `${err.errors[0].message}` 
+            if(err.errors[0].message === 'email must be unique'){
+                msg='Email is already registered!'
+            }
+
         // case 'customMessage':
         //     code = 403
         //     msg = err.msg
-        //     break;
+            break;
         case 'Wrong Email or Password':
             code = 404
             msg = 'Wrong Email or Password'

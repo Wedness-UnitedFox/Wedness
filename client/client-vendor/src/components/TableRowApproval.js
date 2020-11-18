@@ -8,6 +8,7 @@ const TableRowApproval = (props) => {
     const dispatch = useDispatch()
 
     const handleApproval = (id) => {
+        console.log("approving");
         dispatch(approveBookings(id))
     }
     return (
@@ -23,7 +24,7 @@ const TableRowApproval = (props) => {
                 <span class="px-16 py-2">{data.User.name}</span>
             </td>
             <td>
-                <button disabled={!data.isApproved ? false : true} class="bg-yellow-900 items-center text-white px-4 py-2 border rounded-md hover:bg-yellow-700 hover:text-black" onClick={() => { handleApproval(data.id) }}>Approve</button>
+                <button disabled={!data.isApproved ? false : true} class="bg-yellow-900 items-center text-white px-4 py-2 border rounded-md hover:bg-yellow-700 hover:text-black" onClick={() => {handleApproval(data.id)}}>Approve</button>
             </td>
         </tr>
     )

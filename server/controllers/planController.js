@@ -2,39 +2,63 @@
 const { Checkout, Venue, Catering, Organizer, User, sequelize } = require("../models")
 const { Op } = require('sequelize')
 
-class CheckoutController { 
-    static postCheckout(req,res,next){  // input => VendorId(services), vendor_type, subtotal
+class CheckoutController {
+    static postCheckout(req, res, next) {  // input => VendorId(services), vendor_type, subtotal
         req.body.UserId = req.userData.id
         Checkout.create(req.body)
-            .then(result=>{
-                res.status(201).json(result) 
+            .then(result => {
+                res.status(201).json(result)
             })
-            .catch(err=>{
+            .catch(err => {
                 // console.log(err);
                 next(err)
-            }) 
+            })
     }
 
-    static async getCheckouts(req,res,next){   
+    static async getCheckouts(req, res, next) {
         try {
             let plans = await Checkout.findAll({
                 where: {
-                    isPaid: false
-                }
-            })   
-            for(const plan of plans){
+                    [Op.and]: [
+                        { UserId: req.userData.id },
+                        { isPaid: false }
+                    ],
+                },
+            })
+            for (const plan of plans) {
                 let vendor
-                if(plan.vendor_type === 'venue'){ 
-                    vendor = await Venue.findByPk(plan.VendorId)
-                }else if(plan.vendor_type === 'organizer'){ 
-                    vendor = await Organizer.findByPk(plan.VendorId)
-                }else { 
-                    vendor = await Catering.findByPk(plan.VendorId)
-                } 
-                plan.dataValues.Vendor = await vendor  
-            }  
-            await res.status(200).json(plans) 
-        } catch (err) { 
+                if (plan.vendor_type === 'venue') {
+                    vendor = await Venue.findByPk(plan.VendorId, {
+                        include: [
+                            {
+                                model: User,
+                                attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
+                            },
+                        ]
+                    })
+                } else if (plan.vendor_type === 'organizer') {
+                    vendor = await Organizer.findByPk(plan.VendorId, {
+                        include: [
+                            {
+                                model: User,
+                                attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
+                            },
+                        ]
+                    })
+                } else {
+                    vendor = await Catering.findByPk(plan.VendorId, {
+                        include: [
+                            {
+                                model: User,
+                                attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
+                            },
+                        ]
+                    })
+                }
+                plan.dataValues.Vendor = await vendor
+            }
+            await res.status(200).json(plans)
+        } catch (err) {
             // next(err)
         }
     }
@@ -50,28 +74,28 @@ class CheckoutController {
     //         })
     //         .catch(err=>next(err))
     // } 
- 
-    static deleteCheckout(req,res,next){ 
+
+    static deleteCheckout(req, res, next) {
         Checkout.destroy({
-            where:{
-                id:req.params.id
-            } 
-        }).then(result=>{
-            if(result){
-                res.status(200).json({msg:'Deleted Successfully'})
-            }else{
-                next({name:"Not Found"})
+            where: {
+                id: req.params.id
             }
-        }).catch(err=>  
+        }).then(result => {
+            if (result) {
+                res.status(200).json({ msg: 'Deleted Successfully' })
+            } else {
+                next({ name: "Not Found" })
+            }
+        }).catch(err =>
             next(err)
-            )
+        )
     }
 
     // static async getCheckoutForVendor2(req, res, next){
     //     const caterings = await Catering.findAll({where: {UserId: req.userData.id}})
     //     const venues = await Venue.findAll({where: {UserId: req.userData.id}})
     //     const organizers = await Organizer.findAll({where: {UserId: req.userData.id}})
-        
+
     //     // console.log({caterings, venues, organizers}, "from vendor")
 
     //     const checkouts = await Checkout.findAll({
@@ -83,9 +107,9 @@ class CheckoutController {
     //             {
     //                 model: Venue,
     //                 where: {
-                    
+
     //                     UserId: req.userData.id  
-                                         
+
     //                 },
     //                 attributes: {
     //                     exclude: ["id", "description", "address", "email", "phone_number", "price", "type", "capacity", "service_type", "UserId"]},
@@ -107,22 +131,22 @@ class CheckoutController {
     //             }
     //         ]
     //     })
-        // include: [
-            // {
-            // model: Photo,
-            // where: {
-            //     [Op.and]: [
-            //         { vendor_id: req.params.id }, 
-            //         { vendor_type: 'venue' }
-            //     ],                   
-            // },
-            // required: false
-        // }, 
-        // {
-        //     model: User,
-        //     attributes: {exclude: ['password']},
-        // }]
-        // console.log(checkouts, "from here")
+    // include: [
+    // {
+    // model: Photo,
+    // where: {
+    //     [Op.and]: [
+    //         { vendor_id: req.params.id }, 
+    //         { vendor_type: 'venue' }
+    //     ],                   
+    // },
+    // required: false
+    // }, 
+    // {
+    //     model: User,
+    //     attributes: {exclude: ['password']},
+    // }]
+    // console.log(checkouts, "from here")
     //     let result = []
     //     for(const checkout of checkouts){
     //         if(checkout.vendor_type === 'venue'){
@@ -155,74 +179,76 @@ class CheckoutController {
 
 
 
-    static async getCheckoutForVendor(req, res, next){
-        const caterings = await Catering.findAll({where: {UserId: req.userData.id}})
-        const venues = await Venue.findAll({where: {UserId: req.userData.id}})
-        const organizers = await Organizer.findAll({where: {UserId: req.userData.id}})
-         
-        const checkouts = await Checkout.findAll({include:[
-            {
-                model: User,
-                attributes: {exclude: ['password', 'createdAt', 'updatedAt']}
-            },
-        ]})
-        
+    static async getCheckoutForVendor(req, res, next) {
+        const caterings = await Catering.findAll({ where: { UserId: req.userData.id } })
+        const venues = await Venue.findAll({ where: { UserId: req.userData.id } })
+        const organizers = await Organizer.findAll({ where: { UserId: req.userData.id } })
+
+        const checkouts = await Checkout.findAll({
+            include: [
+                {
+                    model: User,
+                    attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
+                },
+            ]
+        })
+
         let result = []
-        for(const checkout of checkouts){
-            if(checkout.vendor_type === 'venue'){ 
-                for(const venue of venues){
-                    if(checkout.VendorId === venue.id || !checkout.isApproved){
+        for (const checkout of checkouts) {
+            if (checkout.vendor_type === 'venue') {
+                for (const venue of venues) {
+                    if (checkout.VendorId === venue.id || !checkout.isApproved) {
                         checkout.dataValues.Service_name = venue.name
                         result.push(checkout)
                     }
-                }                
-            }else if(checkout.vendor_type === 'organizer'){
-                for(const organizer of organizers){
-                    if(checkout.VendorId === organizer.id || !checkout.isApproved){
+                }
+            } else if (checkout.vendor_type === 'organizer') {
+                for (const organizer of organizers) {
+                    if (checkout.VendorId === organizer.id || !checkout.isApproved) {
                         checkout.dataValues.Service_name = organizer.name
                         result.push(checkout)
                     }
-                }                
-            }else {
-                for(const catering of caterings){
-                    if(checkout.VendorId === catering.id || !checkout.isApproved){
+                }
+            } else {
+                for (const catering of caterings) {
+                    if (checkout.VendorId === catering.id || !checkout.isApproved) {
                         checkout.dataValues.Service_name = catering.name
                         result.push(checkout)
                     }
                 }
             }
-        } 
+        }
 
         // console.log(result, "from getCheckoutforVendor")
         res.status(200).json(result)
     }
 
-    static approveCheckoutForVendor(req, res, next){
-        Checkout.update({isApproved: true}, {
+    static approveCheckoutForVendor(req, res, next) {
+        Checkout.update({ isApproved: true }, {
             where: {
                 id: req.params.id
             }
         })
-        .then(result =>{
-            if(result) res.status(200).json({msg:'Vendor has approved this'})
-        })
-        .catch(err => next(err))
+            .then(result => {
+                if (result) res.status(200).json({ msg: 'Vendor has approved this' })
+            })
+            .catch(err => next(err))
     }
 
-    static async payCheckoutForCustomer(req, res, next){
+    static async payCheckoutForCustomer(req, res, next) {
         // console.log('masuk static fungsi')
         const t = await sequelize.transaction()
         try {
             const userCheckouts = await User.findByPk(req.userData.id, {
                 include: [Checkout],
             })
-            for( const plan of userCheckouts.Checkouts ) {
+            for (const plan of userCheckouts.Checkouts) {
                 await plan.update({
-                        isPaid: true
-                    },{
-                        transaction: t
-                    })
-            }; 
+                    isPaid: true
+                }, {
+                    transaction: t
+                })
+            };
             t.afterCommit(() => {
                 res.status(200).json({ msg: 'Checkout completed' })
             })

@@ -52,8 +52,8 @@ export default function Conversations(props) {
                     tmp.push(msg.user.vendor)
                 }
                 console.log(tmp)
-                setConversations(tmp)
             }) 
+            setConversations(tmp)
     }, [messages])
 
     useEffect(() => {
@@ -71,10 +71,15 @@ export default function Conversations(props) {
 
     return (
         <View style={styles.container}>
+            <View style={{paddingBottom:15}}>
+                <Text style={{textAlign:"center", fontSize:20}}>Conversations</Text>
+            </View>
+            <Divider />
             <FlatList
                 data={conversations}
                 keyExtractor={item => item._id}
                 renderItem={({ item }) => (
+                    <>
                     <TouchableOpacity key={item._id} onPress={() => openChat(item)}>
                         <View style={styles.row}>
                             <View style={styles.content}>
@@ -87,6 +92,8 @@ export default function Conversations(props) {
                             </View>
                         </View>
                     </TouchableOpacity>
+                    <Divider style={{marginVertical:5}}/>
+                    </>
                 )}
                 ItemSeparatorComponent={() => <Divider />}
             />

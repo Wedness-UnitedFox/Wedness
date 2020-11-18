@@ -32,7 +32,7 @@ export const login = (inputLogin, cb) => {
     };
 };
 
-export const register = (inputRegister, cb) => {
+export const register = (inputRegister,sukses, error) => {
     console.log("masuk register", inputRegister);
     return (dispatch) => {
         axios({
@@ -40,11 +40,14 @@ export const register = (inputRegister, cb) => {
             method: 'POST',
             data: inputRegister
         })
-        .then(({ data }) => {
-            console.log("Success in registering data", data)
-            cb()
-        })
-        .catch((err) => console.log("-----------error", err.response.data));
+            .then(({ data }) => {
+                console.log("Success in registering data", data)
+                sukses()
+            })
+            .catch((err) => {
+                error(err.response.data.msg)
+                console.log("-----------error", err.response.data)
+            })
     }
 }
 
@@ -133,11 +136,11 @@ export const fetchOrganizer = () => {
 };
 
 
-export const bookNow = (data, success) => { 
+export const bookNow = (data, success) => {
     return (dispatch, getState) => {
-        if(!data.subtotal || !data.vendor_type || !data.VendorId ) {
-            console.log("BOOK FAIL <-________________________"); 
-        } else{
+        if (!data.subtotal || !data.vendor_type || !data.VendorId) {
+            console.log("BOOK FAIL <-________________________");
+        } else {
             AsyncStorage.getItem('access_token')
                 .then(value => {
                     // console.log(value);
@@ -157,22 +160,22 @@ export const bookNow = (data, success) => {
                     console.log(err.response.data);
                 })
         }
-    } 
+    }
 };
 
 export const fetchPlans = () => {
     return (dispatch, getState) => {
         AsyncStorage.getItem('access_token')
-            .then(value => { 
+            .then(value => {
                 console.log(value, '<<<<<<<<<<<<<<<AccessToken');
                 return axios({
                     url: apiUrl + `/user/plan`,
                     method: "GET",
-                    headers: { access_token: value }, 
+                    headers: { access_token: value },
                 })
             })
             .then(({ data }) => {
-                console.log(data, "<--- RESULT"); 
+                console.log(data, "<--- RESULT");
                 dispatch({
                     type: SET_PLANS,
                     payload: {
@@ -189,31 +192,58 @@ export const fetchPlans = () => {
 export const deletePlan = (id) => {
     return (dispatch, getState) => {
         AsyncStorage.getItem('access_token')
-            .then(value => { 
+            .then(value => {
                 console.log(value, '<<<<<<<<<<<<<<<AccessToken  ', id);
 
                 return axios({
                     url: apiUrl + `/user/plan/${id}`,
                     method: "DELETE",
-                    headers: { access_token: value }, 
+                    headers: { access_token: value },
                 })
             })
             .then(({ data }) => {
-                console.log(data, "<--- RESULT"); 
-                let {plans} = getState().Reducer
+                console.log(data, "<--- RESULT");
+                let { plans } = getState().Reducer
                 // console.log(plans);
-                let newPlans = plans.filter(plan=>plan.id !== id) 
-                console.log(plans,"<---->",newPlans);
-                
+                let newPlans = plans.filter(plan => plan.id !== id)
+                console.log(plans, "<---->", newPlans);
+
                 dispatch({
                     type: SET_PLANS,
                     payload: {
-                        data:newPlans
+                        data: newPlans
                     }
                 });
             })
             .catch(err => {
                 console.log(err.response.data);
+            })
+    }
+}
+
+export const checkout = () => {
+    return (dispatch, getState) => {
+        AsyncStorage.getItem('access_token')
+            .then(value => {
+                console.log(value, '<<<<<<<<<<<<<<<AccessToken  ', id);
+
+                return axios({
+                    url: apiUrl + `/user/plan/checkout`,
+                    method: "PUT",
+                    headers: { access_token: value },
+                })
+            }) 
+            .then(({ data }) => {
+                console.log(data, "<--- RESULT");
+                dispatch({
+                    type: SET_PLANS,
+                    payload: {
+                        data:[]
+                    }
+                });
+            })
+            .catch(err => {
+                console.log(err.response);
             })
     }
 }

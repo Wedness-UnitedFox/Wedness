@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1605630537549" clover="3.2.0">
-  <project timestamp="1605630537549" name="All files">
-    <metrics statements="444" coveredstatements="416" conditionals="123" coveredconditionals="96" methods="117" coveredmethods="104" elements="684" coveredelements="616" complexity="0" loc="444" ncloc="444" packages="6" files="24" classes="24"/>
+<coverage generated="1605663842402" clover="3.2.0">
+  <project timestamp="1605663842403" name="All files">
+    <metrics statements="446" coveredstatements="417" conditionals="123" coveredconditionals="96" methods="118" coveredmethods="104" elements="687" coveredelements="617" complexity="0" loc="446" ncloc="446" packages="6" files="24" classes="24"/>
     <package name="server">
-      <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <metrics statements="12" coveredstatements="11" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
       <file name="app.js" path="/home/zanadh/hacktiv8/3-phase/finalproject/wedness/server/app.js">
-        <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <metrics statements="12" coveredstatements="11" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="1" count="6" type="stmt"/>
         <line num="2" count="6" type="stmt"/>
         <line num="3" count="6" type="stmt"/>
@@ -15,6 +15,8 @@
         <line num="8" count="6" type="stmt"/>
         <line num="9" count="6" type="stmt"/>
         <line num="11" count="6" type="stmt"/>
+        <line num="13" count="6" type="stmt"/>
+        <line num="14" count="0" type="stmt"/>
         <line num="17" count="6" type="stmt"/>
       </file>
     </package>
@@ -30,7 +32,7 @@
         <line num="11" count="10" type="stmt"/>
         <line num="15" count="2" type="stmt"/>
         <line num="33" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="34" count="3" type="stmt"/>
+        <line num="34" count="1" type="stmt"/>
         <line num="35" count="1" type="stmt"/>
         <line num="37" count="1" type="stmt"/>
         <line num="39" count="0" type="stmt"/>
@@ -117,9 +119,9 @@
         <line num="182" count="1" type="stmt"/>
         <line num="183" count="1" type="stmt"/>
         <line num="187" count="1" type="stmt"/>
-        <line num="188" count="2" type="cond" truecount="3" falsecount="1"/>
-        <line num="189" count="2" type="stmt"/>
-        <line num="190" count="2" type="stmt"/>
+        <line num="188" count="1" type="cond" truecount="3" falsecount="1"/>
+        <line num="189" count="1" type="stmt"/>
+        <line num="190" count="1" type="stmt"/>
         <line num="197" count="1" type="stmt"/>
         <line num="201" count="0" type="stmt"/>
         <line num="207" count="0" type="cond" truecount="0" falsecount="2"/>
@@ -197,7 +199,7 @@
         <line num="14" count="12" type="stmt"/>
         <line num="18" count="3" type="stmt"/>
         <line num="36" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="37" count="4" type="stmt"/>
+        <line num="37" count="2" type="stmt"/>
         <line num="38" count="2" type="stmt"/>
         <line num="40" count="1" type="stmt"/>
         <line num="42" count="0" type="stmt"/>
@@ -282,7 +284,7 @@
         <line num="63" count="2" type="cond" truecount="1" falsecount="1"/>
         <line num="64" count="0" type="stmt"/>
         <line num="66" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="67" count="2" type="stmt"/>
+        <line num="67" count="1" type="stmt"/>
         <line num="70" count="1" type="stmt"/>
         <line num="73" count="4" type="cond" truecount="1" falsecount="1"/>
         <line num="75" count="4" type="stmt"/>
