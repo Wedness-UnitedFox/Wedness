@@ -12,12 +12,9 @@ const Home = () => {
     const { services, loading, error } = useSelector((state) => state)
 
     useEffect(() => {
+        dispatch(fetchServices())
         if (!localStorage.access_token) history.push('/login')
     }, [])
-
-    useEffect(() => {
-        dispatch(fetchServices())
-    }, [dispatch])
 
     console.log(services)
 

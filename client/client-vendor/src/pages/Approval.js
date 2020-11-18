@@ -35,6 +35,9 @@ export default function Approval() {
               Booked by
             </th>
             <th class="px-16 py-2 text-gray-300 text-center">
+              Booking Date
+            </th>
+            <th class="px-16 py-2 text-gray-300 text-center">
               Action
             </th>
           </tr>

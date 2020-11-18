@@ -7,17 +7,23 @@ import { SidebarData } from './SidebarData';
 import './Navbar.css';
 import { IconContext } from 'react-icons';
 import * as ImIcons from "react-icons/im";
+import firebase from "../services/firebase";
+import { useDispatch } from 'react-redux';
+import { userLogout } from '../store/actions/action';
 
 function Navbar() {
+  const dispatch = useDispatch()
   const history = useHistory()
   const [sidebar, setSidebar] = useState(false);
 
   const showSidebar = () => setSidebar(!sidebar);
 
-  const logoutHandler = (e) => {
-    e.preventDefault()
+  const logoutHandler = async () => {
     localStorage.clear()
-    history.push('/')
+    await firebase.auth().signOut()
+    dispatch(userLogout())
+    history.push('/login')
+
   }
 
   useEffect(() => {
@@ -34,7 +40,7 @@ function Navbar() {
         </div>
         <nav className={sidebar ? 'nav-menu active' : 'nav-menu'} style={{ zIndex: 9999 }}>
           <ul className='nav-menu-items' onClick={showSidebar}>
-            <img class="bg-stretch bg-center" style={{maxWidth:150}} src={myLogo} alt="" />
+            <img class="bg-stretch bg-center" style={{width:"200px", height:"200px"}} src={myLogo} alt="" />
             <li>
             </li>
             {SidebarData.map((item, index) => {
