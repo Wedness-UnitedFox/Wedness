@@ -1,112 +1,213 @@
 import AsyncStorage from '@react-native-community/async-storage'
-import React, { useState } from 'react'
-import { View, StyleSheet, TouchableOpacity, Image } from 'react-native'
-import { Button, Text } from 'react-native-paper'
+import React, { useEffect, useState } from 'react'
+import { Linking, View } from 'react-native'
+import { Button, Card, Paragraph, Text, TextInput, Title } from 'react-native-paper'
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useDispatch } from 'react-redux'
+import { AntDesign } from '@expo/vector-icons';
 import firebaseSDK from '../firebase'
-import * as ImagePicker from 'expo-image-picker'
-import * as Sharing from 'expo-sharing'
+import { LOGIN_FAIL } from '../store/actions';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-
+const invitationRef = firebaseSDK.invitationRef()
 export default function ProfileScreen(props) {
-  const [selectedImage, setSelectedImage] = useState(null)
-    const dispatch = useDispatch()
-    const {navigation} = props
-    const logout = () =>{
-      console.log("logout")
-      firebaseSDK.onLogout() 
-      dispatch({
-          type:"LOGOUT"
+  const dispatch = useDispatch()
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [isDataExist, setIsDataExist] = useState(false)
+  const [showForm, setShowForm] = useState(false)
+  const [data, setData] = useState({})
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date) => {
+    // let newDate = JSON.stringify(new Date(date)) 
+    setData({ ...data, date })
+    hideDatePicker();
+  };
+
+  useEffect(() => {
+    console.log(data, ">?>?>?");
+  }, [data])
+
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => { 
+      fetchData()
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+  const fetchData = () =>{ 
+    invitationRef
+      .doc(firebaseSDK.uid)
+      .get()
+      .then(doc => {
+        if (doc.exists) {  
+          let data = doc.data() 
+          console.log(data.date.time, "<<<<<<<<<<");
+          // let newDate = new Date( data.date.t.seconds * 1000 + data.date.t.nanoseconds/1000000) 
+          let newData = { ...data } 
+          setData(newData)
+          setIsDataExist(true)
+        } else {
+          setIsDataExist(false)
+          console.log("NO DATA");
+        }
       })
-      AsyncStorage.clear() 
-      navigation.replace('Login')
-    }
-
-    const openImagePickerAsync = async () => {
-      const permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
-  
-      if (permissionResult.granted === false) {
-        alert("Permission to access camera roll is required!");
-        return;
-      }
-  
-      const pickerResult = await ImagePicker.launchImageLibraryAsync();
-      console.log(pickerResult);
-      if (pickerResult.cancelled === true) {
-        return;
-      }
-      console.log(pickerResult.uri)
-      setSelectedImage({ localUri: pickerResult.uri });
-    }
-
-    const openShareDialogAsync = async () => {
-      if (!(await Sharing.isAvailableAsync())) {
-        alert(`Uh oh, sharing isn't available on your platform`);
-        return;
-      }
-  
-      await Sharing.shareAsync(selectedImage.localUri);
-    }; 
-
-    return (
-      <View style={{ flex: 1, marginTop:55, alignItems: 'center', flexDirection:"column"}}>
-        <Button style={{alignSelf:'flex-end', marginRight:20}} color="red" mode="outlined" onPress={logout}>LOGOUT</Button>
-        <View style={{width:'100%',flexDirection:"row", justifyContent:"center", paddingVertical:20}}>
-          <Text style={{fontSize:25}}>Hai </Text>
-          <Text style={{fontSize:26}}>{firebaseSDK.displayName?firebaseSDK.displayName: firebaseSDK.email}!</Text> 
-        </View>
-          {selectedImage?.localUri 
-          ? <View style={styles.container}>
-              <Image
-                source={{ uri: selectedImage.localUri }}
-                style={styles.thumbnail}
-              />
-              <TouchableOpacity onPress={openShareDialogAsync} style={styles.button}>
-                <Text style={styles.buttonText}>Share</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={openImagePickerAsync} style={styles.button}>
-                <Text style={styles.buttonText}>Pick another photo</Text>
-              </TouchableOpacity>
-            </View> 
-          
-          : <TouchableOpacity onPress={openImagePickerAsync} style={styles.button}>
-              <Text style={styles.buttonText}>Pick a photo</Text>
-            </TouchableOpacity>
-          }        
-      </View>
-    );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  logo: {
-    width: 305,
-    height: 159,
-    marginBottom: 20,
-  },
-  instructions: {
-    color: '#888',
-    fontSize: 18,
-    marginHorizontal: 15,
-    marginBottom: 10,
-  },
-  button: {
-    backgroundColor: 'blue',
-    padding: 20,
-    borderRadius: 5,
-  },
-  buttonText: {
-    fontSize: 20,
-    color: '#fff',
-  },
-  thumbnail: {
-    width: 300,
-    height: 300,
-    resizeMode: "contain"
   }
-});
+
+  const { navigation } = props
+  const logout = () => {
+    console.log("logout")
+    firebaseSDK.onLogout()
+    dispatch({
+      type: "LOGOUT"
+    })
+    AsyncStorage.clear()
+    navigation.replace('Login')
+  }
+  const goToInvitation = () =>{
+    navigation.push('Invitation', {data})
+  }
+
+  const checkData = () => {
+    invitationRef
+      .doc(firebaseSDK.uid)
+      .get()
+      .then(doc => {
+        if (doc.exists) {
+          console.log(doc.data(), "<<--");
+          let data = doc.data()
+          setIsDataExist(true)
+          let newData = { ...data, date: new Date(data.date) }
+          console.log(newData, "<<<<<<<<<<");
+          setData(newData)
+        } else {
+          setIsDataExist(false)
+          console.log("NO DATA");
+        }
+      })
+  }
+  const addDataHandle = () => {
+    if (data.brideName === "" || data.groomName === "" || data.location === "" || data.date === "" || Object.keys(data).length < 4) {
+      console.log("empty input");
+    } else {
+      const newData = {...data, date:(data.date.toString()).toString()}
+      console.log({ data });
+      invitationRef
+        .doc(firebaseSDK.uid)
+        .set(newData)
+        .then((ref) => {
+
+    setShowForm(false)
+          checkData()
+        })
+        
+    }
+  }
+  const handleCancel = () => {
+    // setData({})
+    setShowForm(false)
+  }
+  return (
+    <View style={{ flex: 1, marginTop: 55, alignItems: 'center', flexDirection: "column" }}>
+      <Button style={{ alignSelf: 'flex-end', marginRight: 20 }} color="red" mode="outlined" onPress={logout}>LOGOUT</Button>
+      <View style={{ width: '100%', flexDirection: "row", justifyContent: "center", paddingVertical: 20 }}>
+        <Text style={{ fontSize: 25 }}>Hai </Text>
+        <Text style={{ fontSize: 26 }}>{firebaseSDK.displayName ? firebaseSDK.displayName : firebaseSDK.email}!</Text>
+      </View>
+      <View style={{ height: "60%", justifyContent: 'flex-start', paddingVertical: 20, width: '100%', paddingHorizontal: 10 }}>
+
+        {Object.keys(data).length < 4 ?
+          <View style={{ alignItems: 'center', width: '100%' }}>
+            <Card style={{ width: '100%', alignItems: 'center', padding: 10 }}>
+              <Text style={{ fontSize: 20 }}>You dont have an E-Invitation</Text>
+              <Button onPress={() => setShowForm(true)}>Create one</Button>
+            </Card>
+          </View> :
+          <>
+          {/* <Text style={{alignSelf:'center'}}>asdada/{firebaseSDK.uid}</Text> */}
+          {/* <TouchableOpacity onPress={() => {
+                let url = `whatsapp://send?text=asdada/${firebaseSDK.uid}`;
+                Linking.openURL(url).then((data) => {
+                  console.log('open whatsapp', data)
+                }).catch(() => {
+                  console.log('App not installed')
+                });
+              }} >
+                <Text>Share</Text>
+                <AntDesign name="sharealt" size={24} color="black" /> 
+          </TouchableOpacity> */}
+          <Button onPress={() => goToInvitation()}>View Invitation Card</Button>
+          <Button onPress={() => setShowForm(true)}>Edit data</Button>
+          </>
+          
+          }
+        {
+          !showForm ? null :
+            <Card style={{ width: '100%', padding: 10, paddingTop: 15 }}>
+              <View style={{ flexDirection: 'row' }}>
+                <TextInput
+                  style={{ flex: 1, marginRight: 5 }}
+                  label="Bride Name"
+                  mode="outlined"
+                  defaultValue={data.brideName}
+                  // value={text}
+                  onChangeText={text => setData({ ...data, brideName: text })}
+                />
+                <TextInput
+                  style={{ flex: 1 }}
+                  label="Groom Name"
+                  defaultValue={data.groomName}
+                  mode="outlined"
+                  // value={text} 
+                  onChangeText={text => setData({ ...data, groomName: text })}
+                />
+              </View>
+              <View style={{ flexDirection: 'row' }}>
+                <TextInput
+                  style={{ flex: 1, marginRight: 5 }}
+                  label="Date"
+                  mode="outlined"
+                  editable={false}
+                  value={(new Date(data.date)).toLocaleDateString()}  
+                // defaultValue={`${(new Date(data?.date))?.getMonth()}`}  value={data?.date? "":data?.date?.toLocaleString('id')} 
+                />
+                <Button style={{ justifyContent: 'center', }} onPress={showDatePicker} >Pick Date</Button>
+              </View>
+              <TextInput
+                style={{ marginRight: 5 }}
+                label="Wedding Location"
+                defaultValue={data.location}
+                mode="outlined"
+                multiline={true}
+                numberOfLines={3}
+                onChangeText={text => setData({ ...data, location: text })}
+              />
+              <View style={{ flexDirection: 'row', justifyContent: 'center', padding: 10 }}>
+                <Button onPress={() => addDataHandle()}>Save Data</Button>
+                <Button onPress={() => handleCancel()}>Cancel</Button>
+              </View>
+              <DateTimePickerModal
+                isVisible={isDatePickerVisible}
+                mode="date"
+                onConfirm={handleConfirm}
+                onCancel={hideDatePicker}
+              />
+            </Card>
+
+        }
+        {/* </View> */}
+        {/* <Text style={{fontSize:15}}> Input your wedding data to create Invitation</Text> */}
+
+      </View>
+    </View>
+  );
+}

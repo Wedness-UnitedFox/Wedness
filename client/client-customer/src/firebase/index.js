@@ -48,8 +48,7 @@ class FirebaseSDK {
                 }
 
                 console.error(error);
-            });
-
+            }); 
     }
 
     onLogout = user => {
@@ -73,6 +72,10 @@ class FirebaseSDK {
     chatsRef = () => {
         const db = firebase.firestore()
         return db.collection('chats')
+    }
+    invitationRef = () => {
+        const db = firebase.firestore()
+        return db.collection('invitations')
     }
 
 }

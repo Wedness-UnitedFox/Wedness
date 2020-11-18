@@ -7,7 +7,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Provider } from 'react-redux';
 import store from './src/store';
 
-import { ChatScreen, LoginScreen, DetailScreen, RegisterScreen } from './src/screens'
+import { ChatScreen, LoginScreen, DetailScreen, RegisterScreen, InvitationScreen } from './src/screens'
 import HomeNavigation from './src/navigation/BottomTabNavigation'
 const Stack = createStackNavigator();
 export default function App() {
@@ -39,6 +39,11 @@ export default function App() {
                 title: route.params.name
               })}
             />
+            <Stack.Screen name="Invitation" component={InvitationScreen}
+              // options={({ route }) => ({
+              //   title: route.params.name
+              // })}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </PaperProvider>
@@ -48,16 +53,26 @@ export default function App() {
 
 const theme = {
   ...DefaultTheme,
+  roundness: 2,
   colors: {
     ...DefaultTheme.colors,
-    primary: 'tomato',
-    accent: 'yellow',
+    primary: '#F2D0D9',
+    accent: '#97A6A0',
+    // background: '#F2D0D9' 
   },
 };
+// const theme = {
+//   ...DefaultTheme,
+//   colors: {
+//     ...DefaultTheme.colors,
+//     primary: '#F2D0D9',
+//     accent: '#97A6A0',
+//   },
+// };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#97A6A0',
     alignItems: 'center',
     justifyContent: 'center',
   },

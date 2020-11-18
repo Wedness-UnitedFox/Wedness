@@ -118,8 +118,10 @@ export default function ProfileScreen(props) {
         <Text>{data.description}</Text>
         <Divider style={{ marginVertical: 5 }} />
       </View>
-      <Button onPress={handleChat}>Chat</Button>
-      <Button onPress={handleConfirm}>Book Now</Button>
+      <View style={{flexDirection:'row', marginTop:20}}>
+        <Button color="#81A68A" onPress={handleConfirm}>Book Now</Button>
+        <Button color="#81A68A" style={{marginLeft:10}} onPress={handleChat}>Chat</Button>
+      </View>
       <View>
         {/* <Text>{JSON.stringify(data)}</Text> */}
       </View>

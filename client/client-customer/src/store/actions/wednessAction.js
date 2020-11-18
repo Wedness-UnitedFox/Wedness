@@ -45,8 +45,8 @@ export const register = (inputRegister,sukses, error) => {
                 sukses()
             })
             .catch((err) => {
-                error(err.response.data.msg)
-                console.log("-----------error", err.response.data)
+                error(err.response)
+                console.log("-----------error", err.response)
             })
     }
 }
@@ -157,7 +157,7 @@ export const bookNow = (data, success) => {
                     success()
                 })
                 .catch(err => {
-                    console.log(err.response.data);
+                    console.log(err.response);
                 })
         }
     }
@@ -184,7 +184,7 @@ export const fetchPlans = () => {
                 });
             })
             .catch(err => {
-                console.log(err.response.data);
+                console.log(err.response);
             })
     }
 }
@@ -216,7 +216,7 @@ export const deletePlan = (id) => {
                 });
             })
             .catch(err => {
-                console.log(err.response.data);
+                console.log(err.response);
             })
     }
 }
@@ -243,7 +243,7 @@ export const checkout = () => {
                 });
             })
             .catch(err => {
-                console.log(err.response);
+                console.log(err);
             })
     }
 }

@@ -85,7 +85,7 @@ export default function Conversations(props) {
                             <View style={styles.content}>
                                 <View style={styles.header}> 
                                     <View style={{flexDirection:'row'}}>
-                                        <Avatar.Text size={34} label={item[0]} /> 
+                                        <Avatar.Text style={{backgroundColor:'#81A68A'}} size={34} label={item[0]} /> 
                                         <Text style={styles.nameText}>{item}</Text>
                                     </View> 
                                 </View>
