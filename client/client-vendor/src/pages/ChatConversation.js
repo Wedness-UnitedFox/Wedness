@@ -10,7 +10,7 @@ const auth = firebase.auth()
 const firestore = firebase.firestore()
 
 const ChatConversations = () => {
-    // const history = useHistory()
+    const history = useHistory()
     const { path, url } = useRouteMatch()
 
     const chatRef = firestore.collection('chats')
@@ -18,6 +18,9 @@ const ChatConversations = () => {
     const [chats] = useCollectionData(query, { idField: 'id' })
     const [conversationNames, setConversationNames] = useState([])
 
+    useEffect(() => {
+        if (!localStorage.access_token) history.push('/login')
+    }, [])
 
     useEffect(() => {
         console.log(chats?.length, "<<<<<<<<< CHATS");

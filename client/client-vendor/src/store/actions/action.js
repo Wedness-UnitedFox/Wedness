@@ -36,6 +36,18 @@ export const userLogin = (inputLogin) => {
     };
 };
 
+export const userLogout = () => {
+    return {
+        type: "SET_LOGOUT"
+    }
+}
+
+export const setLogin = () => {
+    return {
+        type: "SET_LOGIN2"
+    }
+}
+
 export const userRegister = (inputRegister, cb) => {
     return (dispatch) => {
         console.log(inputRegister, "<<<<<<<store regis");
