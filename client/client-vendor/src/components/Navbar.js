@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import myLogo from '../assets/Wedness_white_transparant.svg'
@@ -8,8 +8,11 @@ import './Navbar.css';
 import { IconContext } from 'react-icons';
 import * as ImIcons from "react-icons/im";
 import firebase from "../services/firebase";
+import { useDispatch } from 'react-redux';
+import { userLogout } from '../store/actions/action';
 
 function Navbar() {
+  const dispatch = useDispatch()
   const history = useHistory()
   const [sidebar, setSidebar] = useState(false);
 
@@ -18,8 +21,14 @@ function Navbar() {
   const logoutHandler = async () => {
     localStorage.clear()
     await firebase.auth().signOut()
-    history.push('/')
+    dispatch(userLogout())
+    history.push('/login')
+
   }
+
+  useEffect(() => {
+    if (!localStorage.access_token) history.push('/login')
+  }, [])
 
   return (
     <div>
@@ -29,10 +38,10 @@ function Navbar() {
             <FaIcons.FaBars onClick={showSidebar} />
           </Link>
         </div>
-        <nav className={sidebar ? 'nav-menu active' : 'nav-menu'} style={{zIndex: 9999}}>
+        <nav className={sidebar ? 'nav-menu active' : 'nav-menu'} style={{ zIndex: 9999 }}>
           <ul className='nav-menu-items' onClick={showSidebar}>
-          <img class="bg-auto" src={myLogo} alt="" />
-            <li className='navbar-toggle'>
+            <img class="bg-stretch bg-center" style={{width:"200px", height:"200px"}} src={myLogo} alt="" />
+            <li>
             </li>
             {SidebarData.map((item, index) => {
               return (
@@ -45,11 +54,11 @@ function Navbar() {
               );
             })}
             <li className='nav-text'>
-              <Link to='#' onClick={logoutHandler} >
+              <Link to='#' onClick={(e) => { logoutHandler(e) }} >
                 <ImIcons.ImExit /><span>Logout</span>
               </Link>
             </li>
-            </ul>
+          </ul>
           <p></p>
         </nav>
       </IconContext.Provider>

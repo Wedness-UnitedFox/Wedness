@@ -3,51 +3,58 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { editItem } from '../store/actions/action'
 
-export default function EditItem () {
-  const { id, service_type } = useParams()
-  const {service, loading} = useSelector(state => state)
-  const history = useHistory()
-  const dispatch = useDispatch()
+export default function EditItem() {
+    const { id, service_type } = useParams()
+    const { service, loading } = useSelector(state => state)
+    const history = useHistory()
+    const dispatch = useDispatch()
 
-  // console.log(service, loading)
+    // console.log(service, loading)
 
-  const [update, setUpdate] = useState({})
+    const [update, setUpdate] = useState({})
 
-  useEffect(() => {
-    setUpdate(service)
-  }, [])
+    useEffect(() => {
+        setUpdate(service)
+    }, [])
 
-  const handleChange = (e) => {
-    if (e.target.name === "price") e.target.value = +e.target.value
-    if (e.target.name === "capacity") e.target.value = +e.target.value
-    setUpdate({...update, [e.target.name]: e.target.value})
-  }
+    useEffect(() => {
+        if (!localStorage.access_token) history.push('/login')
+    }, [])
 
-  const handleNew = () => {
-    dispatch(editItem(id, service_type, update))
-    history.push('/home')
-  };
+    const handleChange = (e) => {
+        if (e.target.name === "price") e.target.value = +e.target.value
+        if (e.target.name === "capacity") e.target.value = +e.target.value
+        setUpdate({ ...update, [e.target.name]: e.target.value })
+    }
 
-  const handleCancel = () => {
-    history.push('/home')
-  };
+    const handleEdit = () => {
+        dispatch(editItem(id, service_type, update))
+        history.push('/')
+    };
 
-  return (
-    <div>
-      <pre>{JSON.stringify(service)}</pre>
-      <div className="container shadow">
-      <h3 className="text-center">Edit {update.service_type}</h3>
-            <div className="container mt-3">
-                <form onSubmit={handleNew}>
-                    <select required className="form-control" onChange={handleChange} name="service_type" disabled={true}>
-                        <option>Choose Vendor Type</option>
-                        <option value="venue" selected={update.service_type === 'venue' ? true: false}>Venue</option>
-                        <option value="catering" selected={update.service_type === 'catering' ? true: false}>Catering</option>
-                        <option value="organizer" selected={update.service_type === 'organizer' ? true: false}>Organizer</option>
-                    </select>
-                    <div className="form-group">
+    const handleCancel = () => {
+        history.push('/')
+    };
+
+    return (
+        <div>
+            <div class="antialiased text-gray-900">
+                <div class="mx-4 card bg-white p-10 md:rounded-lg my-8 mx-auto" style={{ width: 600 }}>
+                    <div class="title">
+                        <h3 class="text-2xl text-gray-900 font-semibold">Edit {update.service_type}</h3>
+                    </div>
+                    <form onSubmit={handleEdit}>
+                        <div class="options md:flex md:space-x-6 text-sm items-center text-gray-700 mt-4">
+                            <h2 class="w-1/2 mb-2 text-gray-900">Services type: </h2>
+                            <select required class="w-full border border-gray-200 p-2 focus:outline-none focus:border-gray-500" onChange={handleChange} name="service_type" disabled={true}>
+                                <option>Choose Vendor Type</option>
+                                <option value="venue" selected={update.service_type === 'venue' ? true : false}>Venue</option>
+                                <option value="catering" selected={update.service_type === 'catering' ? true : false}>Catering</option>
+                                <option value="organizer" selected={update.service_type === 'organizer' ? true : false}>Organizer</option>
+                            </select>
+                        </div>
                         <input
-                            className="form-control"
+                            class="border p-2 w-full mt-3 text-gray-500 focus:text-gray-800"
                             label="Name"
                             name="name"
                             type="text"
@@ -55,8 +62,9 @@ export default function EditItem () {
                             onChange={handleChange}
                             required
                         />
+                        <div class="flex space-x-5 mt-3">
                         <input
-                            className="form-control"
+                            class="border p-2  w-1/2 text-gray-500 focus:text-gray-800"
                             label="Email"
                             name="email"
                             type="email"
@@ -65,7 +73,17 @@ export default function EditItem () {
                             required
                         />
                         <input
-                            className="form-control"
+                            class="border p-2  w-1/2 text-gray-500 focus:text-gray-800"
+                            label="Phone Number"
+                            name="phone_number"
+                            type="text"
+                            value={update.phone_number}
+                            onChange={handleChange}
+                            required
+                        />
+                        </div>
+                        <input
+                            class="border p-2 w-full mt-3 text-gray-500 focus:text-gray-800"
                             label="Address"
                             name="address"
                             type="text"
@@ -74,16 +92,7 @@ export default function EditItem () {
                             required
                         />
                         <input
-                            className="form-control"
-                            label="Phone Number"
-                            name="phone_number"
-                            type="text"
-                            value={update.phone_number}
-                            onChange={handleChange}
-                            required
-                        />
-                        <input
-                            className="form-control"
+                            class="border p-2 w-full mt-3 text-gray-500 focus:text-gray-800"
                             label="Price"
                             name="price"
                             type="number"
@@ -93,25 +102,27 @@ export default function EditItem () {
                             required
                         />
                         {service_type === 'venue' ?
-                        <><select required className="form-control" onChange={handleChange} name="type">
-                            <option default value="">Choose Venue Type</option>
-                            <option value="indoor" selected={update.type === 'indoor' ? true : false}>Indoor</option>
-                            <option value="outdoor" selected={update.type === 'outdoor' ? true : false}>Outdoor</option>
-                        </select>
-                        <input
-                            className="form-control"
-                            label="Type"
-                            name="capacity"
-                            type="number"
-                            min="0"
-                            value={update.capacity}
-                            onChange={handleChange}
-                            required
-                        /></>
-                        : ""
+                            <div class="flex flex-col text-sm">
+                                <><select required class="border p-2 w-full mt-3 bg-gray-100 text-gray-500 focus:text-gray-800" onChange={handleChange} name="type">
+                                    <option default value="">Choose Venue Type</option>
+                                    <option value="indoor" selected={update.type === 'indoor' ? true : false}>Indoor</option>
+                                    <option value="outdoor" selected={update.type === 'outdoor' ? true : false}>Outdoor</option>
+                                </select>
+                                    <input
+                                        class="border p-2 w-full mt-3 text-gray-500 focus:text-gray-800"
+                                        label="Type"
+                                        name="capacity"
+                                        type="number"
+                                        min="0"
+                                        value={update.capacity}
+                                        onChange={handleChange}
+                                        required
+                                    /></>
+                            </div>
+                            : ""
                         }
                         <input
-                            className="form-control"
+                            class="border p-2 w-full mt-3 text-gray-500 focus:text-gray-800"
                             label="Avatar"
                             name="avatar"
                             type="text"
@@ -119,8 +130,8 @@ export default function EditItem () {
                             onChange={handleChange}
                             required
                         />
-                        <textarea
-                            className="form-control"
+                        <textarea cols="10" rows="4"
+                            class="border p-2 w-full mt-3 text-gray-500 focus:text-gray-800"
                             label="Description"
                             name="description"
                             type="text"
@@ -129,14 +140,15 @@ export default function EditItem () {
                             row="3"
                             required
                         />
-                        <button type="submit" className="btn btn-primary">
+                        <button type="submit" class=" w-full bg-green-600 shadow-lg text-white px-4 py-2 hover:bg-green-700 mt-8 text-center font-semibold focus:outline-none">
                             Submit
                         </button>
-                    </div>
-                </form>
-                <button className="btn btn-info" onClick={() => handleCancel()}>Cancel</button>
+
+                    </form>
+                    <button class=" w-full bg-gray-400 shadow-lg text-white px-4 py-2 hover:bg-gray-700 mt-8 text-center font-semibold focus:outline-none" onClick={() => handleCancel()}>Cancel</button>
+
+                </div>
             </div>
         </div>
-    </div>
-  )
+    )
 }

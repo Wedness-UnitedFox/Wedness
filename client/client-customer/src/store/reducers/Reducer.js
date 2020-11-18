@@ -18,16 +18,16 @@ export default function reducer(state = initialState, action) {
     case LOGOUT:
       return {...state, isLogin:false, access_token:null}
     case SET_PLANS:
-      console.log(action, '<<<store SET VENUE<<<')
+      // console.log(action, '<<<store SET VENUE<<<')
       return { ...state, plans: action.payload.data }
     case SET_VENUE:
-      console.log(action, '<<<store SET VENUE<<<')
+      // console.log(action, '<<<store SET VENUE<<<')
       return { ...state, venues: action.payload.data }
     case SET_ORGANIZER:
-      console.log(action, '<<<store SET ORGANIZER<<<')
+      // console.log(action, '<<<store SET ORGANIZER<<<')
       return { ...state, organizers: action.payload.data }
     case SET_CATERING:
-      console.log(action, '<<<store SET CATERING<<<')
+      // console.log(action, '<<<store SET CATERING<<<')
       return { ...state, caterings: action.payload.data }
     default:
       return state

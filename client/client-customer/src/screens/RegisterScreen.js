@@ -9,7 +9,9 @@ import AwesomeAlert from 'react-native-awesome-alerts';
 
 export default function RegisterScreen (props) {
   const [user, setUser] = useState({})
-  const [showAlert, setShowAlert] = useState(false)
+  const [swal, showSwal] = useState(false)
+  const [message, setMessage] = useState({title:'',message:'', ok:'Yes, Regist me in'}) 
+  const [loader, setLoader] = useState(false)
   const dispatch = useDispatch()
 
   const onPressLogin = () => {
@@ -17,10 +19,9 @@ export default function RegisterScreen (props) {
   }
 
   const onPressSubmit = () => {
-    console.log(user)
-    // dispatch(register(user, trigger))
-    showAlert()
-    
+    console.log(user) 
+    setMessage({title:'Submit',message:'Regist User ?'}) 
+    showAlert() 
   }
 
   const onChangeName = name => setUser({...user, name})
@@ -28,7 +29,12 @@ export default function RegisterScreen (props) {
   const onChangePhone = phone => setUser({...user, phone_number: phone})
   const onChangePassword = password => setUser({...user, password})
 
+  const handleRegister = () =>{
+    hideAlert();
+    dispatch(register(user,trigger,registerFailed))
+  }
   const trigger = () => {
+    console.log("SUKSES");
     const response = firebaseSDK.register(user,registerSuccess,registerFailed)
     console.log("trgger via cb")
   }
@@ -45,12 +51,12 @@ export default function RegisterScreen (props) {
     alert(message);
   };
 
-  showAlert = () => {
-    setShowAlert(true)
+  const  showAlert = () => {
+    showSwal(true)
   };
  
-  hideAlert = () => {
-    setShowAlert(false)
+  const hideAlert = () => {
+    showSwal(false)
   };
 
   return(
@@ -101,22 +107,24 @@ export default function RegisterScreen (props) {
       > Sign in </Button>
       </ScrollView>
       <AwesomeAlert
-          show={showAlert}
-          showProgress={false}
-          title="AwesomeAlert"
-          message="I have a message for you!"
+          show={swal}
+          showProgress={loader} 
+          title={message.title}
+          message={message.message}
           closeOnTouchOutside={true}
           closeOnHardwareBackPress={false}
           showCancelButton={true}
           showConfirmButton={true}
-          cancelText="No, cancel"
-          confirmText="Yes, delete it"
-          confirmButtonColor="#DD6B55"
+          cancelText="cancel"
+          confirmText={message.ok}
+          progressSize="large"
+          progressColor="black"
+          // confirmButtonColor="#DD6B55"
           onCancelPressed={() => {
             hideAlert();
           }}
           onConfirmPressed={() => {
-            hideAlert();
+            handleRegister()
           }}
         />
     </View>

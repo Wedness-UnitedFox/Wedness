@@ -8,7 +8,7 @@ import * as ImIcons from "react-icons/im";
 export const SidebarData = [
   {
     title: 'Home',
-    path: '/home',
+    path: '/',
     icon: <AiIcons.AiFillHome />,
     cName: 'nav-text'
   },

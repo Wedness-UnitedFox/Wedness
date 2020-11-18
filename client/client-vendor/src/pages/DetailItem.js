@@ -25,6 +25,10 @@ const DetailItem = () => {
         dispatch(fetchServiceById(id, service_type))
     }, [])
 
+    useEffect(() => {
+        if (!localStorage.access_token) history.push('/login')
+    }, [])
+
     const closeHandler = function () {
         history.push('/home')
     }
@@ -126,6 +130,9 @@ const DetailItem = () => {
                             <span className="mr-0"><i class="fas fa-envelope"></i></span>
                             <span className="text-gray-900 text-justify">{email}</span>
                         </div>
+                    </div>
+                    <div >
+
                     </div>
                     <div className="flex justify-between">
                         <span className="title-font font-medium text-2xl text-gray-900">{service_type === 'catering' ? "Rp." + price?.toLocaleString("ID") + "/porsi" : "Rp." + price?.toLocaleString("ID")}</span>
