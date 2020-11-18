@@ -131,7 +131,7 @@ const ChatRoom = () => {
 
 export default ChatRoom
 
-async function sendPushNotification(expoPushToken, input) {
+const sendPushNotification = async (expoPushToken, input) => {
     // const { email, chat } = input
     const message = {
       to: expoPushToken,
@@ -151,4 +151,4 @@ async function sendPushNotification(expoPushToken, input) {
       },
       body: JSON.stringify(message),
     });
-  }
+}
