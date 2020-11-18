@@ -8,6 +8,7 @@ const TableRowApproval = (props) => {
     const dispatch = useDispatch()
 
     const handleApproval = (id) => {
+        console.log("approving");
         dispatch(approveBookings(id))
     }
     return (

@@ -1,17 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Avatar } from "react-native-elements";
 import { StyleSheet,Image, ImageBackground, View } from 'react-native'
 import { Button, Divider, List, Text } from 'react-native-paper'
 import { useDispatch } from 'react-redux'
 import firebaseSDK from '../firebase'
 import { bookNow } from '../store/actions/wednessAction'
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 
 export default function ProfileScreen(props) {
   const dispatch = useDispatch()
   const { navigation, route } = props
   const { id, data } = route.params
-  const [expanded, setExpanded] = React.useState(true);
+  const [expanded, setExpanded] = useState(true);
+  const [swal, showSwal] = useState(false)
   const vendor_type = 'venue'
 
   const handlePress = () => setExpanded(!expanded);
@@ -19,16 +21,45 @@ export default function ProfileScreen(props) {
     console.log(data.User, "<><><><><><><><><"); 
     navigation.navigate('ChatRoom', { vendorEmail:data.User.email, name:data.User.email })
   }
+  const handleConfirm = () =>{
+    showSwal(true)
+  }
+
+  const hideAlert = () => {
+    showSwal(false)
+  };
   const handleBook = () => {
     console.log(id, "chat")
     dispatch(bookNow({ VendorId: id, vendor_type:data.service_type, subtotal: data.price }, success))
+
   }
   const success = () => {
     console.log("success");
     navigation.replace('Home')
+    hideAlert()
   }
   return (
     <View style={{ flex: 1, alignItems: 'center', flexDirection: 'column' }}> 
+
+        <AwesomeAlert
+          show={swal}
+          showProgress={true}
+          title="Book this service"
+          // message={message.message}
+          closeOnTouchOutside={true}
+          closeOnHardwareBackPress={false}
+          showCancelButton={true}
+          showConfirmButton={true}
+          cancelText="Cancel"
+          confirmText="Yes, Book now"
+          confirmButtonColor="green"
+          onCancelPressed={() => {
+            hideAlert();
+          }}
+          onConfirmPressed={() => {
+            handleBook();
+          }}
+        />
       <View style={styles.container}>
         <ImageBackground source={ {uri: `${data.avatar}`}} blurRadius={2} style={styles.image}>
           <View
@@ -88,7 +119,7 @@ export default function ProfileScreen(props) {
         <Divider style={{ marginVertical: 5 }} />
       </View>
       <Button onPress={handleChat}>Chat</Button>
-      <Button onPress={handleBook}>Book Now</Button>
+      <Button onPress={handleConfirm}>Book Now</Button>
       <View>
         {/* <Text>{JSON.stringify(data)}</Text> */}
       </View>

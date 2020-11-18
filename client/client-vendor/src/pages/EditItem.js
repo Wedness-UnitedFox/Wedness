@@ -103,7 +103,7 @@ export default function EditItem() {
                         />
                         {service_type === 'venue' ?
                             <div class="flex flex-col text-sm">
-                                <><select required class="border p-2 w-full mt-3 text-gray-500 focus:text-gray-800" onChange={handleChange} name="type">
+                                <><select required class="border p-2 w-full mt-3 bg-gray-100 text-gray-500 focus:text-gray-800" onChange={handleChange} name="type">
                                     <option default value="">Choose Venue Type</option>
                                     <option value="indoor" selected={update.type === 'indoor' ? true : false}>Indoor</option>
                                     <option value="outdoor" selected={update.type === 'outdoor' ? true : false}>Outdoor</option>

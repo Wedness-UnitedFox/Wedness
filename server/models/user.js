@@ -31,12 +31,13 @@ module.exports = (sequelize, DataTypes) => {
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false, 
+      unique: true,
       validate: {
         notEmpty: {
           args: true,
           msg: "Email cannot be empty"
-        }
+        }, 
       }
     },
     phone_number: {
