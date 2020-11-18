@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import firebase from '../services/firebase';
@@ -35,10 +35,12 @@ const ChatRoom = () => {
     const [messages, setMessages] = useState([]) 
     const [chats] = useCollectionData(query, {idField: 'id'})
     // const { uid, photoURL, displayName, email } = auth.currentUser;
-
+    const history = useHistory()
     const [tokenLocal, setTokenLocal] = useState('')
     
-    
+    useEffect(() => {
+        if (!localStorage.access_token) history.push('/login')
+    }, [])
 
     useEffect(()=>{
         // console.log(chats, "chat room")

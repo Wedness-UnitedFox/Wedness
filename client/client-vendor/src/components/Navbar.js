@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import myLogo from '../assets/Wedness_white_transparant.svg'
@@ -14,10 +14,15 @@ function Navbar() {
 
   const showSidebar = () => setSidebar(!sidebar);
 
-  const logoutHandler = () => {
+  const logoutHandler = (e) => {
+    e.preventDefault()
     localStorage.clear()
     history.push('/')
   }
+
+  useEffect(() => {
+    if (!localStorage.access_token) history.push('/login')
+  }, [])
 
   return (
     <div>
@@ -27,10 +32,10 @@ function Navbar() {
             <FaIcons.FaBars onClick={showSidebar} />
           </Link>
         </div>
-        <nav className={sidebar ? 'nav-menu active' : 'nav-menu'} style={{zIndex: 9999}}>
+        <nav className={sidebar ? 'nav-menu active' : 'nav-menu'} style={{ zIndex: 9999 }}>
           <ul className='nav-menu-items' onClick={showSidebar}>
-          <img class="bg-auto" src={myLogo} alt="" />
-            <li className='navbar-toggle'>
+            <img class="bg-stretch bg-center" style={{maxWidth:150}} src={myLogo} alt="" />
+            <li>
             </li>
             {SidebarData.map((item, index) => {
               return (
@@ -43,11 +48,11 @@ function Navbar() {
               );
             })}
             <li className='nav-text'>
-              <Link to='#' onClick={logoutHandler} >
+              <Link to='#' onClick={(e) => { logoutHandler(e) }} >
                 <ImIcons.ImExit /><span>Logout</span>
               </Link>
             </li>
-            </ul>
+          </ul>
           <p></p>
         </nav>
       </IconContext.Provider>

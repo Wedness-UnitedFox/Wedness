@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { addItem } from '../store/actions/action';
@@ -9,6 +9,10 @@ const AddNew = () => {
     const dispatch = useDispatch()
     const [inputNew, setNew] = useState([])
     const [vendorType, setVendorType] = useState("")
+
+    useEffect(() => {
+        if (!localStorage.access_token) history.push('/login')
+    }, [])
 
     const handleNew = (e) => {
         e.preventDefault();
@@ -135,7 +139,6 @@ const AddNew = () => {
                 <div class="mx-4 card bg-white p-10 md:rounded-lg my-8 mx-auto" style={{ width: 600 }}>
                     <div class="title">
                         <h3 class="text-2xl text-gray-900 font-semibold">Add Your Services Here!</h3>
-                        {/* <h1 class="font-bold text-center">Add Your Services Here!</h1> */}
                     </div>
                     <form onSubmit={handleNew} >
                         <div class="options md:flex md:space-x-6 text-sm items-center text-gray-700 mt-4">
@@ -165,7 +168,7 @@ const AddNew = () => {
                             name="address"
                             type="text"
                             onChange={handleChange}
-                            required ></textarea> 
+                            required ></textarea>
                         <input placeholder="Price" class="border p-2 w-full mt-3" name="price"
                             type="number"
                             onChange={handleChange}
@@ -180,125 +183,29 @@ const AddNew = () => {
                             name="description"
                             type="text"
                             onChange={handleChange}
-                            required ></textarea> 
+                            required ></textarea>
 
-                            {vendorType === 'venue' ?
-                                <div class="flex flex-col text-sm">
-                                    <label class="font-bold mb-2">Venue Type</label>
-                                    <select required class="w-full border border-gray-200 p-2 focus:outline-none focus:border-gray-500" onChange={handleChange} name="type">
-                                        <option default value="">Choose Venue Type</option>
-                                        <option value="indoor">Indoor</option>
-                                        <option value="outdoor">Outdoor</option>
-                                    </select>
-                                    <label class="font-bold mb-2">Capacity</label>
-                                    <input
-                                        class=" appearance-none border border-gray-200 p-2 focus:outline-none focus:border-gray-500"
-                                        label="Type"
-                                        name="capacity"
-                                        type="number"
-                                        placeholder="Input Capacity"
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
-                                : ""
-                            }
-
-                        <div class="form mt-4">
-                            {/* <div class="flex flex-col text-sm">
-                                <label for="title" class="font-bold mb-2 mt-2">Title</label>
-                                <input class="appearance-none border border-gray-200 p-2 focus:outline-none focus:border-gray-500"
-                                    label="Name"
-                                    name="name"
-                                    type="text"
-                                    placeholder="Input Name"
-                                    onChange={handleChange}
-                                    required />
-                            </div> */}
-                            {/* <div class="flex flex-col text-sm">
-                                <label for="title" class="font-bold mb-2 mt-2">Email</label>
-                                <input class=" appearance-none border border-gray-200 p-2 focus:outline-none focus:border-gray-500"
-                                    label="Email"
-                                    name="email"
-                                    type="email"
-                                    placeholder="Input Email"
-                                    onChange={handleChange}
-                                    required />
-                            </div> */}
-                            {/* <div class="flex flex-col text-sm">
-                                <label for="title" class="font-bold mb-2 mt-2">Address</label>
-                                <input class=" appearance-none border border-gray-200 p-2 focus:outline-none focus:border-gray-500"
-                                    label="Address"
-                                    name="address"
-                                    type="text"
-                                    placeholder="Input Address"
-                                    onChange={handleChange}
-                                    required />
-                            </div> */}
-                            {/* <div class="flex flex-col text-sm">
-                                <label for="title" class="font-bold mb-2 mt-2">Phone Number</label>
-                                <input class=" appearance-none border border-gray-200 p-2 focus:outline-none focus:border-gray-500"
-                                    label="Phone Number"
-                                    name="phone_number"
-                                    type="text"
-                                    placeholder="Input Phone Number"
-                                    onChange={handleChange}
-                                    required />
-                            </div> */}
-                            {/* <div class="flex flex-col text-sm">
-                                <label for="title" class="font-bold mb-2 mt-2">Price</label>
-                                <input class=" appearance-none border border-gray-200 p-2 focus:outline-none focus:border-gray-500"
-                                    label="Price"
-                                    name="price"
+                        {vendorType === 'venue' ?
+                            <div class="flex flex-col text-sm">
+                                <label class="font-bold mb-2">Venue Type</label>
+                                <select required class="w-full border border-gray-200 p-2 focus:outline-none focus:border-gray-500" onChange={handleChange} name="type">
+                                    <option default value="">Choose Venue Type</option>
+                                    <option value="indoor">Indoor</option>
+                                    <option value="outdoor">Outdoor</option>
+                                </select>
+                                <label class="font-bold mb-2">Capacity</label>
+                                <input
+                                    class=" appearance-none border border-gray-200 p-2 focus:outline-none focus:border-gray-500"
+                                    label="Type"
+                                    name="capacity"
                                     type="number"
-                                    placeholder="Input Price"
+                                    placeholder="Input Capacity"
                                     onChange={handleChange}
-                                    required />
-                            </div> */}
-                            {/* <div class="flex flex-col text-sm">
-                                <label for="title" class="font-bold mb-2 mt-2">Photo</label>
-                                <input class=" appearance-none border border-gray-200 p-2 focus:outline-none focus:border-gray-500"
-                                    label="Avatar"
-                                    name="avatar"
-                                    type="text"
-                                    placeholder="Input Photo"
-                                    onChange={handleChange}
-                                    required />
+                                    required
+                                />
                             </div>
-                            {vendorType === 'venue' ?
-                                <div class="flex flex-col text-sm">
-                                    <label class="font-bold mb-2">Venue Type</label>
-                                    <select required class="w-full border border-gray-200 p-2 focus:outline-none focus:border-gray-500" onChange={handleChange} name="type">
-                                        <option default value="">Choose Venue Type</option>
-                                        <option value="indoor">Indoor</option>
-                                        <option value="outdoor">Outdoor</option>
-                                    </select>
-                                    <label class="font-bold mb-2">Capacity</label>
-                                    <input
-                                        class=" appearance-none border border-gray-200 p-2 focus:outline-none focus:border-gray-500"
-                                        label="Type"
-                                        name="capacity"
-                                        type="number"
-                                        placeholder="Input Capacity"
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
-                                : ""
-                            }
-                            <div class="text-sm flex flex-col">
-                                <label for="description" class="font-bold mt-2 mb-2">Description</label>
-                                <textarea class=" appearance-none w-full border border-gray-200 p-2 h-40 focus:outline-none focus:border-gray-500"
-                                    label="Description"
-                                    name="description"
-                                    type="text"
-                                    placeholder="Input Description"
-                                    onChange={handleChange}
-                                    required>
-                                </textarea>
-                            </div> */}
-                        </div>
-
+                            : ""
+                        }
                         <div class="submit">
                             <button type="submit" class=" w-full bg-blue-600 shadow-lg text-white px-4 py-2 hover:bg-blue-700 mt-8 text-center font-semibold focus:outline-none ">Submit</button>
                         </div>

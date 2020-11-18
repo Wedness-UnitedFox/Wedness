@@ -25,6 +25,10 @@ const DetailItem = () => {
         dispatch(fetchServiceById(id, service_type))
     }, [])
 
+    useEffect(() => {
+        if (!localStorage.access_token) history.push('/login')
+    }, [])
+
     const closeHandler = function () {
         history.push('/home')
     }

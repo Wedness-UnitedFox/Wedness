@@ -12,13 +12,17 @@ const initialState = {
 export default function reducer(state = initialState, action) {
     switch (action.type) {
         case SET_LOGIN:
-            return { ...state, ...action.payload.data, isLogin: true}
+            return { ...state, ...action.payload.data, isLogin: true }
+        case "SET_LOGIN2":
+            return { ...state, isLogin: true }
+        case "SET_LOGOUT":
+            return { ...state, isLogin: false }
         case ADD_REGISTER:
-            return { ...state, ...action.payload.data}
+            return { ...state, ...action.payload.data }
         case FETCH_SERVICES:
-            return { ...state, services: action.payload}
+            return { ...state, services: action.payload }
         case FETCH_SERVICE:
-            return { ...state, service: action.payload}
+            return { ...state, service: action.payload }
         case ADD_ITEM:
             let newItem = state.services.concat(action.payload.data)
             return { ...state, services: newItem }
@@ -27,7 +31,7 @@ export default function reducer(state = initialState, action) {
         case SET_ERROR:
             return { ...state, error: action.payload }
         case FETCH_BOOKING_APPROVALS:
-            return {...state, bookingApprovals: action.payload}        
+            return { ...state, bookingApprovals: action.payload }
         default:
             return state
     }
