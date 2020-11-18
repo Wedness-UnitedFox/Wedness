@@ -150,7 +150,9 @@ export default function Login(props) {
       />
       <TextInput
         style={styles.input}
+        mode="outlined"
         label="Password"
+        secureTextEntry={true}
         onChangeText={onChangeTextPassword}
         value={userData.password}
       />
@@ -206,7 +208,7 @@ const styles = StyleSheet.create({
   buttonText: {
     alignSelf: 'center',
     fontSize: 42,
-    paddingVertical: 20,
+    paddingVertical: 15,
     width: "70%",
   }
 });

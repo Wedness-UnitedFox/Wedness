@@ -54,7 +54,7 @@ export default function HomeScreen(props) {
 
   return (
     <ScrollView style={styles.container}>
-      <View style={{marginTop:18}}>
+      <View style={{ marginTop: 18 }}>
         <Carousel
           autoplay
           autoplayTimeout={5000}
@@ -65,35 +65,44 @@ export default function HomeScreen(props) {
           {images.map((image, index) => renderPage(image, index))}
         </Carousel>
       </View>
-      <Divider style={{ marginVertical: 5 }} />
-      <View style={styles.vendorContainer}>
-        <Text style={{ marginLeft: 20, fontSize: 25, }}>Venues</Text>
+      <Divider style={styles.divider} />
+
+      <View style={styles.vendorContainer}> 
+        <View style={{ flexDirection: "row", justifyContent: 'space-between' }}>
+          <Text style={{ marginLeft: 20, fontSize: 25, }}>Venues</Text>
+          <Button style={{ marginRight: 10 }} color="#81A68A" mode="outlined" onPress={() => goToDetail('Venues')} >See All</Button>
+        </View>
         <ScrollView horizontal={true} style={{ flex: 1, paddingVertical: 10 }}>
           {
             dataVenues?.length == 0 ? null :
-              dataVenues.map((venue,i) => (
+              dataVenues.map((venue, i) => (
                 <CardService vendor={venue} key={i} />
               ))
           }
         </ScrollView>
-        <Button style={{ width: '80%', alignSelf: 'center' }} color="blue" mode="outlined" onPress={() => goToDetail('Venues')} >See All Venues</Button>
-        <Divider style={{ marginVertical: 5 }} />
+        <Divider style={styles.divider} /> 
       </View>
+ 
       <View style={styles.vendorContainer}>
-        <Text style={{ marginLeft: 20, fontSize: 25, }}>Caterings</Text>
+        <View style={{ flexDirection: "row", justifyContent: 'space-between' }}>
+          <Text style={{ marginLeft: 20, fontSize: 25, }}>Caterings</Text>
+          <Button style={{ marginRight: 10 }} color="#81A68A" mode="outlined" onPress={() => goToDetail('Caterings')} >See All</Button>
+        </View>
         <ScrollView horizontal={true} style={{ flex: 1, paddingVertical: 10 }}>
           {
-            dataCaterings?.length == 0 ? null :
-              dataCaterings.map((catering, i) => (
-                <CardService vendor={catering} key={i} />
+            dataOrganizers?.length == 0 ? null :
+            dataOrganizers.map((organizer, i) => (
+              <CardService vendor={organizer} key={i} />
               ))
           }
-        </ScrollView>
-        <Button style={{ width: '80%', alignSelf: 'center' }} color="blue" mode="outlined" onPress={() => goToDetail('Caterings')} >See All Caterings</Button>
-        <Divider style={{ marginVertical: 5 }} />
+        </ScrollView> 
       </View>
+
       <View style={styles.vendorContainer}>
-        <Text style={{ marginLeft: 20, fontSize: 25, }}>Organizers</Text>
+        <View style={{ flexDirection: "row", justifyContent: 'space-between' }}>
+          <Text style={{ marginLeft: 20, fontSize: 25, }}>Organizers</Text>
+          <Button style={{ marginRight: 10 }} color="#81A68A" mode="outlined" onPress={() => goToDetail('Organizers')} >See All</Button>
+        </View>
         <ScrollView horizontal={true} style={{ flex: 1, paddingVertical: 10 }}>
           {
             dataOrganizers?.length == 0 ? null :
@@ -101,8 +110,7 @@ export default function HomeScreen(props) {
                 <CardService vendor={organizer} key={i} />
               ))
           }
-        </ScrollView>
-        <Button style={{ width: '80%', alignSelf: 'center' }} color="blue" mode="outlined" onPress={() => goToDetail('Organizers')} >See All Organizers</Button>
+        </ScrollView> 
       </View>
     </ScrollView>
   );
@@ -111,6 +119,7 @@ export default function HomeScreen(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    // backgroundColor: '#F2DDD0',
     // alignItems: 'center',
     marginTop: '6%',
     flexDirection: "column"
@@ -120,5 +129,8 @@ const styles = StyleSheet.create({
     flex: 1,
     minHeight: 250,
     maxHeight: 250
+  },
+  divider: {
+    marginVertical: 10
   }
 })

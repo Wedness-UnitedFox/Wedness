@@ -13,8 +13,7 @@ import VendorTopNavigation from './VendorTopNavigation'
 
 
 const Tab = createMaterialBottomTabNavigator();
-
-
+ 
 export default function BottomTab() {
 
   const readUser = async () => {
@@ -27,7 +26,12 @@ export default function BottomTab() {
   }, [])
 
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      initialRouteName="Home"
+      activeColor="#81A68A"
+      inactiveColor="#808C88"
+      barStyle={{ backgroundColor: '#808C88' }}
+    >
       <Tab.Screen
         name="Home"
         component={HomeScreen}
