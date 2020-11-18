@@ -4,6 +4,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
+  useParams,
 } from "react-router-dom";
 import Home from './pages/Home';
 import Navbar from './components/Navbar'
@@ -45,7 +46,10 @@ function App() {
           <> */}
         <Route exact path="/register" component={Register} />
         <Route exact path="/login" component={Login} />
+        <Route exact path="/invitation/:uid" component={Invitation} />
+        
         <Route path="/" component={Home} />
+
         {/* </>
           } */}
       </Switch>
@@ -55,3 +59,8 @@ function App() {
 
 
 export default App;
+
+const Invitation = () => {
+  let { uid } = useParams()
+  return <h1>This is invitation {uid}</h1>
+}
