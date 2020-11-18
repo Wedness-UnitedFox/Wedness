@@ -74,6 +74,10 @@ class FirebaseSDK {
         const db = firebase.firestore()
         return db.collection('chats')
     }
+    invitationRef = () => {
+        const db = firebase.firestore()
+        return db.collection('invitations')
+    }
 
 }
 const firebaseSDK = new FirebaseSDK();

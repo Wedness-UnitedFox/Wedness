@@ -13,8 +13,7 @@ import VendorTopNavigation from './VendorTopNavigation'
 
 
 const Tab = createMaterialBottomTabNavigator();
-
-
+ 
 export default function BottomTab() {
 
   const readUser = async () => {
