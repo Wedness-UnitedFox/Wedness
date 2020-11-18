@@ -9,7 +9,7 @@ const Tab = createMaterialTopTabNavigator();
 
 export default function VendorTab() {
   return (
-    <Tab.Navigator  style={{marginTop:50}}>
+    <Tab.Navigator style={{marginTop:50}}>
       <Tab.Screen name="Venues" component={VenueScreen} />
       <Tab.Screen name="Organizers" component={OrganizerScreen} />
       <Tab.Screen name="Caterings" component={CateringScreen} />

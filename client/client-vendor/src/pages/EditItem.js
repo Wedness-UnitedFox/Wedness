@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
-import { editItem } from '../store/actions/action'
+import { editItem, fetchServices } from '../store/actions/action'
 
 export default function EditItem() {
     const { id, service_type } = useParams()
@@ -27,8 +27,10 @@ export default function EditItem() {
         setUpdate({ ...update, [e.target.name]: e.target.value })
     }
 
-    const handleEdit = () => {
+    const handleEdit = (e) => {
+        e.preventDefault()
         dispatch(editItem(id, service_type, update))
+        dispatch(fetchServices())
         history.push('/')
     };
 
@@ -43,7 +45,7 @@ export default function EditItem() {
                     <div class="title">
                         <h3 class="text-2xl text-gray-900 font-semibold">Edit {update.service_type}</h3>
                     </div>
-                    <form onSubmit={handleEdit}>
+                    <form onSubmit={(e) => handleEdit(e)}>
                         <div class="options md:flex md:space-x-6 text-sm items-center text-gray-700 mt-4">
                             <h2 class="w-1/2 mb-2 text-gray-900">Services type: </h2>
                             <select required class="w-full border border-gray-200 p-2 focus:outline-none focus:border-gray-500" onChange={handleChange} name="service_type" disabled={true}>

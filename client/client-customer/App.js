@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import { DefaultTheme,configureFonts, Provider as PaperProvider } from 'react-native-paper';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Provider } from 'react-redux';
@@ -11,10 +11,37 @@ import { ChatScreen, LoginScreen, DetailScreen, RegisterScreen } from './src/scr
 import HomeNavigation from './src/navigation/BottomTabNavigation'
 const Stack = createStackNavigator();
 export default function App() {
+
+  const fontConfig = {
+    default: {
+      regular: {
+        fontFamily: 'PlayfairDisplay-Regular',
+        fontWeight: 'normal',
+      },
+      medium: {
+        fontFamily: 'PlayfairDisplay-Medium',
+        fontWeight: 'normal',
+      },
+      light: {
+        fontFamily: 'PlayfairDisplay-Bold',
+        fontWeight: 'normal',
+      },
+      thin: {
+        fontFamily: 'PlayfairDisplay-SemiBold',
+        fontWeight: 'normal',
+      },
+    },
+  };
+  
+  const theme = {
+    ...DefaultTheme,
+    fonts: configureFonts(fontConfig),
+  };
+  
   return (
     <Provider store={store}>
-      <PaperProvider>
-        <NavigationContainer theme={theme}>
+      <PaperProvider theme={theme}>
+        <NavigationContainer>
           <Stack.Navigator mode="modal" >
             <Stack.Screen
               name="Login"
