@@ -72,7 +72,7 @@ const ChatRoom = () => {
     const sendMessage = async (e) => {
         e.preventDefault();
     
-        const { uid, email, token } = auth.currentUser
+        const { uid, email } = auth.currentUser
         await chatRef.add({
           text: formChat,
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -89,8 +89,11 @@ const ChatRoom = () => {
         setFormChat('');
         dummy.current.scrollIntoView({ behavior: 'smooth' });
         if(tokenLocal){
+            // await sendPushNotification("ExponentPushToken[O5o6nzEK6oikGfa9bHDgqD]", input)
             await sendPushNotification(tokenLocal, input)
+
         }
+
     }
     
     return (

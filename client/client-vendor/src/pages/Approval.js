@@ -13,8 +13,7 @@ export default function Approval () {
 
   return (
     <div>
-    {/* <h1>This is Approval</h1>
-    <pre>{JSON.stringify(bookingApprovals, null, 2)}</pre> */}
+    {/* <pre>{JSON.stringify(bookingApprovals, null, 2)}</pre> */}
     <table class="min-w-full table-auto">
       <thead class="justify-between">
         <tr class="bg-gray-800">
@@ -29,6 +28,9 @@ export default function Approval () {
           </th>
           <th class="px-16 py-2">
             <span class="text-gray-300">Booked by</span>
+          </th>
+          <th class="px-16 py-2">
+            <span class="text-gray-300">Booking Date</span>
           </th>
           <th class="px-16 py-2">
             <span class="text-gray-300">Action</span>

@@ -7,6 +7,7 @@ import { SidebarData } from './SidebarData';
 import './Navbar.css';
 import { IconContext } from 'react-icons';
 import * as ImIcons from "react-icons/im";
+import firebase from "../services/firebase";
 
 function Navbar() {
   const history = useHistory()
@@ -14,8 +15,9 @@ function Navbar() {
 
   const showSidebar = () => setSidebar(!sidebar);
 
-  const logoutHandler = () => {
+  const logoutHandler = async () => {
     localStorage.clear()
+    await firebase.auth().signOut()
     history.push('/')
   }
 
