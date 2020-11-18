@@ -73,6 +73,9 @@ export default function ProfileScreen(props) {
     AsyncStorage.clear()
     navigation.replace('Login')
   }
+  const goToInvitation = () =>{
+    navigation.push('Invitation', {data})
+  }
 
   const checkData = () => {
     invitationRef
@@ -130,8 +133,8 @@ export default function ProfileScreen(props) {
             </Card>
           </View> :
           <>
-          <Text style={{alignSelf:'center'}}>asdada/{firebaseSDK.uid}</Text>
-          <TouchableOpacity onPress={() => {
+          {/* <Text style={{alignSelf:'center'}}>asdada/{firebaseSDK.uid}</Text> */}
+          {/* <TouchableOpacity onPress={() => {
                 let url = `whatsapp://send?text=asdada/${firebaseSDK.uid}`;
                 Linking.openURL(url).then((data) => {
                   console.log('open whatsapp', data)
@@ -140,9 +143,9 @@ export default function ProfileScreen(props) {
                 });
               }} >
                 <Text>Share</Text>
-                <AntDesign name="sharealt" size={24} color="black" />
-            {/* <Icon name='logo-whatsapp' style={{color: '#395894', fontSize: 30, marginRight: 10}}/> */}
-          </TouchableOpacity>
+                <AntDesign name="sharealt" size={24} color="black" /> 
+          </TouchableOpacity> */}
+          <Button onPress={() => goToInvitation()}>View Invitation Card</Button>
           <Button onPress={() => setShowForm(true)}>Edit data</Button>
           </>
           
