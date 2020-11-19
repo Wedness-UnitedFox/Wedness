@@ -142,12 +142,12 @@ export default function EditItem() {
                             row="3"
                             required
                         />
-                        <button type="submit" class=" w-full bg-green-600 shadow-lg text-white px-4 py-2 hover:bg-green-700 mt-8 text-center font-semibold focus:outline-none">
+                        <button type="submit" class=" w-full bg-green-600 text-white px-4 py-2 hover:bg-green-700 mt-8 text-center font-semibold focus:outline-none">
                             Submit
                         </button>
 
                     </form>
-                    <button class=" w-full bg-gray-400 shadow-lg text-white px-4 py-2 hover:bg-gray-700 mt-8 text-center font-semibold focus:outline-none" onClick={() => handleCancel()}>Cancel</button>
+                    <button class=" w-full bg-gray-400 text-white px-4 py-2 hover:bg-gray-700 mt-8 text-center font-semibold focus:outline-none" onClick={() => handleCancel()}>Cancel</button>
 
                 </div>
             </div>

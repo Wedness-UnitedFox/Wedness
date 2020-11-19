@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 import store from './src/store';
 
 
-import { ChatScreen, LoginScreen, DetailScreen, RegisterScreen } from './src/screens'
+import { ChatScreen, LoginScreen, DetailScreen, RegisterScreen, InvitationScreen } from './src/screens'
 import HomeNavigation from './src/navigation/BottomTabNavigation'
 const Stack = createStackNavigator();
 export default function App() {
@@ -34,6 +34,9 @@ export default function App() {
               options={({ route }) => ({
                 title: route.params.name
               })}
+            />
+            <Stack.Screen name="Invitation" component={InvitationScreen}
+        
             />
             <Stack.Screen name="Detail" component={DetailScreen}
               options={({ route }) => ({
