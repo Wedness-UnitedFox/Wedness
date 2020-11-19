@@ -132,10 +132,10 @@ const AddNew = () => {
                             : ""
                         }
                         <div class="submit">
-                            <button type="submit" class=" w-full bg-blue-600 shadow-lg text-white px-4 py-2 hover:bg-blue-700 mt-8 text-center font-semibold focus:outline-none ">Submit</button>
+                            <button type="submit" class=" w-full bg-blue-600 text-white px-4 py-2 hover:bg-blue-700 mt-8 text-center font-semibold focus:outline-none ">Submit</button>
                         </div>
                         <div class="submit">
-                            <button type="button" onClick={handleCancel} class=" w-full bg-gray-900 shadow-lg text-white px-4 py-2 hover:bg-blue-700 mt-8 text-center font-semibold focus:outline-none ">Cancel</button>
+                            <button type="button" onClick={handleCancel} class=" w-full bg-gray-700 text-white px-4 py-2 hover:bg-gray-500 mt-8 text-center font-semibold focus:outline-none ">Cancel</button>
                         </div>
                     </form>
                 </div>

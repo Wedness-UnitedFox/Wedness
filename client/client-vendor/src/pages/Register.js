@@ -23,7 +23,7 @@ const Register = () => {
     const handleRegister = (e) => {
         e.preventDefault();
         // console.log(inputRegister, "<<<<<<page handleRegister");
-        dispatch(userRegister(inputRegister, trigger))
+		dispatch(userRegister(inputRegister, trigger))
 				swal({
 					title: "Thank you!",
 					text: "You have been registered!",
@@ -63,13 +63,13 @@ const Register = () => {
 					<div class="w-full lg:w-7/12 bg-orange-200 p-5 rounded-lg lg:rounded-l-none">
 						<h3 class="pt-4 text-3xl text-center">Create an Account</h3>
 						<form class="px-8 pt-6 pb-8 mb-4 rounded" onSubmit={(e) => handleRegister(e)}>
-							<div class="mb-4 md:flex md:justify-between">
-								<div class="mb-4">
-									<label class="block mb-2 text-sm font-bold text-gray-800" for="name">
+							<div class="mb-2 md:flex md:justify-between">
+								<div class="mb-2">
+									<label class="block mb-1 text-sm font-bold text-gray-800" for="name">
 										Name
 									</label>
 									<input
-										class="w-full px-2 py-2 text-sm leading-tight text-gray-800 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+										class="w-full px-2 py-2 text-sm leading-tight text-gray-800 border rounded appearance-none focus:outline-none focus:shadow-outline"
 										name="name"
 										type="text"
                                         placeholder="Input your Name"
@@ -77,11 +77,11 @@ const Register = () => {
 									/>
 								</div>
 								<div class="md:ml-2">
-									<label class="block mb-2 text-sm font-bold text-gray-800" for="phone">
+									<label class="block mb-1 text-sm font-bold text-gray-800" for="phone">
 										Phone Number
 									</label>
 									<input
-										class="w-full px-2 py-2 text-sm leading-tight text-gray-800 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+										class="w-full px-2 py-2 text-sm leading-tight text-gray-800 border rounded appearance-none focus:outline-none focus:shadow-outline"
 										name="phone_number"
 										type="number"
                                         placeholder="Phone Number"
@@ -89,12 +89,12 @@ const Register = () => {
 									/>
 								</div>
 							</div>
-							<div class="mb-4">
-								<label class="block mb-2 text-sm font-bold text-gray-800" for="email">
+							<div class="mb-2">
+								<label class="block mb-1 text-sm font-bold text-gray-800" for="email">
 									Email
 								</label>
 								<input
-									class="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-800 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+									class="w-full px-3 py-2 mb-1 text-sm leading-tight text-gray-800 border rounded appearance-none focus:outline-none focus:shadow-outline"
 									name="email"
 									type="email"
                                     placeholder="Email"
@@ -107,7 +107,7 @@ const Register = () => {
 										Password
 									</label>
 									<input
-										class="w-full px-3 py-2 mb-5 text-sm leading-tight text-gray-700 border border-red-500 rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+										class="w-full px-3 py-2 mb-2 text-sm leading-tight text-gray-700 border border-red-500 rounded appearance-none focus:outline-none focus:shadow-outline"
 										name="password"
 										type="password"
                                         placeholder="******************"
@@ -123,9 +123,8 @@ const Register = () => {
 									Sign Up
 								</button>
 							</div>
-							<hr class="mb-6 border-t" />
+							<hr class="mb-3 border-t" />
 							
-						</form>
 							<div class="text-center">
 								<button
 									class="inline-block text-sm text-gray-500 align-baseline hover:text-gray-800"
@@ -134,6 +133,7 @@ const Register = () => {
 									Already have an account? Login Here!
 								</button>
 							</div>
+						</form>
 					</div>
 				</div>
 			</div>

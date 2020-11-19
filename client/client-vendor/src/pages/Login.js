@@ -62,7 +62,7 @@ const Login = () => {
                                     Email
 								</label>
                                 <input
-                                    class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                                    class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded appearance-none focus:outline-none focus:shadow-outline"
                                     name="email"
                                     type="email"
                                     placeholder="Email"
@@ -74,7 +74,7 @@ const Login = () => {
                                     Password
 								</label>
                                 <input
-                                    class="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border border-red-500 rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                                    class="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border border-red-500 rounded appearance-none focus:outline-none focus:shadow-outline"
                                     name="password"
                                     type="password"
                                     placeholder="Password"
