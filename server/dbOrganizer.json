@@ -1,0 +1,32 @@
+[
+    {
+        "name": "SLC Wedding Organizer",
+        "address": "Jl. Panglima Polim Raya No. 1A / Jl. Manggis No. 111",
+        "email": "slcweddingservice@gmail.com",
+        "phone_number": "085777784306",
+        "avatar": "https://www.mantenan.co.id/home/wp-content/uploads/2017/02/slc-logo-web.jpg",
+        "price": 17500000,
+        "service_type": "organizer",
+        "description": "SLC Berdiri dari tahun 1999. Bergerak dibidang Sanggar, dekor, catering, peyewaan perlengkapan pesta dll."
+    },
+    {
+        "name": "HR Team Wedding Group",
+        "address": "Jl. Raya Fatmawati No. 39 Blok B2 No. 19 Cipete Utara, Kebayoran Baru, Jakarta Selatan",
+        "email": "hrteamweddinggroup@gmail.com",
+        "phone_number": "08118686500",
+        "avatar": "https://alexandra.bridestory.com/image/upload/assets/hr-team-wedding-group-1548937092-HJTKwve4V.png",
+        "price": 10000000,
+        "service_type": "organizer",
+        "description": "HR TEAM Wedding Group make your dream come true with our service"
+    },
+    {
+        "name": "Priceless Wedding Planner & Organizer",
+        "address": "Golden park serpong",
+        "email": "Pricelessweddingplanner@gmail.Com",
+        "phone_number": "081291781040",
+        "service_type": "organizer",
+        "avatar": "https://www.mantenan.co.id/wp-content/uploads/2019/10/Priceless-Wedding-Planner-Organizer_3.jpg",
+        "price": 12000000,
+        "description": "Our mission is to help our clients develop a clear vision of what they wish to achieve, and to create and execute a complete solution that brings their vision into reality."
+    }
+]
