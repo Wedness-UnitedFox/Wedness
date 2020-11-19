@@ -30,7 +30,7 @@ const DetailItem = () => {
     }, [])
 
     const closeHandler = function () {
-        history.push('/home')
+        history.push('/')
     }
 
     const toEditHandler = function () {

@@ -32,7 +32,7 @@ function App() {
 
   return (
     <Router>
-      { isLogin ? <Navbar /> : ''}
+      { localStorage.access_token ? <Navbar /> : ''}
       <Switch>
         {/* { isLogin ? 
             <> */}
@@ -48,7 +48,7 @@ function App() {
         <Route exact path="/login" component={Login} />
         <Route exact path="/invitation/:uid" component={Invitation} />
         
-        <Route path="/" component={Home} />
+        <Route exact path="/" component={Home} />
 
         {/* </>
           } */}
