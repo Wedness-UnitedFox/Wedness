@@ -178,7 +178,7 @@ export default function ProfileScreen(props) {
                   label="Date"
                   mode="outlined"
                   editable={false}
-                  value={(new Date(data.date)).toLocaleDateString()}
+                  value={data?.date && (new Date(data.date)).toLocaleDateString()}
                 // defaultValue={`${(new Date(data?.date))?.getMonth()}`}  value={data?.date? "":data?.date?.toLocaleString('id')} 
                 />
                 <Button style={{ justifyContent: 'center', }} onPress={showDatePicker} >Pick A Date</Button>

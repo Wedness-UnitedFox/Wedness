@@ -23,9 +23,9 @@ export default function Login(props) {
     title: 'RN + Firebase Chat App'
   };
   const [userData, setUserData] = useState({
-    name: 'tester',
-    email: 'testing@mail.com',
-    password: '123456',
+    name: '',
+    email: '',
+    password: '',
     avatar: ''
   })
 
@@ -67,8 +67,15 @@ export default function Login(props) {
 
   }, [])
 
-  function trigger() {
-    const response = firebaseSDK.login(userData, loginSuccess, loginFailed)
+  function trigger(result) {
+    setLoading(false)
+    if(result === 'success'){
+      const response = firebaseSDK.login(userData, loginSuccess, loginFailed)
+    }else{
+      console.log(result.data.msg);
+      setMessage({title:"Login Failed", message:result.data.msg})
+      showAlert()
+    }
 
   }
 
@@ -130,10 +137,10 @@ export default function Login(props) {
           message={message.message}
           closeOnTouchOutside={true}
           closeOnHardwareBackPress={false}
-          showCancelButton={true}
+          showCancelButton={message.title==="Login Failed" && false}
           showConfirmButton={true}
-          cancelText="No, cancel"
-          confirmText="Yes, delete it"
+          cancelText="No"
+          confirmText="Ok"
           confirmButtonColor="#DD6B55"
           onCancelPressed={() => {
             hideAlert();

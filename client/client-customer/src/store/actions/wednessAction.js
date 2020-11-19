@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-community/async-storage'
 import axios from 'axios'
 
 // const apiUrl = 'http://10.0.2.2:3000'
-const apiUrl = 'http://localhost:3000'
+const apiUrl = 'http://54.151.227.157:3000'
 
 export const login = (inputLogin, cb) => {
     console.log(inputLogin, "<<<<<<<store login");
@@ -26,9 +26,12 @@ export const login = (inputLogin, cb) => {
             })
             .then(() => {
                 console.log("sukses")
-                cb()
+                cb('success')
             })
-            .catch((err) => console.log("-----------error", err));
+            .catch((err) =>{
+                    cb(err.response)
+                //  console.log("-----------error", err)
+                });
     };
 };
 

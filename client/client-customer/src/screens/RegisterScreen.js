@@ -89,6 +89,7 @@ export default function RegisterScreen(props) {
         <TextInput
           mode="outlined"
           label="Password"
+          secureTextEntry={true}
           placeholder="Your password..."
           onChangeText={onChangePassword}
           style={styles.input}
