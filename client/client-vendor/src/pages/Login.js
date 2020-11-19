@@ -14,7 +14,9 @@ const Login = () => {
     const history = useHistory()
 
     useEffect(() => {
-        if (localStorage.access_token && localStorage.currentUser) history.push('/')
+        // if (localStorage.access_token && localStorage.currentUser) history.push('/')
+        if (localStorage.access_token) history.push('/')
+
     }, [])
 
     const handleSubmit = (e) => {
@@ -24,9 +26,9 @@ const Login = () => {
         auth.signInWithEmailAndPassword(email, password)
             .then(() => {
                 console.log('Login berhasil')
-                localStorage.setItem('currentUser', JSON.stringify(auth.currentUser))
+                // localStorage.setItem('currentUser', JSON.stringify(auth.currentUser))
+                // dispatch(fetchServices())
                 history.push('/')
-                dispatch(fetchServices())
             })
             .catch(function (error) {
                 // Handle Errors here.

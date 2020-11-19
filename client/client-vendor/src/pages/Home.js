@@ -11,18 +11,19 @@ const Home = () => {
 
     const { services, loading, error } = useSelector((state) => state)
 
-    useEffect(() => {
-        dispatch(fetchServices())
+    useEffect(() => { 
         if (!localStorage.access_token) history.push('/login')
+        else dispatch(fetchServices())
     }, [])
 
-    console.log(services, "hasil ngefetch nih")
+    // console.log(services, "hasil ngefetch nih")
 
     if (loading) return <p>Loading....</p>
     if (error) return <p>Error!</p>
 
     return (
         <div>
+            {/* <pre>{JSON.stringify(services, null, 2)}</pre> */}
             <div >
                 <table class="table-auto  w-full" >
                     <thead class="justify-between">
@@ -50,9 +51,9 @@ const Home = () => {
                         </tr>
                     </thead>
                     <tbody class="bg-gray-200">
-                        {services ? services.map((data, id) => {
+                        {services.length > 0 ? services.map((data, id) => {
                             return <TableRow key={`${data.id}${data.service_type}${data.name}`} data={data} id={id} />
-                        }) : ''}
+                        }) : null}
                     </tbody>
                 </table>
             </div>
