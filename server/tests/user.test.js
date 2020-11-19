@@ -49,6 +49,20 @@ describe('POST /register', () => {
       })
   })
 
+  test('Register Failed', done => {
+    request(app)
+      .post('/user/register')
+      .send(newUser)
+      .set('Accept', 'application/json')
+      .then(response => {
+        console.log(response.body)
+        const { status, body } = response
+        expect(status).toBe(400)
+        expect(body).toHaveProperty('msg', 'Email is already registered!') 
+        done()
+      })
+  })
+
   test('Fail to register due to empty name column', done => {
     const latestUser = {...newUser, name: ''}
     request(app)
