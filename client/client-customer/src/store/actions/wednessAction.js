@@ -225,7 +225,7 @@ export const checkout = () => {
     return (dispatch, getState) => {
         AsyncStorage.getItem('access_token')
             .then(value => {
-                console.log(value, '<<<<<<<<<<<<<<<AccessToken  ', id);
+                // console.log(value, '<<<<<<<<<<<<<<<AccessToken  ', id);
 
                 return axios({
                     url: apiUrl + `/user/plan/checkout`,
