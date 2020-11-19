@@ -78,14 +78,13 @@ beforeAll( (done) => {
 })
 
 afterAll((done) => {
-    queryInterface.bulkDelete('Checkouts')
-        .then(() => {
+    // queryInterface.bulkDelete('Checkouts')
+    //     .then(() => {
             done()
-        })
-        .catch(err => {
-            // console.log(err)
-            done()
-        })
+        // })
+        // .catch(err => { 
+        //     done()
+        // })
     // queryInterface.bulkDelete('Caterings')
     // .then(()=> {
     //     done()
@@ -434,6 +433,8 @@ describe('Failed Case /putCheckoutCustomer for Vendor', () => {
 })
 describe('Testing /getCheckoutForVendor', () => {  
     let checkoutId
+    let checkoutId2
+    let checkoutId3
     let access_token_vendor
     test('Success get All', async (done) => { 
         const vendorLogin = await request(app)
@@ -441,15 +442,17 @@ describe('Testing /getCheckoutForVendor', () => {
         .send(userDataVendor)   
         access_token_vendor = await vendorLogin.body.access_token  
  
-        await request(app)
+        const resultPost3 = await request(app)
         .post("/vendor/venue")
         .send(testDataVenue)
         .set('access_token', await access_token_vendor) 
+        checkoutId3 = resultPost3.body.id
 
-        await request(app)
+        const resultPost2 = await request(app)
         .post("/vendor/catering")
         .send(testDataCatering)
         .set('access_token', await access_token_vendor) 
+        checkoutId2 = resultPost2.body.id
 
         const resultPost = await request(app)
         .post("/vendor/organizer")
@@ -457,6 +460,29 @@ describe('Testing /getCheckoutForVendor', () => {
         .set('access_token', await access_token_vendor) 
         checkoutId = resultPost.body.id
         console.log({checkoutId});
+
+        await request(app)
+        .post("/user/catering")
+        .send(testDataCatering)
+        .set('access_token', await access_token_vendor) 
+
+        request(app)
+        .post("/user/plan")
+        .send({...dataOrganizer, VendorId: checkoutId})
+        .set('access_token', access_token) 
+        
+        await request(app)
+        .post("/user/plan")
+        .send({...dataVenue, VendorId:await checkoutId})
+        .set('access_token', access_token) 
+        await request(app)
+        .post("/user/plan")
+        .send({...dataOrganizer, VendorId:await checkoutId2})
+        .set('access_token', access_token) 
+        await request(app)
+        .post("/user/plan")
+        .send({...dataCatering, VendorId:await checkoutId3})
+        .set('access_token', access_token) 
  
         request(app)
             .get(`/vendor/checkout`)
@@ -468,7 +494,7 @@ describe('Testing /getCheckoutForVendor', () => {
                 const { status, body } = response
                 expect(status).toBe(200)
                 done()
-            }) 
+            })
     })
     test('failed get one venue, unauthorized', async (done) => {  
         request(app)

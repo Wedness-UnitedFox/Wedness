@@ -25,16 +25,16 @@ beforeAll((done)=> {
     // done()
 })
 
-afterAll((done) => {
-    queryInterface.bulkDelete('Venues')
-    .then(()=> {
-        done()
-    })
-    .catch(err => {
-        console.log(err)
-        done()
-    })
-})
+// afterAll((done) => {
+    // queryInterface.bulkDelete('Venues')
+    // .then(()=> {
+    //     done()
+    // })
+    // .catch(err => {
+    //     console.log(err)
+    //     done()
+    // })
+// })
 
 let data = { 
     name: 'Wedness Hall',
@@ -64,6 +64,29 @@ let dataPut = {
 
 describe('Testing /postVenue', () => {
     describe('Success case /postVenue', () => {
+        test('Successfully Add Venue', (done) => { 
+            request(app)
+            .post("/vendor/venue")
+            .send(data)
+            .set('access_token', access_token) 
+            .then(response => {
+                const {status,body} = response 
+                console.log(body, "<<<<<<<<<<<<<<<body");
+                expect(status).toBe(201)
+                id = body.id
+                expect(body).toHaveProperty('id', expect.any(Number))
+                expect(body).toHaveProperty('name', data.name)
+                expect(body).toHaveProperty('address', data.address)
+                expect(body).toHaveProperty('phone_number', data.phone_number)
+                expect(body).toHaveProperty('price', data.price)
+                expect(body).toHaveProperty('type', data.type)
+                expect(body).toHaveProperty('description', data.description)
+                expect(body).toHaveProperty('avatar', data.avatar)
+                expect(body).toHaveProperty('capacity', data.capacity)
+                expect(body).toHaveProperty('service_type', data.service_type)
+                done()
+            })
+        })
         test('Successfully Add Venue', (done) => { 
             request(app)
             .post("/vendor/venue")
@@ -380,13 +403,25 @@ describe('Testing /getVenue', () => {
     describe('Failed Case /getVenue', () => {
         test('Wrong Id', (done) => {
             request(app)
-            .get('/vendor/venue' + 0 )
+            .get('/vendor/venue' + 1 )
             .set('access_token', access_token)
             .send(data)
             .set('Accept', 'application/json')
             .then(response => {
                 const {status, body} = response
                 expect(status).toBe(404)
+                done()
+            })
+        })
+        test('Wrong Id', (done) => {
+            request(app)
+            .get('/vendor/venue/x' )
+            .set('access_token', access_token)
+            .send(data)
+            .set('Accept', 'application/json')
+            .then(response => {
+                const {status, body} = response
+                expect(status).toBe(500)
                 done()
             })
         })
@@ -620,7 +655,7 @@ describe('Testing /deleteVenue', () => {
 
         test('Delete catering Invalid Id input string', (done) => {
             request(app)
-            .delete(`/vendor/venue/x`)
+            .delete(`/vendor/venue/xxxx`)
             .set('access_token', access_token)
             .set('Accept', 'application/json')
             .then(response => {
@@ -631,7 +666,7 @@ describe('Testing /deleteVenue', () => {
         })
         test('Delete catering Invalid Id no data', (done) => {
             request(app)
-            .delete(`/vendor/venue/0`)
+            .delete(`/vendor/venue/1`)
             .set('access_token', access_token)
             .set('Accept', 'application/json')
             .then(response => {

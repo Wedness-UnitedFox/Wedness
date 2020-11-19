@@ -22,16 +22,16 @@ beforeAll((done)=> {
     })
 })
 
-afterAll((done) => {
-    queryInterface.bulkDelete('Organizers')
-    .then(() => {
-        done()
-    })
-    .catch(err => {
-        console.log(err)
-        done()
-    })
-})
+// afterAll((done) => {
+    // queryInterface.bulkDelete('Organizers')
+    // .then(() => {
+    //     done()
+    // })
+    // .catch(err => {
+    //     console.log(err)
+    //     done()
+    // })
+// })
 
 let data = {
     name: 'Wedness Organizer',
@@ -57,6 +57,26 @@ let dataPut = {
 
 describe('Testing /postOrganizer', () => {
     describe('Success case /postOrganizer', () => {
+        test('Successfully Add Organizer', (done) => {
+            request(app)
+            .post("/vendor/organizer")
+            .set('access_token', access_token)
+            .send(data)
+            .then(response => {
+                const {status,body} = response
+                expect(status).toBe(201)
+                id = body.id
+                expect(body).toHaveProperty('id', expect.any(Number))
+                expect(body).toHaveProperty('name', data.name)
+                expect(body).toHaveProperty('address', data.address)
+                expect(body).toHaveProperty('phone_number', data.phone_number)
+                expect(body).toHaveProperty('price', data.price)
+                expect(body).toHaveProperty('description', data.description)
+                expect(body).toHaveProperty('avatar', data.avatar)
+                expect(body).toHaveProperty('service_type', data.service_type)
+                done()
+            })
+        })
         test('Successfully Add Organizer', (done) => {
             request(app)
             .post("/vendor/organizer")
