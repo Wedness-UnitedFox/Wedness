@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
-    width: 400,
+    width: '100%',
     justifyContent: "center",
   },
   title: {
