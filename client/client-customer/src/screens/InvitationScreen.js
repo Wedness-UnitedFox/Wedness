@@ -37,7 +37,7 @@ export default function App({ route, navigation }) {
         }).catch(err => {
             console.log(err);
         })
-        // .catch(error => console.error("Oops, snapshot failed", error))
+        .catch(error => console.error("Oops, snapshot failed", error))
     }
 
     const trigger = () => {
@@ -47,6 +47,7 @@ export default function App({ route, navigation }) {
         })
         .then( uri => {
             setInvitation(uri)
+            console.log(uri,"<-- SAVED");
         })
     }
 
@@ -59,15 +60,19 @@ export default function App({ route, navigation }) {
     },[])
 
     const openShareDialogAsync = async () => {
-        if(!invitation){
-            return alert("Save your invitation first!")
+        console.log({invitation});
+        try {
+            if(!invitation){
+                return alert("Save your invitation first!")
+            }
+            if (!(await Sharing.isAvailableAsync())) {
+              alert(`Uh oh, sharing isn't available on your platform`);
+              return;
+            } 
+            await Sharing.shareAsync(invitation)
+        } catch (error) {
+            console.log({error});
         }
-        if (!(await Sharing.isAvailableAsync())) {
-          alert(`Uh oh, sharing isn't available on your platform`);
-          return;
-        }
-    
-        await Sharing.shareAsync(invitation.localUri);
     }; 
 
 
@@ -98,9 +103,9 @@ export default function App({ route, navigation }) {
                         </View>
                     </ImageBackground>
                 </ViewShot>
-                <View style={{flexDirection:"row"}}>
-                    <Button color="#81A68A" onPress={capture} style={{width: "50%"}}>Save Image</Button>
-                    <Button color="#81A68A" onPress={openShareDialogAsync} style={[{width: "50%"}, styles.button]}>Share Image</Button>
+                <View style={{flexDirection:"row", marginTop:10, paddingHorizontal:10}}>
+                    <Button color="#81A68A" onPress={capture} style={{width: "50%", borderWidth:1, borderColor:'white', marginRight:4}}>Save Image</Button>
+                    <Button color="#81A68A" onPress={openShareDialogAsync} style={[{width: "50%",}, styles.button]}>Share Image</Button>
                 </View>
             </ScrollView>
         );
