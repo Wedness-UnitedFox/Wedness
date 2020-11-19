@@ -23,7 +23,7 @@ const Register = () => {
     const handleRegister = (e) => {
         e.preventDefault();
         // console.log(inputRegister, "<<<<<<page handleRegister");
-        dispatch(userRegister(inputRegister, trigger))
+		dispatch(userRegister(inputRegister, trigger))
 				swal({
 					title: "Thank you!",
 					text: "You have been registered!",

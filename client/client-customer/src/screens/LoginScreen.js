@@ -162,14 +162,14 @@ export default function Login(props) {
         title="Login"
         mode="contained"
         style={styles.buttonText}
-        color={'white'}
+        color={'black'}
         onPress={onPressLogin}
       > Login </Button>
 
       <Button
         title="Signup"
         style={styles.buttonSignup}
-        color={'black'}
+        color={'white'}
         onPress={onPressRegister}
       > Sign up </Button>
 
@@ -197,6 +197,7 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
+    width: 400,
     justifyContent: "center",
   },
   title: {
@@ -212,7 +213,7 @@ const styles = StyleSheet.create({
     margin: 16,
     width: "70%",
     paddingHorizontal: 16,
-    backgroundColor: "rgba(255, 255, 255, 0.91)",
+    backgroundColor: "white",
     fontSize: 16
   },
   buttonText: {
@@ -220,7 +221,7 @@ const styles = StyleSheet.create({
     fontSize: 42,
     paddingVertical: 2,
     width: "60%",
-    backgroundColor: "rgba(170, 217, 192, 0.62)",
+    backgroundColor: "#81A68A",
     marginTop: 15
   },
   buttonSignup: {
@@ -228,7 +229,7 @@ const styles = StyleSheet.create({
     fontSize: 42,
     paddingVertical: 2,
     width: "60%",
-    backgroundColor: "rgba(170, 217, 192, 0.62)",
+    backgroundColor: "#81A68A",
     marginTop: 15
   }
 });

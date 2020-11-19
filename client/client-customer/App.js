@@ -35,6 +35,9 @@ export default function App() {
                 title: route.params.name
               })}
             />
+            <Stack.Screen name="Invitation" component={InvitationScreen}
+        
+            />
             <Stack.Screen name="Detail" component={DetailScreen}
               options={({ route }) => ({
                 title: route.params.name
